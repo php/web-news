@@ -25,7 +25,7 @@ function foot() {?>
 <hr noshade size="1" width="60%" align="right">
 <div align="right">
 <small>
-blah blah blah blah.
+written by jim winstead. no rights reserved.
 </small>
 </div>
 </body>
