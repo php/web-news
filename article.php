@@ -71,7 +71,7 @@ while (!feof($s)) {
       if (strlen($description))
         $link_desc .= " " . $description;
 
-      $dl_link = "getpart.php?group=$group&article=$article&part=$mimecount";
+      $dl_link = "/getpart.php?group=$group&article=$article&part=$mimecount";
      
       echo "Attachment: <a target=\"_blank\" href=\"$dl_link\">${link_desc}</a><br />\n"; 
     }
