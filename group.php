@@ -65,7 +65,7 @@ while ($line = fgets($s, 4096)) {
       echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
       echo "<title>", format_subject($subj), "</title>\n";
       echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
-      echo "<pubDate>$date822</pubDate>";
+      echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";
       break;
     case 'rdf':
@@ -73,7 +73,7 @@ while ($line = fgets($s, 4096)) {
       echo "<title>", format_subject($subj), "</title>\n";
       echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
       echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
-      echo "<pubDate>$date822</pubDate>";
+      echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";
       break;
     case 'html':
@@ -92,7 +92,7 @@ while ($line = fgets($s, 4096)) {
 
 switch ($format) {
   case 'rss':
-    echo "</channel></rss>\n";
+    echo "</channel>\n</rss>\n";
     break;
   case 'rdf':
     echo "</rdf:RDF>\n";
