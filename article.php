@@ -1,6 +1,7 @@
 <?php
 // vim:sw=2:ts=2:et
 
+$article = (int)$article;
 if (!$article) die("no article specified");
 
 require 'common.inc';
