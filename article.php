@@ -38,7 +38,7 @@ while (!feof($s)) {
     }
     if ($headers['content-type']
         && preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
-      $mimetype = strtolower($m[1]);
+      $mimetype = trim(strtolower($m[1]));
     }
     if (!$started) {
       head("$group: ".format_subject($headers[subject], $charset));
