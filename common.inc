@@ -19,7 +19,7 @@ function head($title="PHP news") {
    <a href="/index.php"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
   </td>
   <td align="right" valign="bottom">
-   PHP.net <a href="news://<?php echo NNTP_HOST; ?>/" clas="top">news server</a> web interface
+   PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" clas="top">news server</a> web interface
   </td>
  </tr>
  <tr bgcolor="#333366">
