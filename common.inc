@@ -1,10 +1,11 @@
 <?php
 
 function head($title="php news") {?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
 <html>
 <head>
  <title><?echo $title?></title>
- <link rel="stylesheet=" href="/style.css">
+ <link rel="stylesheet" href="/style.css" type="text/css" />
 </head>
 <body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -40,18 +41,18 @@ function head($title="php news") {?>
   </td>
   </form>
   <td align="right">
-   <a href="/"><img src="/i/l.gif" border="0" width="120" height="64" alt="php"></a>
+   <a href="/"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
   </td>
  </tr>
  <tr bgcolor="#333366">
-  <td colspan="3"><img src="/i/g.gif" width="1" height="1" alt=""></td>
+  <td colspan="3"><img src="/i/g.gif" width="1" height="1" alt="" /></td>
  </tr>
 </table>
 <?php
 }
 
 function foot() {?>
-<hr noshade size="1" width="60%" align="right">
+<hr noshade="noshade" size="1" width="60%" align="right" />
 <div align="right">
 <small>
 written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved.
