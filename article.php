@@ -1,4 +1,5 @@
 <?php
+// vim:sw=2:ts=2:et
 
 if (!$article) die("no article specified");
 
@@ -15,21 +16,59 @@ if ($group) {
 $res = nntp_cmd($s, "ARTICLE $article",220)
   or die("failed to get article ".htmlspecialchars($article));
 
+$started = 0;
 $inheaders = 1; $headers = array();
-$charset = $encoding = "";
+$masterheaders = null;
+$mimetype = $boundary = $charset = $encoding = "";
+$boundaries = array();
 $lk = '';
 while (!feof($s)) {
   $line = fgets($s, 4096);
   if ($line == ".\r\n") break;
   if ($inheaders && ($line == "\n" || $line == "\r\n")) {
     $inheaders = 0;
-    head("$group: ".format_subject($headers[subject]));
-    start_article($group,$headers);
+    if (!$started) {
+      head("$group: ".format_subject($headers[subject]));
+      start_article($group,$headers);
+      $started = 1;
+    }
     if ($headers['content-type']
         && preg_match("/charset=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
       $charset = trim($m[2]);
     }
+    if ($headers['content-type']
+        && preg_match("/boundary=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
+      $boundaries[] = trim($m[2]);
+      $boundary = end($boundaries);
+    }
+    if ($headers['content-type']
+        && preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
+      $mimetype = strtolower($m[1]);
+    }
+    
     $encoding = strtolower(trim($headers['content-transfer-encoding']));
+    if (strlen($mimetype)
+        && $mimetype != "text/plain"
+        && substr($mimetype,0,10) != "multipart/") {
+      # Display a link to the attachment
+      $name = "";
+      if ($headers['content-type']
+          && preg_match("/name=(\"|'|)(.+)\\1/s", $headers['content-type'], $m))
+        $name = trim($m[2]);
+      else if ($headers['content-disposition']
+          && preg_match("/filename=(\"|'|)(.+)\\1/s", $headers['content-type'], $m))
+        $name = trim($m[2]);
+      
+      if ($headers['content-description'])
+        $description = trim($headers['content-description']) . " ";
+      else
+        $description = "";
+      
+      echo "Attachment: [$mimetype] ${description}$name<br />\n"; 
+    }
+    
+    if ($masterheaders == null)
+      $headers = $masterheaders;
     continue;
   }
   # fix lines that started with a period and got escaped
@@ -45,13 +84,36 @@ while (!feof($s)) {
     }
   }
   else {
+
+    if ($boundary
+        && substr($line,0,2) == '--'
+        && substr($line,2,strlen($boundary)) == $boundary) {
+
+      $inheaders = 1;
+
+      if (substr($line,2+strlen($boundary)) == '--') {
+        # end of this container
+        array_pop($boundaries);
+        $boundary = end($boundaries);
+      } else {
+        # next section; start with an inherited set of headers
+        $headers = $masterheaders;
+        $mimetype = "";
+      }
+      
+      continue;
+    }
+
+    if (strlen($mimetype) && $mimetype != "text/plain")
+      continue;
+    
     switch($encoding) {
       case "quoted-printable":
-	$line = quoted_printable_decode($line);
-	break;
+        $line = quoted_printable_decode($line);
+        break;
       case "base64":
-	$line = base64_decode($line);
-	break;
+        $line = base64_decode($line);
+        break;
     }
 
     # this is some amazingly simplistic code to color quotes/signatures
@@ -75,7 +137,7 @@ while (!feof($s)) {
     }
   }
 }
-if ($inheaders) {
+if ($inheaders && !$started) {
     head("$group: ".format_subject($headers[subject]));
     start_article($group,$headers);
 }
