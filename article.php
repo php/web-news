@@ -71,10 +71,11 @@ function start_article ($group,$headers) {
   echo '<tr><td class="headerlabel">Subject:</td><td class="headervalue" colspan="3">'.format_subject($headers["subject"])."</td></tr>\n";
   echo "<tr>";
   # references
-  if ($headers["references"]) {
+  if ($headers["references"] || $headers["in-reply-to"]) {
     echo '<td class="headerlabel">References:</td><td class="headervalue">';
-    $r = explode(" ", $headers["references"]);
+    $r = explode(" ", $headers["references"]." ".$headers["in-reply-to"]);
     while (list($k,$v) = each($r)) {
+      if (!$v) continue;
       echo "<a href=\"article.php?group=$group&amp;article=".htmlspecialchars(urlencode($v))."\">".($k+1)."</a>\n";
     }
     echo "</td>\n";
@@ -82,7 +83,7 @@ function start_article ($group,$headers) {
   # groups
   if ($headers["newsgroups"]) {
     echo '<td class="headerlabel">Groups:</td><td class="headervalue">';
-    $r = explode(" ", chop($headers["newsgroups"]));
+    $r = explode(",", chop($headers["newsgroups"]));
     while (list($k,$v) = each($r)) {
       echo "<a href=\"group.php?group=".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>\n";
     }
