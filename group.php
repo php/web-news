@@ -14,35 +14,68 @@ $n = min($l+1,$i+20);
 $res = nntp_cmd($s,"XOVER $i-$n", 224)
   or die("failed to get xover data\n");
 
-head($group);
-
-navbar($group,$f,$l,$i);
+switch($format) {
+  case 'rss':
+    header("Content-type: text/xml");
+    echo "<?xml version=\"1.0\" standalone=\"yes\">\n";?>
+<rss version="0.93">
+<channel> 
+ <title>news.php.net: <?echo $group?></title>
+ <link>http://news.php.net/group.php?group=<?echo $group?></link>
+ <description></description>
+<?  break;
+  case 'html':
+  default:
+    head($group);
+    navbar($group,$f,$l,$i);
+    echo '<table class="alist" width="100%">';
+    echo '<tr><td class="alisthead">#</td><td class="alisthead">subject</td><td class="alisthead">author</td><td class="alisthead">date</td><td class="alisthead">lines</td></tr>',"\n";
+    break;
+}
 
 # list of articles
-echo '<table class="alist" width="100%">';
-echo '<tr><td class="alisthead">#</td><td class="alisthead">subject</td><td class="alisthead">author</td><td class="alisthead">date</td><td class="alisthead">lines</td></tr>',"\n";
 $class = "even";
 while ($line = fgets($s, 4096)) {
   if ($line == ".\r\n") break;
   $line = chop($line);
-  list($n,$subj,$author,$date,$messageid,$references,$bytes,$lines,$extra)
+  list($n,$subj,$author,$odate,$messageid,$references,$bytes,$lines,$extra)
     = explode("\t", $line, 9);
-  $date = date("H:i:s M/d/y", strtotime($date));
-  echo "<tr>";
-  echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">$n</a></td>";
-  echo "<td class=\"$class\">";
-  echo format_subject($subj);
-  echo "</td>";
-  echo "<td class=\"$class\">".format_author($author)."</td>\n";
-  echo "<td class=\"$class\"><tt>$date</tt></td>\n";
-  echo "<td align=\"right\" class=\"$class\">$lines</td>\n";
+  $date = date("H:i:s M/d/y", strtotime($odate));
+  $date822 = date("r", strtotime($odate));
+
+  switch($format) {
+    case 'rss':
+      echo "<item>\n";
+      echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
+      echo "<title>", format_subject($subj), "</title>\n";
+      echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
+      echo "<pubDate>$date822</pubDate>";
+      echo "</item>\n";
+      break;
+    case 'html':
+    default:
+      echo "<tr>";
+      echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">$n</a></td>";
+      echo "<td class=\"$class\">";
+      echo format_subject($subj);
+      echo "</td>";
+      echo "<td class=\"$class\">".format_author($author)."</td>\n";
+      echo "<td class=\"$class\"><tt>$date</tt></td>\n";
+      echo "<td align=\"right\" class=\"$class\">$lines</td>\n";
+  }
   $class = $class == "even" ? "odd" : "even";
 }
-echo "</table>\n";
 
-navbar($group,$f,$l,$i);
-
-foot();
+switch ($format) {
+  case 'rss':
+    echo "</channel></rss>\n";
+    break;
+  case 'html':
+  default:
+    echo "</table>\n";
+    navbar($group,$f,$l,$i);
+    foot();
+}
 
 function navbar($g,$f,$l,$i) {
   echo '<table border="0" cellpadding="2" cellspacing="2" width="100%"><tr class="alisthead">';
@@ -69,4 +102,3 @@ function navbar($g,$f,$l,$i) {
   echo '</td>';
   echo '</tr></table>';
 }
-
