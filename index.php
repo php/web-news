@@ -13,7 +13,7 @@ head();
 echo '<table border="0" cellpadding="6" cellspacing="0"><tr><td>';
 
 echo "<table class=\"grouplist\">\n";
-echo '<tr><td class="grouplisthead">name</td><td class="grouplisthead">messages</td></tr>',"\n";
+echo '<tr><td class="grouplisthead">name</td><td class="grouplisthead">messages</td><td class="grouplisthead">rss</td></tr>',"\n";
 $class = "even";
 while ($line = fgets($s, 1024)) {
   if ($line == ".\r\n") break;
@@ -24,6 +24,11 @@ while ($line = fgets($s, 1024)) {
   echo "<a class=\"active$active\" href=\"group.php?group=$group\">$group</a>";
   echo "</td>\n";
   echo "<td align=\"right\" class=\"$class\">", $high-$low+1, "</td>\n";
+  echo "<td class=\"$class\">";
+  if ($active != 'n') {
+    echo "<a href=\"group.php?group=$group&amp;format=rss\">rss</a>";
+  }
+  echo "</td>\n";
   echo "</tr>\n";
   $class = $class == "even" ? "odd" : "even";
 }
