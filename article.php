@@ -39,10 +39,9 @@ $mimetype = $boundary = $charset = $encoding = "";
 $mimecount = 0; // number of mime parts
 $boundaries = array();
 $lk = '';
-$prevquote = 0;
-$prevline = '';
+$linebuf = '';
 while (!feof($s)) {
-	$line = fgets($s, 4096);
+	$line = fgets($s);
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
@@ -107,6 +106,7 @@ while (!feof($s)) {
 		$line = substr($line,1);
 	}
 
+
 	if ($inheaders) {
 		list($k,$v) = explode(": ", $line, 2);
 		if ($k && $v) {
@@ -153,6 +153,15 @@ while (!feof($s)) {
 			$line = to_utf8($line, $charset);
 		}
 
+		$line = $linebuf . $line;
+
+		if (substr($line, -2) == "\r\n") {
+		   $linebuf = '';
+		} else {
+		   $linebuf = $line;
+		   continue;
+		}
+
 		# this is some amazingly simplistic code to color quotes/signatures
 		# differently, and turn links into real links. it actually appears
 		# to work fairly well, but could easily be made more sophistimicated.
@@ -166,17 +175,11 @@ while (!feof($s)) {
 			echo "</span>";
 			$insig = 0;
 		}
-		if (
-		(!$insig && substr($line,0,4) == "&gt;") ||
-		($prevquote && !in_array(substr($prevline, -1), array("\r","\n")))
-		) {
+		if (!$insig && substr($line,0,4) == "&gt;") {
 			echo "<span class=\"quote\">$line</span>";
-			$prevquote = 1;
 		} else {
 			echo $line;
-			$prevquote = 0;
 		}
-		$prevline = $line;
 	}
 }
 if ($inheaders && !$started) {
