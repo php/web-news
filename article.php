@@ -78,6 +78,7 @@ function start_article ($group,$headers) {
     $c = 1;
     while (list($k,$v) = each($r)) {
       if (!$v) continue;
+      $v = trim($v);
       if (!preg_match("/^<.+>\$/", $v)) continue;
       echo "<a href=\"article.php?group=$group&amp;article=".htmlspecialchars(urlencode($v))."\">".($c++)."</a>\n";
     }
