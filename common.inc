@@ -14,7 +14,7 @@ function head($title="PHP news") {
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr bgcolor="#9999cc">
   <td>
-   <a href="index.php"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
+   <a href="/index.php"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
   </td>
   <td align="right" valign="bottom">
    PHP.net <a href="news://news.php.net/" clas="top">news server</a> web interface
