@@ -36,4 +36,5 @@ could use the gnu recode functions to do this in a general way,
 i think.
 
 oh, and this uses direct socket functions instead of the php imap
-extension because nntp is a drop-dead-easy protocol.
+extension because nntp is a drop-dead-easy protocol, and i'm allergic
+to the c-client code.
