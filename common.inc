@@ -54,7 +54,7 @@ function foot() {?>
 <hr noshade size="1" width="60%" align="right">
 <div align="right">
 <small>
-written by jim winstead. no rights reserved.
+written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved.
 </small>
 </div>
 </body>
