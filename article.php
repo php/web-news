@@ -6,7 +6,7 @@ if (!$article) die("no article specified");
 require 'common.inc';
 require 'nntp.inc';
 
-$s = nntp_connect("news.php.net")
+$s = nntp_connect(NNTP_HOST)
   or die("failed to connect to news server");
 
 if ($group) {
@@ -171,14 +171,14 @@ function start_article ($group,$headers,$charset) {
     echo '<td class="headerlabel">References:</td><td class="headervalue">';
     $r = explode(" ", $ref);
     $c = 1;
-    $s = nntp_connect("news.php.net")
+    $s = nntp_connect(NNTP_HOST)
       or die("failed to connect to news server");
     while (list($k,$v) = each($r)) {
       if (!$v) continue;
       $v = trim($v);
       if (!preg_match("/^<.+>\$/", $v)) continue;
       $res2 = nntp_cmd($s, "XPATH $v",223)
-        or die("failed to get reference article id ".htmlspecialchars($v));
+        or print("failed to get reference article id ".htmlspecialchars($v)."<br />\n");
       list(,$v)  = split("/", trim($res2));
       if (empty($v)) continue;
       echo "<a href=\"/$group/".htmlspecialchars(urlencode($v))."\">".($c++)."</a>\n";

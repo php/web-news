@@ -38,3 +38,14 @@ i think.
 oh, and this uses direct socket functions instead of the php imap
 extension because nntp is a drop-dead-easy protocol, and i'm allergic
 to the c-client code.
+
+---
+SC.2004.09.03:
+Here are the appropriate Rewrite rules for apache:
+  RewriteEngine on
+  RewriteRule ^/(php.+)/start/([0-9]+) /group.php?group=$1&i=$2 [L]
+  RewriteRule ^/(php.+)/([0-9]+)       /article.php?group=$1&article=$2 [L]
+  RewriteRule ^/(php[^/]+)(/)?$        /group.php?group=$1 [L]
+
+Also note that register_globals must be on.
+

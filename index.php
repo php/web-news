@@ -3,7 +3,7 @@
 require 'common.inc';
 require 'nntp.inc';
 
-$s = nntp_connect("news.php.net")
+$s = nntp_connect(NNTP_HOST)
   or die("failed to connect to news server");
 
 nntp_cmd($s,"LIST",215)
@@ -43,8 +43,8 @@ echo '</td><td valign="top">';
 ?>
 <h1>Welcome!</h1>
 <p>This is a completely experimental interface to the PHP mailing
-lists as reflected on the <a href="news://news.php.net/">news.php.net
-NNTP server</a>.</p>
+lists as reflected on the <a href="news://<?php echo NNTP_HOST; ?>/">
+<?php echo NNTP_HOST; ?> NNTP server</a>.</p>
 <p>There may be a little more info <a href="README">here</a>.</p>
 <p>The news server software that is used is also available from <a
 href="http://trainedmonkey.com/colobus/">here</a>.</p>

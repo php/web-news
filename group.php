@@ -3,7 +3,7 @@
 require 'common.inc';
 require 'nntp.inc';
 
-$s = nntp_connect("news.php.net")
+$s = nntp_connect(NNTP_HOST)
   or die("failed to connect to news server");
 
 $res = nntp_cmd($s,"GROUP $group",211)
@@ -21,8 +21,8 @@ switch($format) {
     echo '<?xml version="1.0" encoding="utf-8"?>';?>
 <rss version="0.93">
 <channel> 
- <title>news.php.net: <?echo $group?></title>
- <link>http://news.php.net/group.php?group=<?echo $group?></link>
+ <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?echo $group?></title>
+ <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?echo $group?></link>
  <description></description>
 <?  break;
   case 'rdf':
@@ -33,9 +33,9 @@ switch($format) {
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns="http://my.netscape.com/rdf/simple/0.9/">
 <channel>
-  <title>news.php.net: <?echo $group?></title>
-  <link>http://news.php.net/group.php?group=<?echo $group?></link>
-  <description><?echo $group?> Mailinglist at news.php.net</description>
+  <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?echo $group?></title>
+  <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?echo $group?></link>
+  <description><?echo $group?> Newsgroup at <?php echo NNTP_HOST; ?></description>
   <language>en-US</language>
 </channel>
 <?  
@@ -65,7 +65,7 @@ while ($line = fgets($s, 16384)) {
   switch($format) {
     case 'rss':
       echo "<item>\n";
-      echo "<link>http://news.php.net/$group/$n</link>\n";
+      echo "<link>http://{$_SERVER['HTTP_HOST']}/$group/$n</link>\n";
       echo "<title>", format_subject($subj, $charset), "</title>\n";
       echo "<description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
@@ -74,7 +74,7 @@ while ($line = fgets($s, 16384)) {
     case 'rdf':
       echo "<item>\n";
       echo "<title>", format_subject($subj, $charset), "</title>\n";
-      echo "<link>http://news.php.net/$group/$n</link>\n";
+      echo "<link>http://{$_SERVER['HTTP_HOST']}/$group/$n</link>\n";
       echo "<description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";

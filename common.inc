@@ -1,5 +1,7 @@
 <?php # vim:ft=php:ts=2:sw=2:et
 
+define('NNTP_HOST', 'localhost');
+
 function head($title="PHP news") {
   header("Content-type: text/html; charset=utf-8");
 ?>
@@ -17,7 +19,7 @@ function head($title="PHP news") {
    <a href="/index.php"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
   </td>
   <td align="right" valign="bottom">
-   PHP.net <a href="news://news.php.net/" clas="top">news server</a> web interface
+   PHP.net <a href="news://<?php echo NNTP_HOST; ?>/" clas="top">news server</a> web interface
   </td>
  </tr>
  <tr bgcolor="#333366">

@@ -6,7 +6,7 @@ if (!$part) die("no part specified");
 require 'common.inc';
 require 'nntp.inc';
 
-$s = nntp_connect("news.php.net")
+$s = nntp_connect(NNTP_HOST)
   or die("failed to connect to news server");
 
 if ($group) {
