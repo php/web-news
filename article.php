@@ -230,7 +230,7 @@ function start_article ($group,$headers,$charset) {
 			if (empty($v)) {
 				continue;
 			}
-			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v))."\">".($c++)."</a>";
+			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v))."\">".($c++)."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
