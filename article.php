@@ -20,6 +20,7 @@ $started = 0;
 $inheaders = 1; $headers = array();
 $masterheaders = null;
 $mimetype = $boundary = $charset = $encoding = "";
+$mimecount = 0; // number of mime parts
 $boundaries = array();
 $lk = '';
 while (!feof($s)) {
@@ -39,6 +40,7 @@ while (!feof($s)) {
     if ($headers['content-type']
         && preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
       $mimetype = trim(strtolower($m[1]));
+      ++$mimecount;
     }
     if (!$started) {
       head("$group: ".format_title($headers[subject], $charset));
@@ -63,8 +65,15 @@ while (!feof($s)) {
         $description = trim($headers['content-description']) . " ";
       else
         $description = "";
-      
-      echo "Attachment: [$mimetype] ${description}$name<br />\n"; 
+    
+      $description .= $name;
+      $link_desc = "[$mimetype]";
+      if (strlen($description))
+        $link_desc .= " " . $description;
+
+      $dl_link = "getpart.php?group=$group&article=$article&part=$mimecount";
+     
+      echo "Attachment: <a target=\"_blank\" href=\"$dl_link\">${link_desc}</a><br />\n"; 
     }
     
     if ($masterheaders == null)
