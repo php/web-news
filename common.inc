@@ -90,16 +90,31 @@ function recode_header($header, $basecharset)
   return preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $header);
 }
 
+/* Email spam protection (taken from php-bugs-web) */
+function spam_protect($txt)
+{
+	$translate = array('@' => ' at ', '.' => ' dot ');
+
+	/* php.net addresses are not protected! */
+	if (preg_match('/^(.+)@php\.net/i', $txt)) {
+		return $txt;
+	} else {
+		return strtr($txt, $translate);
+	}
+}
+
+
 # this turns some common forms of email addresses into mailto: links
 function format_author($a, $charset) {
   $a = recode_header($a, $charset);
   if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/",$a,$ar)) {
-    return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[1]))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2]))."</a>";
+    return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[1])))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2]))."</a>";
   }
   if (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/",$a,$ar)) {
-    return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[2]))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[1]))."</a>";
+    return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[2])))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[1]))."</a>";
   }
   if (ereg("@",$a)) {
+    $a = spam_protect($a);
     return "<a href=\"mailto:".htmlspecialchars(urlencode($a))."\">".htmlspecialchars($a)."</a>";
   }
   return str_replace(" ", "&nbsp;", htmlspecialchars($a));

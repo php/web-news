@@ -159,7 +159,7 @@ function start_article ($group,$headers,$charset) {
   echo "<blockquote>\n";
   echo '<table border="0" cellpadding="2" cellspacing="2" width="100%">';
   # from
-  echo '<tr><td class="headerlabel">From:</td><td class="headervalue">'.format_author($headers[from], $charset)."</td>\n";
+  echo '<tr><td class="headerlabel">From:</td><td class="headervalue">'.format_author($headers['from'], $charset)."</td>\n";
   # date
   echo '<td class="headerlabel">Date:</td><td class="headervalue">'.format_date($headers["date"])."</td></tr>\n";
   # subject
