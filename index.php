@@ -48,7 +48,7 @@ lists as reflected on the <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/"
 <p>There may be a little more info in the <a href="README">README</a> file.</p>
 <p>The news server software that is used is <a
 href="http://trainedmonkey.com/colobus/">colobus</a>.</p>
-<?
+<?php
 echo '</td></tr></table>';
 
 foot();

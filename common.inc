@@ -1,6 +1,6 @@
 <?php # vim:ft=php:ts=2:sw=2:et
 
-define('NNTP_HOST', 'localhost');
+define('NNTP_HOST', 'news.php.net');
 
 function head($title="PHP news") {
   header("Content-type: text/html; charset=utf-8");
@@ -9,7 +9,7 @@ function head($title="PHP news") {
 <html>
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
- <title><?echo $title?></title>
+ <title><?php echo $title?></title>
  <link rel="stylesheet" href="/style.css" type="text/css" />
 </head>
 <body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">

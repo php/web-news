@@ -21,10 +21,10 @@ switch($format) {
     echo '<?xml version="1.0" encoding="utf-8"?>';?>
 <rss version="0.93">
 <channel> 
- <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?echo $group?></title>
- <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?echo $group?></link>
+ <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?php echo $group?></title>
+ <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?php echo $group?></link>
  <description></description>
-<?  break;
+<?php  break;
   case 'rdf':
     header("Content-type: text/xml");
     echo '<?xml version="1.0" encoding="utf-8"?>';
@@ -33,12 +33,12 @@ switch($format) {
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns="http://my.netscape.com/rdf/simple/0.9/">
 <channel>
-  <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?echo $group?></title>
-  <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?echo $group?></link>
-  <description><?echo $group?> Newsgroup at <?php echo NNTP_HOST; ?></description>
+  <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?php echo $group?></title>
+  <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?php echo $group?></link>
+  <description><?php echo $group?> Newsgroup at <?php echo NNTP_HOST; ?></description>
   <language>en-US</language>
 </channel>
-<?  
+<?php
 break;
   case 'html':
   default:
