@@ -1,4 +1,9 @@
-body  { margin: 0px; background: white; color: black; }
+body, li, th, td {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 85%;
+}
+
+body { margin: 0px; background: white; color: black; }
 td,th { color: black; }
 
 .quote { color: green; }
