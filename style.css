@@ -25,3 +25,5 @@ a:visited { color: purple; }
 
 .headerlabel { background: #cccccc; font-weight: bold; text-align: right; }
 .headervalue { background: #eeeeee; }
+
+a.top { text-decoration: none; color: blue; }
