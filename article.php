@@ -16,6 +16,8 @@ $res = nntp_cmd($s, "ARTICLE $article",220)
   or die("failed to get article $article");
 
 $inheaders = 1; $headers = array();
+$charset = "";
+$lk = '';
 while (!feof($s)) {
   $line = fgets($s, 4096);
   if ($line == ".\r\n") break;
@@ -23,19 +25,29 @@ while (!feof($s)) {
     $inheaders = 0;
     head("$group: ".format_subject($headers[subject]));
     start_article($group,$headers);
+    if ($headers['content-type']
+        && preg_match("/charset=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
+      $charset = trim($m[2]);
+    }
     continue;
   }
   # fix lines that started with a period and got escaped
   if (substr($line,0,2) == "..") $line = substr($line,1);
   if ($inheaders) {
     list($k,$v) = explode(": ", $line, 2);
-    $headers[strtolower($k)] = $v;
+    if ($k && $v) {
+      $headers[strtolower($k)] = $v;
+      $lk = strtolower($k);
+    }
+    else {
+      $headers[$lk] .= $line;
+    }
   }
   else {
     # this is some amazingly simplistic code to color quotes/signatures
     # differently, and turn links into real links. it actually appears
     # to work fairly well, but could easily be made more sophistimicated.
-    $line = htmlspecialchars($line);
+    $line = htmlentities($line,ENT_NOQUOTES,$charset);
     $line = preg_replace("/((mailto|http|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/","<a href=\"\\1\">\\1</a>\\3",$line);
     if (!$insig && $line == "-- \r\n") {
       echo "<span class=\"signature\">";
