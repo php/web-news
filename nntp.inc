@@ -11,6 +11,7 @@ function nntp_connect($server,$port=119) {
     echo "<!-- unexpected greeting: $hello -->\n";
     return false;
   }
+  #echo "<!-- $hello -->\n";
   return $s;
 }
 
