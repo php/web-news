@@ -4,7 +4,7 @@ function head($title="php news") {?>
 <html>
 <head>
  <title><?echo $title?></title>
- <link rel="stylesheet=" src="/style.css">
+ <link rel="stylesheet=" href="/style.css">
 </head>
 <body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
