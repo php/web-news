@@ -1,7 +1,7 @@
 <?php
 
 function nntp_connect($server,$port=119) {
-  $s = fsockopen($server,$port,$errno,$errstr,30);
+  $s = @fsockopen($server,$port,$errno,$errstr,30);
   if (!$s) {
     echo "<!-- error connecting to nntp server: $errstr -->\n";
     return false;
