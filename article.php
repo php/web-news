@@ -27,11 +27,6 @@ while (!feof($s)) {
   if ($line == ".\r\n") break;
   if ($inheaders && ($line == "\n" || $line == "\r\n")) {
     $inheaders = 0;
-    if (!$started) {
-      head("$group: ".format_subject($headers[subject]));
-      start_article($group,$headers);
-      $started = 1;
-    }
     if ($headers['content-type']
         && preg_match("/charset=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
       $charset = trim($m[2]);
@@ -44,6 +39,11 @@ while (!feof($s)) {
     if ($headers['content-type']
         && preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
       $mimetype = strtolower($m[1]);
+    }
+    if (!$started) {
+      head("$group: ".format_subject($headers[subject], $charset));
+      start_article($group,$headers,$charset);
+      $started = 1;
     }
     
     $encoding = strtolower(trim($headers['content-transfer-encoding']));
@@ -115,11 +115,13 @@ while (!feof($s)) {
         $line = base64_decode($line);
         break;
     }
+    if (strlen($charset))
+      $line = to_utf8($line, $charset);
 
     # this is some amazingly simplistic code to color quotes/signatures
     # differently, and turn links into real links. it actually appears
     # to work fairly well, but could easily be made more sophistimicated.
-    $line = htmlentities($line,ENT_NOQUOTES,$charset);
+    $line = htmlentities($line,ENT_NOQUOTES,"utf-8");
     $line = preg_replace("/((mailto|http|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/","<a href=\"\\1\">\\1</a>\\3",$line);
     if (!$insig && $line == "-- \r\n") {
       echo "<span class=\"signature\">";
@@ -139,20 +141,20 @@ while (!feof($s)) {
 }
 if ($inheaders && !$started) {
     head("$group: ".format_subject($headers[subject]));
-    start_article($group,$headers);
+    start_article($group,$headers,$charset);
 }
 if ($insig) echo "</span>";
 echo "</pre></blockquote>";
 
-function start_article ($group,$headers) {
+function start_article ($group,$headers,$charset) {
   echo "<blockquote>\n";
   echo '<table border="0" cellpadding="2" cellspacing="2" width="100%">';
   # from
-  echo '<tr><td class="headerlabel">From:</td><td class="headervalue">'.format_author($headers[from])."</td>\n";
+  echo '<tr><td class="headerlabel">From:</td><td class="headervalue">'.format_author($headers[from], $charset)."</td>\n";
   # date
   echo '<td class="headerlabel">Date:</td><td class="headervalue">'.format_date($headers["date"])."</td></tr>\n";
   # subject
-  echo '<tr><td class="headerlabel">Subject:</td><td class="headervalue" colspan="3">'.format_subject($headers["subject"])."</td></tr>\n";
+  echo '<tr><td class="headerlabel">Subject:</td><td class="headervalue" colspan="3">'.format_subject($headers["subject"], $charset)."</td></tr>\n";
   echo "<tr>";
   # references
   if ($headers["references"] || $headers["in-reply-to"]) {

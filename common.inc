@@ -1,11 +1,12 @@
 <?php /* vim: set ft=php : */
 
 function head($title="php news") {
-  header("Content-type: text/html; charset=iso-8859-1");
+  header("Content-type: text/html; charset=utf-8");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
 <html>
 <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
  <title><?echo $title?></title>
  <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -65,19 +66,45 @@ written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reser
 <?php
 }
 
-# this is pretty cheesy, since it doesn't do real charset handling
+if (function_exists("mb_convert_encoding")) {
+	function to_utf8($str, $charset)
+	{
+		return mb_convert_encoding($str, "utf-8", strlen($charset) ? $charset : "iso-8859-1");
+	}
+} else if (function_exists("recode_string")) {
+	function to_utf8($str, $charset)
+	{
+    if (strlen($charset) == 0)
+      $charset = "iso-8859-1";
+		return recode_string("$charset..utf-8", $str);
+	}
+} else if (function_exists("iconv")) {
+	function to_utf8($str, $charset)
+	{
+		return iconv(strlen($charset) ? $charset : "iso-8859-1", "utf-8", $str);
+	}
+}
+
 function decode_header($charset,$encoding,$text) {
   if (strtolower($encoding) == "b") {
-    return base64_decode($text);
+    $text = base64_decode($text);
   }
   else {
-    return quoted_printable_decode($text);
+    $text = quoted_printable_decode($text);
   }
+  return to_utf8($text, $charset);
+}
+
+function recode_header($header, $basecharset)
+{
+  if (strpos($header, "=?") === false)
+    return to_utf8($header, $basecharset);
+  return preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $header);
 }
 
 # this turns some common forms of email addresses into mailto: links
-function format_author($a) {
-  $a = preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $a);
+function format_author($a, $charset) {
+  $a = recode_header($a, $charset);
   if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/",$a,$ar)) {
     return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[1]))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2]))."</a>";
   }
@@ -90,9 +117,9 @@ function format_author($a) {
   return str_replace(" ", "&nbsp;", htmlspecialchars($a));
 }
 
-function format_subject($s) {
+function format_subject($s, $charset) {
   global $article;
-  $s = preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $s);
+  $s = recode_header($s, $charset);
   $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
   // make this look better on the preview page..
   if (strlen($s) > 150 && !isset($article)) {

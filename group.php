@@ -18,7 +18,7 @@ $res = nntp_cmd($s,"XOVER $i-$n", 224)
 switch($format) {
   case 'rss':
     header("Content-type: text/xml");
-    echo '<?xml version="1.0" encoding="iso-8859-1"?>';?>
+    echo '<?xml version="1.0" encoding="utf-8"?>';?>
 <rss version="0.93">
 <channel> 
  <title>news.php.net: <?echo $group?></title>
@@ -27,7 +27,7 @@ switch($format) {
 <?  break;
   case 'rdf':
     header("Content-type: text/xml");
-    echo '<?xml version="1.0" encoding="iso-8859-1"?>';
+    echo '<?xml version="1.0" encoding="utf-8"?>';
 ?>
 <rdf:RDF
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -51,6 +51,9 @@ break;
 
 # list of articles
 $class = "even";
+# TODO: somehow determine the correct charset
+$charset = "";
+
 while ($line = fgets($s, 4096)) {
   if ($line == ".\r\n") break;
   $line = chop($line);
@@ -63,16 +66,16 @@ while ($line = fgets($s, 4096)) {
     case 'rss':
       echo "<item>\n";
       echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
-      echo "<title>", format_subject($subj), "</title>\n";
+      echo "<title>", format_subject($subj, $charset), "</title>\n";
       echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";
       break;
     case 'rdf':
       echo "<item>\n";
-      echo "<title>", format_subject($subj), "</title>\n";
+      echo "<title>", format_subject($subj, $charset), "</title>\n";
       echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
-      echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
+      echo "<description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";
       break;
@@ -81,9 +84,9 @@ while ($line = fgets($s, 4096)) {
       echo "<tr>";
       echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">$n</a></td>";
       echo "<td class=\"$class\">";
-      echo format_subject($subj);
+      echo format_subject($subj, $charset);
       echo "</td>";
-      echo "<td class=\"$class\">".format_author($author)."</td>\n";
+      echo "<td class=\"$class\">".format_author($author, $charset)."</td>\n";
       echo "<td align=\"center\" class=\"$class\"><tt>" . format_date($odate) . "</tt></td>\n";
       echo "<td align=\"right\" class=\"$class\">$lines</td>\n";
   }
