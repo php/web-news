@@ -75,7 +75,7 @@ function start_article ($group,$headers) {
     $ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
     echo '<td class="headerlabel">References:</td><td class="headervalue">';
     $r = explode(" ", $ref);
-    $c = 0;
+    $c = 1;
     while (list($k,$v) = each($r)) {
       if (!$v) continue;
       if (!preg_match("/^<.+>\$/", $v)) continue;
