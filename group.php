@@ -83,9 +83,9 @@ while ($line = fgets($s, 4096)) {
     default:
       echo "<tr>";
       echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">$n</a></td>";
-      echo "<td class=\"$class\">";
+      echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">";
       echo format_subject($subj, $charset);
-      echo "</td>";
+      echo "</a></td>";
       echo "<td class=\"$class\">".format_author($author, $charset)."</td>\n";
       echo "<td align=\"center\" class=\"$class\"><tt>" . format_date($odate) . "</tt></td>\n";
       echo "<td align=\"right\" class=\"$class\">$lines</td>\n";
