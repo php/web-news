@@ -41,6 +41,8 @@ echo '</td><td valign="top">';
 lists as reflected on the <a href="news://news.php.net/">news.php.net
 NNTP server</a>.</p>
 <p>There may be a little more info <a href="README">here</a>.</p>
+<p>The news server software that is used is also available from <a
+href="http://trainedmonkey.com/colobus/">here</a>.</p>
 <?
 echo '</td></tr></table>';
 
