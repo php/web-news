@@ -31,7 +31,7 @@ function foot() {?>
 <hr noshade="noshade" size="1" width="60%" align="right" />
 <div align="right">
 <small>
-written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved. (<a href="http://cvs.php.net/cvs.php/php-news-web">source code</a>)
+written by jim winstead. no rights reserved. (<a href="http://cvs.php.net/cvs.php/php-news-web">source code</a>)
 </small>
 </div>
 </body>
