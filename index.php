@@ -45,9 +45,9 @@ echo '</td><td valign="top">';
 <p>This is a completely experimental interface to the PHP mailing
 lists as reflected on the <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/">
 <?php echo $_SERVER['HTTP_HOST']; ?> NNTP server</a>.</p>
-<p>There may be a little more info <a href="README">here</a>.</p>
-<p>The news server software that is used is also available from <a
-href="http://trainedmonkey.com/colobus/">here</a>.</p>
+<p>There may be a little more info in the <a href="README">README</a> file.</p>
+<p>The news server software that is used is <a
+href="http://trainedmonkey.com/colobus/">colobus</a>.</p>
 <?
 echo '</td></tr></table>';
 
