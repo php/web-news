@@ -10,13 +10,41 @@ function head($title="php news") {?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr bgcolor="#9999cc">
   <td>&nbsp;</td>
-  <td valign="bottom"><b><a href="/">news</a></b></td>
+  <form method="GET" action="/search.php">
+  <td valign="bottom">
+   <b><a href="/search.php">search</a> for:</b>
+   <input type="text" name="q" value="<?echo htmlspecialchars($GLOBALS[q])?>" size="15">
+   in 
+   <select name="t">
+    <option value="">all</option>
+    <option>php.announce</option>
+    <option>php.cvs</option>
+    <option>php.db</option>
+    <option>php.dev</option>
+    <option>php.doc</option>
+    <option>php.general</option>
+    <option>php.gtk</option>
+    <option>php.i18n</option>
+    <option>php.install</option>
+    <option>php.lang</option>
+    <option>php.mirrors</option>
+    <option>php.notes</option>
+    <option>php.pear.dev</option>
+    <option>php.pear.cvs</option>
+    <option>php.pear.general</option>
+    <option>php.qa</option>
+    <option>php.template</option>
+    <option>php.windows</option>
+   </select>
+   <input type="image" src="/i/g.gif" border="0" width="11" height="11" value="go">
+  </td>
+  </form>
   <td align="right">
-   <a href="http://www.php.net/"><img src="/i/l.gif" border="0" width="120" height="64" alt="php"></a>
+   <a href="/"><img src="/i/l.gif" border="0" width="120" height="64" alt="php"></a>
   </td>
  </tr>
  <tr bgcolor="#333366">
-  <td colspan="3"><img src="/i/s.gif" width="1" height="1" alt=""></td>
+  <td colspan="3"><img src="/i/g.gif" width="1" height="1" alt=""></td>
  </tr>
 </table>
 <?php
