@@ -1,6 +1,6 @@
 <?php # vim:ft=php:ts=2:sw=2:et
 
-define('NNTP_HOST', 'news.php.net');
+define('NNTP_HOST', 'localhost');
 
 function head($title="PHP news") {
   header("Content-type: text/html; charset=utf-8");
