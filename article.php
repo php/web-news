@@ -65,15 +65,26 @@ function start_article ($group,$headers) {
   echo '<td class="headerlabel">Date:</td><td class="headervalue">'.format_date($headers["date"])."</td></tr>\n";
   # subject
   echo '<tr><td class="headerlabel">Subject:</td><td class="headervalue" colspan="3">'.format_subject($headers["subject"])."</td></tr>\n";
+  echo "<tr>";
   # references
   if ($headers["references"]) {
-    echo '<tr><td class="headerlabel">References:</td><td class="headervalue">';
+    echo '<td class="headerlabel">References:</td><td class="headervalue">';
     $r = explode(" ", $headers["references"]);
     while (list($k,$v) = each($r)) {
       echo "<a href=\"article.php?group=$group&amp;article=".htmlspecialchars(urlencode($v))."\">".($k+1)."</a>\n";
     }
-    echo "</td></tr>\n";
+    echo "</td>\n";
   }
+  # groups
+  if ($headers["newsgroups"]) {
+    echo '<td class="headerlabel">Groups:</td><td class="headervalue">';
+    $r = explode(" ", chop($headers["newsgroups"]));
+    while (list($k,$v) = each($r)) {
+      echo "<a href=\"group.php?group=".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>\n";
+    }
+    echo "</td>\n";
+  }
+  echo "</tr>";
   while (list($k,$v) = each($headers)) {
     echo "<!-- $k: $v -->\n";
   }
