@@ -17,7 +17,7 @@ $res = nntp_cmd($s,"XOVER $i-$n", 224)
 switch($format) {
   case 'rss':
     header("Content-type: text/xml");
-    echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";?>
+    echo '<?xml version="1.0" encoding="iso-8859-1"?>';?>
 <rss version="0.93">
 <channel> 
  <title>news.php.net: <?echo $group?></title>
