@@ -4,7 +4,7 @@ define('NNTP_HOST', 'localhost');
 
 function error($str) {
 	head("PHP news : error");
-	echo "<p><strong>Error:</strong> $str</p>\n";
+	echo "<blockquote><strong>Error:</strong> $str</blockquote>\n";
 	foot();
 	die();
 }

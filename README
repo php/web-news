@@ -47,5 +47,3 @@ Here are the appropriate Rewrite rules for apache:
   RewriteRule ^/(php.+)/([0-9]+)       /article.php?group=$1&article=$2 [L]
   RewriteRule ^/(php[^/]+)(/)?$        /group.php?group=$1 [L]
 
-Also note that register_globals must be on.
-

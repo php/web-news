@@ -1,6 +1,8 @@
 <?php
 require 'common.inc';
 
+$q = isset($_GET['q']) ? $_GET['q'] : false;
+
 if ($q && get_magic_quotes_gpc()) $q = stripslashes($q);
 
 head("news search");
