@@ -16,7 +16,7 @@ $res = nntp_cmd($s, "ARTICLE $article",220)
   or die("failed to get article ".htmlspecialchars($article));
 
 $inheaders = 1; $headers = array();
-$charset = "";
+$charset = $encoding = "";
 $lk = '';
 while (!feof($s)) {
   $line = fgets($s, 4096);
@@ -29,6 +29,7 @@ while (!feof($s)) {
         && preg_match("/charset=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
       $charset = trim($m[2]);
     }
+    $encoding = strtolower(trim($headers['content-transfer-encoding']));
     continue;
   }
   # fix lines that started with a period and got escaped
@@ -44,6 +45,15 @@ while (!feof($s)) {
     }
   }
   else {
+    switch($encoding) {
+      case "quoted-printable":
+	$line = quoted_printable_decode($line);
+	break;
+      case "base64":
+	$line = base64_decode($line);
+	break;
+    }
+
     # this is some amazingly simplistic code to color quotes/signatures
     # differently, and turn links into real links. it actually appears
     # to work fairly well, but could easily be made more sophistimicated.
