@@ -58,7 +58,7 @@ if ($q) {
     }
     echo "</table>";
     navbar($q,$first,$last,$found,$wordinfo,$time);
-    echo '<a href="http://www.mnogosearch.ru/"><img align="left" src="/i/udm.gif" border="0" width="102" height="25" alt="Powered by mnoGoSearch"></a>';
+    echo '<a href="http://www.mnogosearch.ru/"><img align="left" src="i/udm.gif" border="0" width="102" height="25" alt="Powered by mnoGoSearch"></a>';
     foot();
     exit();
   }

@@ -5,7 +5,7 @@ function head($title="php news") {?>
 <html>
 <head>
  <title><?echo $title?></title>
- <link rel="stylesheet" href="/style.css" type="text/css" />
+ <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -13,7 +13,7 @@ function head($title="php news") {?>
   <td>&nbsp;</td>
   <form method="GET" action="/search.php">
   <td valign="bottom">
-   <b><a href="/search.php">search</a> for:</b>
+   <b><a href="search.php">search</a> for:</b>
    <input type="text" name="q" value="<?echo htmlspecialchars($GLOBALS[q])?>" size="15">
    in 
    <select name="t">
@@ -37,15 +37,15 @@ function head($title="php news") {?>
     <option>php.template</option>
     <option>php.windows</option>
    </select>
-   <input type="image" src="/i/g.gif" border="0" width="11" height="11" value="go">
+   <input type="image" src="i/g.gif" border="0" width="11" height="11" value="go">
   </td>
   </form>
   <td align="right">
-   <a href="/"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
+   <a href="index.php"><img src="i/l.gif" border="0" width="120" height="64" alt="php" /></a>
   </td>
  </tr>
  <tr bgcolor="#333366">
-  <td colspan="3"><img src="/i/g.gif" width="1" height="1" alt="" /></td>
+  <td colspan="3"><img src="i/g.gif" width="1" height="1" alt="" /></td>
  </tr>
 </table>
 <?php
@@ -55,7 +55,7 @@ function foot() {?>
 <hr noshade="noshade" size="1" width="60%" align="right" />
 <div align="right">
 <small>
-written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved. (<a href="/snapshot.tar.gz">source code snapshot</a>)
+written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved. (<a href="snapshot.tar.gz">source code snapshot</a>)
 </small>
 </div>
 </body>
