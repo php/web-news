@@ -41,7 +41,7 @@ while (!feof($s)) {
       $mimetype = trim(strtolower($m[1]));
     }
     if (!$started) {
-      head("$group: ".format_subject($headers[subject], $charset));
+      head("$group: ".format_title($headers[subject], $charset));
       start_article($group,$headers,$charset);
       $started = 1;
     }

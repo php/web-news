@@ -118,6 +118,20 @@ function format_subject($s, $charset) {
   return nl2br(htmlspecialchars($s));
 }
 
+
+function format_title($s, $charset) {
+  global $article;
+  $s = recode_header($s, $charset);
+  $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
+  // make this look better on the preview page..
+  if (strlen($s) > 150 && !isset($article)) {
+        $s = substr($s, 0, 150) . "...";
+  } else {
+        $s = wordwrap($s, 150);
+  }
+  return $s;
+}
+
 function format_date($d) {
   $d = strtotime($d);
   $d = strftime("%c", $d);
