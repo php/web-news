@@ -66,6 +66,15 @@ written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reser
 <?php
 }
 
+  function to_utf8($str, $charset)
+  {
+    $n = iconv(strlen($charset) ? $charset : "iso-8859-1", "utf-8", $str);
+    if ($n === false)
+      return $str;
+    return $n;
+  }
+
+/*
 if (function_exists("mb_convert_encoding")) {
   function to_utf8($str, $charset)
   {
@@ -89,6 +98,7 @@ if (function_exists("mb_convert_encoding")) {
     return $str;
   }
 }
+*/
 
 function decode_header($charset,$encoding,$text) {
   if (strtolower($encoding) == "b") {
