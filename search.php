@@ -4,6 +4,14 @@ require 'common.inc';
 if ($q && get_magic_quotes_gpc()) $q = stripslashes($q);
 
 head("news search");
+?>
+<blockquote>
+sorry, search is offline for now.
+</blockquote>
+<?php
+
+foot();
+exit;
 
 if ($q) {
   $udm = udm_alloc_agent("mysql://root@localhost/news_search/", "crc-multi");
@@ -35,9 +43,9 @@ if ($q) {
       $b = udm_get_res_field($res,$i,UDM_FIELD_TEXT);
       $m = udm_get_res_field($res,$i,UDM_FIELD_MODIFIED);
       $f = udm_get_res_field($res,$i,UDM_FIELD_KEYWORDS);
-      $u = preg_replace("#^news://news.php.net/#","", $u);
+      $u = preg_replace("#^file:/home/news/articles/(.+?)/(\\d+)\$#e","gen_url('\\1','\\2')", $u);
       echo "<tr class=\"$class\"><td>";
-      echo "<a href=\"article.php?article=".htmlspecialchars(urlencode("<$u>"))."\">".($i+$first)."</a>";
+      echo "<a href=\"$u\">".($i+$first)."</a>";
       echo "</td><td>";
       echo format_subject($t);
       echo "</td><td>";
@@ -54,6 +62,10 @@ if ($q) {
     foot();
     exit();
   }
+}
+
+function gen_url($group,$article) {
+  return "article.php?group=".ereg_replace("/",".",$group)."&amp;article=$article";
 }
 
 # display search box, possibly with message about no results
@@ -78,7 +90,7 @@ function navbar($q,$first,$last,$found,$wordinfo,$time) {
   echo '</td>';
   $j = min($i+20,$l);
   $c = $l - $f + 1;
-  echo '<td align="middle" class="alisthead" width="60%">'.htmlspecialchars("found: $wordinfo in $time secs")." ($first-$last of $found)</td>";
+  echo '<td align="center" class="alisthead" width="60%">'.htmlspecialchars("found: $wordinfo in $time secs")." ($first-$last of $found)</td>";
   echo '<td align="right" width="20%">';
   $maxpages = floor($found / 20);
   if ($p < $maxpages) {
