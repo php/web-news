@@ -1,4 +1,4 @@
-<?php
+<?php /* vim: set ft=php : */
 
 function head($title="php news") {?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
@@ -55,7 +55,7 @@ function foot() {?>
 <hr noshade="noshade" size="1" width="60%" align="right" />
 <div align="right">
 <small>
-written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved. (<a href="snapshot.tar.gz">source code snapshot</a>)
+written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved. (<a href="http://cvs.php.net/cvs.php/php-news-web">source code</a>)
 </small>
 </div>
 </body>
@@ -89,6 +89,7 @@ function format_author($a) {
 }
 
 function format_subject($s) {
+  $s = preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $s);
   $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
   return htmlspecialchars($s);
 }
