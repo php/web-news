@@ -54,7 +54,7 @@ $class = "even";
 # TODO: somehow determine the correct charset
 $charset = "";
 
-while ($line = fgets($s, 4096)) {
+while ($line = fgets($s, 16384)) {
   if ($line == ".\r\n") break;
   $line = chop($line);
   list($n,$subj,$author,$odate,$messageid,$references,$bytes,$lines,$extra)
