@@ -140,7 +140,7 @@ while (!feof($s)) {
   }
 }
 if ($inheaders && !$started) {
-    head("$group: ".format_subject($headers[subject]));
+    head("$group: ". $headers[subject]);
     start_article($group,$headers,$charset);
 }
 if ($insig) echo "</span>";
