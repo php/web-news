@@ -57,7 +57,7 @@ function navbar($g,$f,$l,$i) {
   echo '</td>';
   $j = min($i+20,$l);
   $c = $l - $f + 1;
-  echo '<td align="middle" class="alisthead" width="60%">'.htmlspecialchars($g)." ($i-$j of $c)</td>";
+  echo '<td align="center" class="alisthead" width="60%">'.htmlspecialchars($g)." ($i-$j of $c)</td>";
   echo '<td align="right" width="20%">';
   if ($i+20 < $l) {
     $n = min($i+20,$l-20);
