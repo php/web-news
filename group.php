@@ -25,6 +25,21 @@ switch($format) {
  <link>http://news.php.net/group.php?group=<?echo $group?></link>
  <description></description>
 <?  break;
+  case 'rdf':
+    header("Content-type: text/xml");
+    echo '<?xml version="1.0" encoding="iso-8859-1"?>';
+?>
+<rdf:RDF
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns="http://my.netscape.com/rdf/simple/0.9/">
+<channel>
+  <title>news.php.net: <?echo $group?></title>
+  <link>http://news.php.net/group.php?group=<?echo $group?></link>
+  <description><?echo $group?> Mailinglist at news.php.net</description>
+  <language>en-US</language>
+</channel>
+<?  
+break;
   case 'html':
   default:
     head($group);
@@ -53,6 +68,14 @@ while ($line = fgets($s, 4096)) {
       echo "<pubDate>$date822</pubDate>";
       echo "</item>\n";
       break;
+    case 'rdf':
+      echo "<item>\n";
+      echo "<title>", format_subject($subj), "</title>\n";
+      echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
+      echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
+      echo "<pubDate>$date822</pubDate>";
+      echo "</item>\n";
+      break;
     case 'html':
     default:
       echo "<tr>";
@@ -70,6 +93,9 @@ while ($line = fgets($s, 4096)) {
 switch ($format) {
   case 'rss':
     echo "</channel></rss>\n";
+    break;
+  case 'rdf':
+    echo "</rdf:RDF>\n";
     break;
   case 'html':
   default:
