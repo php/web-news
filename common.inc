@@ -55,7 +55,7 @@ function foot() {?>
 <hr noshade="noshade" size="1" width="60%" align="right" />
 <div align="right">
 <small>
-written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved.
+written by <a href="http://trainedmonkey.com/">jim winstead</a>. no rights reserved. (<a href="/snapshot.tar.gz">source code snapshot</a>)
 </small>
 </div>
 </body>
