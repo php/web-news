@@ -67,7 +67,7 @@ while ($line = fgets($s, 4096)) {
       echo "<item>\n";
       echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
       echo "<title>", format_subject($subj, $charset), "</title>\n";
-      echo "<description>", htmlspecialchars(format_author($author)), "</description>\n";
+      echo "<description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";
       break;
