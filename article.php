@@ -189,9 +189,9 @@ function start_article ($group,$headers,$charset) {
     echo "</td>\n";
   }
   echo "</tr>";
-  while (list($k,$v) = each($headers)) {
-    echo "<!-- ", htmlspecialchars($k),": ",preg_replace("/-+/", "-", htmlspecialchars($v))," -->\n";
-  }
+  //while (list($k,$v) = each($headers)) {
+  //  echo "<!-- ", htmlspecialchars($k),": ",preg_replace("/-+/", "-", htmlspecialchars($v))," -->\n";
+  //}
   echo "</table></blockquote>\n";
   echo "<blockquote><pre>";
 }
