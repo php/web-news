@@ -26,7 +26,7 @@ function head($title="PHP news") {
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
    <tr class="header">
     <td>
-     <a href="/index.php"><img src="/?=PHPE9568F36-D428-11d2-A769-00AA001ACF42" width="120" height="67" alt="PHP" /></a>
+     <a href="/index.php"><img src="/i/l.gif" width="120" height="67" alt="PHP" /></a>
     </td>
     <td align="right" valign="bottom">
      PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface
