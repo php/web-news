@@ -40,7 +40,7 @@ while ($line = fgets($s, 4096)) {
   $line = chop($line);
   list($n,$subj,$author,$odate,$messageid,$references,$bytes,$lines,$extra)
     = explode("\t", $line, 9);
-  $date = date("H:i:s M/d/y", strtotime($odate));
+/*  $date = date("H:i:s M/d/y", strtotime($odate)); */
   $date822 = date("r", strtotime($odate));
 
   switch($format) {
@@ -60,7 +60,7 @@ while ($line = fgets($s, 4096)) {
       echo format_subject($subj);
       echo "</td>";
       echo "<td class=\"$class\">".format_author($author)."</td>\n";
-      echo "<td class=\"$class\"><tt>$date</tt></td>\n";
+      echo "<td align=\"center\" class=\"$class\"><tt>" . format_date($odate) . "</tt></td>\n";
       echo "<td align=\"right\" class=\"$class\">$lines</td>\n";
   }
   $class = $class == "even" ? "odd" : "even";

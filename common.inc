@@ -79,24 +79,32 @@ function decode_header($charset,$encoding,$text) {
 function format_author($a) {
   $a = preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $a);
   if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/",$a,$ar)) {
-    return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[1]))."\">".htmlspecialchars($ar[2])."</a>";
+    return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[1]))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2]))."</a>";
   }
   if (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/",$a,$ar)) {
-    return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[2]))."\">".htmlspecialchars($ar[1])."</a>";
+    return "<a href=\"mailto:".htmlspecialchars(urlencode($ar[2]))."\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[1]))."</a>";
   }
   if (ereg("@",$a)) {
     return "<a href=\"mailto:".htmlspecialchars(urlencode($a))."\">".htmlspecialchars($a)."</a>";
   }
-  return htmlspecialchars($a);
+  return str_replace(" ", "&nbsp;", htmlspecialchars($a));
 }
 
 function format_subject($s) {
+  global $article;
   $s = preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $s);
   $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
-  return htmlspecialchars($s);
+  // make this look better on the preview page..
+  if (strlen($s) > 150 && !isset($article)) {
+	$s = substr($s, 0, 150) . "...";
+  } else {
+	$s = wordwrap($s, 150);
+  }
+  return nl2br(htmlspecialchars($s));
 }
 
 function format_date($d) {
   $d = strtotime($d);
-  return strftime("%c", $d);
+  $d = strftime("%c", $d);
+  return str_replace(" ", "&nbsp;", $d);
 }
