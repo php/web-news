@@ -65,7 +65,7 @@ while ($line = fgets($s, 4096)) {
   switch($format) {
     case 'rss':
       echo "<item>\n";
-      echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
+      echo "<link>http://news.php.net/$group/$n</link>\n";
       echo "<title>", format_subject($subj, $charset), "</title>\n";
       echo "<description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
@@ -74,7 +74,7 @@ while ($line = fgets($s, 4096)) {
     case 'rdf':
       echo "<item>\n";
       echo "<title>", format_subject($subj, $charset), "</title>\n";
-      echo "<link>http://news.php.net/article.php?group=$group&amp;article=$n</link>\n";
+      echo "<link>http://news.php.net/$group/$n</link>\n";
       echo "<description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
       echo "<pubDate>$date822</pubDate>\n";
       echo "</item>\n";
@@ -82,8 +82,8 @@ while ($line = fgets($s, 4096)) {
     case 'html':
     default:
       echo "<tr>";
-      echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">$n</a></td>";
-      echo "<td class=\"$class\"><a href=\"article.php?group=$group&amp;article=$n\">";
+      echo "<td class=\"$class\"><a href=\"/$group/$n\">$n</a></td>";
+      echo "<td class=\"$class\"><a href=\"/$group/$n\">";
       echo format_subject($subj, $charset);
       echo "</a></td>";
       echo "<td class=\"$class\">".format_author($author, $charset)."</td>\n";
@@ -112,7 +112,7 @@ function navbar($g,$f,$l,$i) {
   echo '<td width="20%">';
   if ($i > $f) {
     $p = max($i-20,$f);
-    echo "<a href=\"group.php?group=".htmlspecialchars($g)."&amp;i=$p\"><b>&laquo; previous</b></a>";
+    echo "<a href=\"/".htmlspecialchars($g)."/start/$p\"><b>&laquo; previous</b></a>";
   }
   else {
     echo "&nbsp;";
@@ -124,7 +124,7 @@ function navbar($g,$f,$l,$i) {
   echo '<td align="right" width="20%">';
   if ($i+20 < $l) {
     $n = min($i+20,$l-20);
-    echo "<a href=\"group.php?group=".htmlspecialchars($g)."&amp;i=$n\"><b>next &raquo;</b></a>";
+    echo "<a href=\"/".htmlspecialchars($g)."/start/$n\"><b>next &raquo;</b></a>";
   }
   else {
     echo "&nbsp;";

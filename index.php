@@ -21,7 +21,7 @@ while ($line = fgets($s, 1024)) {
   list($group,$high,$low,$active) = explode(" ", $line);
   echo "<tr>";
   echo "<td class=\"$class\">";
-  echo "<a class=\"active$active\" href=\"group.php?group=$group\">$group</a>";
+  echo "<a class=\"active$active\" href=\"/$group\">$group</a>";
   echo "</td>\n";
   echo "<td align=\"right\" class=\"$class\">", $high-$low+1, "</td>\n";
   echo "<td class=\"$class\">";

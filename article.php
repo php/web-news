@@ -175,7 +175,7 @@ function start_article ($group,$headers,$charset) {
       if (!$v) continue;
       $v = trim($v);
       if (!preg_match("/^<.+>\$/", $v)) continue;
-      echo "<a href=\"article.php?group=$group&amp;article=".htmlspecialchars(urlencode($v))."\">".($c++)."</a>\n";
+      echo "<a href=\"/$group/".htmlspecialchars(urlencode($v))."\">".($c++)."</a>\n";
     }
     echo "</td>\n";
   }
@@ -184,7 +184,7 @@ function start_article ($group,$headers,$charset) {
     echo '<td class="headerlabel">Groups:</td><td class="headervalue">';
     $r = explode(",", chop($headers["newsgroups"]));
     while (list($k,$v) = each($r)) {
-      echo "<a href=\"group.php?group=".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>\n";
+      echo "<a href=\"/".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>\n";
     }
     echo "</td>\n";
   }

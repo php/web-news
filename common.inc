@@ -8,20 +8,20 @@ function head($title="PHP news") {
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
  <title><?echo $title?></title>
- <link rel="stylesheet" href="style.css" type="text/css" />
+ <link rel="stylesheet" href="/style.css" type="text/css" />
 </head>
 <body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr bgcolor="#9999cc">
   <td>
-   <a href="index.php"><img src="i/l.gif" border="0" width="120" height="64" alt="php" /></a>
+   <a href="index.php"><img src="/i/l.gif" border="0" width="120" height="64" alt="php" /></a>
   </td>
   <td align="right" valign="bottom">
    PHP.net <a href="news://news.php.net/" clas="top">news server</a> web interface
   </td>
  </tr>
  <tr bgcolor="#333366">
-  <td colspan="3"><img src="i/g.gif" width="1" height="1" alt="" /></td>
+  <td colspan="3"><img src="/i/g.gif" width="1" height="1" alt="" /></td>
  </tr>
 </table>
 <?php
