@@ -28,11 +28,11 @@ while (!feof($s)) {
   if ($inheaders && ($line == "\n" || $line == "\r\n")) {
     $inheaders = 0;
     if ($headers['content-type']
-        && preg_match("/charset=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
+        && preg_match("/charset=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
       $charset = trim($m[2]);
     }
     if ($headers['content-type']
-        && preg_match("/boundary=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
+        && preg_match("/boundary=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
       $boundaries[] = trim($m[2]);
       $boundary = end($boundaries);
     }
