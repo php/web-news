@@ -3,32 +3,118 @@ body, li, th, td {
 	font-size: 95%; 
 }
 
-body { margin: 0px; background: white; color: black; }
-td,th { color: black; }
+body { 
+	margin: 0px; 
+	background: #ffffff;
+	color: #000000; 
+}
 
-.quote { color: green; }
+td,th { 
+	color: #000000;
+}
 
-.signature { font-size: smaller; color: gray; }
-.signature a:link    { color: #9999ff; }
-.signature a:hover   { color: #ff9999; }
-.signature a:active  { color: #ff9999; }
-.signature a:visited { color: #ff66ff; }
 
-a:link    { color: blue; }
-a:hover   { color: red; }
-a:active  { color: red; }
-a:visited { color: purple; }
+img { 
+	border : 0px;
+}
 
-.grouplisthead { background: #cccccc; font-weight: bold; text-align: center; }
-.even { background: #eeeeee; }
-.odd  { background: #dddddd; }
-.grouplistmsgs { text-align: right; }
+a:link    { 
+	color: #000099;
+}
 
-.alisthead { background: #cccccc; font-weight: bold; text-align: center; }
+a:hover   { 
+	color: #ff0000;
+}
 
-.activen { color: gray; }
+a:active  { 
+	color: #ff0000;
+}
 
-.headerlabel { background: #cccccc; font-weight: bold; text-align: right; }
-.headervalue { background: #eeeeee; }
+a:visited { 
+	color: #000099; 
+}
 
-a.top { text-decoration: none; color: blue; }
+.quote { 
+	color: green; 
+}
+
+.signature { 
+	font-size: smaller; 
+	color: gray; 
+}
+
+.signature a:link    { 
+	color: #9999ff; 
+}
+
+.signature a:hover   { 
+	color: #ff9999; 
+}
+
+.signature a:active  { 
+	color: #ff9999; 
+}
+
+.signature a:visited { 
+	color: #ff66ff; 
+}
+
+.grouplisthead { 
+	background: #cccccc; 
+	font-weight: bold; 
+	text-align: center; 
+}
+
+.even { 
+	background: #eeeeee; 
+}
+
+.odd  { 
+	background: #dddddd; 
+}
+
+.grouplistmsgs { 
+	text-align: right; 
+}
+
+.alisthead { 
+	background: #cccccc;
+	font-weight: bold;
+	text-align: center;
+}
+
+.activen { 
+	color: gray; 
+}
+
+.headerlabel { 
+	background: #cccccc; 
+	font-weight: bold; 
+	text-align: right; 
+}
+
+.headervalue { 
+	background: #eeeeee; 
+}
+
+a.top { 
+	text-decoration: none; 
+}
+
+tr.header {
+    background: #9999cc;
+}
+
+tr.subheader {
+    background: #666699;
+    height : 2px;
+}
+
+.small {
+    font-size: 75%;
+    text-align: right;
+}
+
+.nav {
+	width: 20%;
+}
