@@ -93,7 +93,7 @@ function format_author($a) {
 function format_subject($s) {
   $s = preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)\\?=/ie", "decode_header('\\1','\\2','\\3')", $s);
   $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
-  return wordwrap(htmlspecialchars($s), 200);
+  return htmlspecialchars($s);
 }
 
 function format_date($d) {
