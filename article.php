@@ -237,7 +237,7 @@ function start_article ($group,$headers,$charset) {
 		echo '     <td class="headervalue">';
 		$r = explode(",", chop($headers["newsgroups"]));
 		while (list($k,$v) = each($r)) {
-			echo "<a href=\"/".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>";
+			echo "<a href=\"/".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
