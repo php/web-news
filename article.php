@@ -1,6 +1,6 @@
 <?php
 
-if (!$article || !$group) die("no article specified");
+if (!$article) die("no article specified");
 
 require 'common.inc';
 require 'nntp.inc';
@@ -8,8 +8,10 @@ require 'nntp.inc';
 $s = nntp_connect("news.php.net")
   or die("failed to connect to news server");
 
-$res = nntp_cmd($s,"GROUP $group",211)
-  or die("failed to select group $group");
+if ($group) {
+  $res = nntp_cmd($s,"GROUP $group",211)
+    or die("failed to select group $group");
+}
 $res = nntp_cmd($s, "ARTICLE $article",220)
   or die("failed to get article $article");
 
