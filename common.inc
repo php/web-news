@@ -1,4 +1,4 @@
-<?php /* vim:set ft=php:ts=2:sw=2:et */
+<?php # vim:ft=php:ts=2:sw=2:et
 
 function head($title="php news") {
   header("Content-type: text/html; charset=utf-8");
@@ -82,6 +82,11 @@ if (function_exists("mb_convert_encoding")) {
   function to_utf8($str, $charset)
   {
     return iconv(strlen($charset) ? $charset : "iso-8859-1", "utf-8", $str);
+  }
+} else {
+  function to_utf8($str, $charset)
+  {
+    return $str;
   }
 }
 
