@@ -10,10 +10,10 @@ $s = nntp_connect("news.php.net")
 
 if ($group) {
   $res = nntp_cmd($s,"GROUP $group",211)
-    or die("failed to select group $group");
+    or die("failed to select group .".htmlspecialchars($group));
 }
 $res = nntp_cmd($s, "ARTICLE $article",220)
-  or die("failed to get article $article");
+  or die("failed to get article ".htmlspecialchars($article));
 
 $inheaders = 1; $headers = array();
 $charset = "";

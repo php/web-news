@@ -9,6 +9,7 @@ $s = nntp_connect("news.php.net")
 $res = nntp_cmd($s,"GROUP $group",211)
   or die("failed to get info on group");
 list (,$f,$l,$g) = explode(" ", $res);
+$i=(int)$i;
 if (!$i || $i > $l - 20 || $i < $f) $i = $l - $f > 20 ? $l - 20 : $f;
 $n = min($l+1,$i+20);
 $res = nntp_cmd($s,"XOVER $i-$n", 224)
