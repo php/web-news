@@ -10,12 +10,13 @@ function head($title="php news") {?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
  <tr bgcolor="#9999cc">
   <td>&nbsp;</td>
+  <td valign="bottom"><b><a href="/">news</a></b></td>
   <td align="right">
    <a href="http://www.php.net/"><img src="/i/l.gif" border="0" width="120" height="64" alt="php"></a>
   </td>
  </tr>
  <tr bgcolor="#333366">
-  <td colspan="2"><img src="/i/s.gif" width="1" height="1" alt=""></td>
+  <td colspan="3"><img src="/i/s.gif" width="1" height="1" alt=""></td>
  </tr>
 </table>
 <?php
@@ -59,7 +60,7 @@ function format_author($a) {
 }
 
 function format_subject($s) {
-  $s = preg_replace("/^(Re:\s*)?\[(PHP|PEAR)(-.*)\] /i", "\\1", $s);
+  $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
   return htmlspecialchars($s);
 }
 
