@@ -72,11 +72,14 @@ function start_article ($group,$headers) {
   echo "<tr>";
   # references
   if ($headers["references"] || $headers["in-reply-to"]) {
+    $ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
     echo '<td class="headerlabel">References:</td><td class="headervalue">';
-    $r = explode(" ", $headers["references"]." ".$headers["in-reply-to"]);
+    $r = explode(" ", $ref);
+    $c = 0;
     while (list($k,$v) = each($r)) {
       if (!$v) continue;
-      echo "<a href=\"article.php?group=$group&amp;article=".htmlspecialchars(urlencode($v))."\">".($k+1)."</a>\n";
+      if (!preg_match("/^<.+>\$/", $v) continue;
+      echo "<a href=\"article.php?group=$group&amp;article=".htmlspecialchars(urlencode($v))."\">".($c++)."</a>\n";
     }
     echo "</td>\n";
   }
