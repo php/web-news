@@ -19,7 +19,7 @@ $inheaders = 1; $headers = array();
 while (!feof($s)) {
   $line = fgets($s, 4096);
   if ($line == ".\r\n") break;
-  if ($inheaders && $line == "\r\n") {
+  if ($inheaders && ($line == "\n" || $line == "\r\n")) {
     $inheaders = 0;
     head("$group: ".format_subject($headers[subject]));
     start_article($group,$headers);
@@ -52,6 +52,10 @@ while (!feof($s)) {
       echo $line;
     }
   }
+}
+if ($inheaders) {
+    head("$group: ".format_subject($headers[subject]));
+    start_article($group,$headers);
 }
 if ($insig) echo "</span>";
 echo "</pre></blockquote>";
@@ -86,7 +90,7 @@ function start_article ($group,$headers) {
   }
   echo "</tr>";
   while (list($k,$v) = each($headers)) {
-    echo "<!-- $k: $v -->\n";
+    echo "<!-- ", htmlspecialchars($k),": ",preg_replace("/-+/g", "-", htmlspecialchars($v))," -->\n";
   }
   echo "</table></blockquote>\n";
   echo "<blockquote><pre>";
