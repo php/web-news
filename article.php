@@ -40,13 +40,14 @@ $mimecount = 0; // number of mime parts
 $boundaries = array();
 $lk = '';
 $linebuf = '';
+$insig = false;
 while (!feof($s)) {
 	$line = fgets($s);
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
 		if ($headers['content-type']
-		&& preg_match("/charset=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
+		&& preg_match('/charset=("|\'|)([1-9a-zA-Z-]+)\1/is', $headers['content-type'], $m)) {
 			$charset = trim($m[2]);
 		}
 		if ($headers['content-type']
@@ -108,7 +109,7 @@ while (!feof($s)) {
 
 
 	if ($inheaders) {
-		list($k,$v) = explode(": ", $line, 2);
+		@list($k,$v) = explode(": ", $line, 2);
 		if ($k && $v) {
 			$headers[strtolower($k)] = $v;
 			$lk = strtolower($k);
@@ -210,7 +211,7 @@ function start_article ($group,$headers,$charset) {
 	echo "    </tr>\n";
 	echo "    <tr>\n";
 	# references
-	if ($headers["references"] || $headers["in-reply-to"]) {
+	if (!empty($headers['references']) || !empty($headers['in-reply-to'])) {
 		$ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
 		echo '     <td class="headerlabel">References:</td>' . "\n";
 		echo '     <td class="headervalue">';
