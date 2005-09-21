@@ -33,10 +33,10 @@ if (!$res) {
 }
 
 list (, $f, $l, $g) = explode(" ", $res);
-if (!$i || $i > $l - 20 || $i < $f) {
-	$i = $l - $f > 20 ? $l - 20 : $f;
+if (!$i || $i > $l - 19 || $i < $f) {
+	$i = $l - $f > 19 ? $l - 19 : $f;
 }
-$n = min($l + 1, $i + 20);
+$n = min($l, $i + 19);
 
 $res = nntp_cmd($s,"XOVER $i-$n", 224);
 if (!$res) {
@@ -157,8 +157,8 @@ function navbar($g, $f, $l, $i) {
 	$c = $l - $f + 1;
 	echo '    <td align="center" class="alisthead">'.htmlspecialchars($g)." ($i-$j of $c)</td>\n";
 	echo '    <td align="right" class="nav">';
-	if ($i+20 < $l) {
-		$n = min($i + 20, $l - 20);
+	if ($i+20 <= $l) {
+		$n = min($i + 20, $l - 19);
 		echo "<a href=\"/" . htmlspecialchars($g) . "/start/$n\"><b>next &raquo;</b></a>";
 	}
 	else {
