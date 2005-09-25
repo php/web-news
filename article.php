@@ -46,19 +46,20 @@ while (!feof($s)) {
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
-		if ($headers['content-type']
-		&& preg_match('/charset=("|\'|)([1-9a-zA-Z-]+)\1/is', $headers['content-type'], $m)) {
-			$charset = trim($m[2]);
-		}
-		if ($headers['content-type']
-		&& preg_match("/boundary=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
-			$boundaries[] = trim($m[2]);
-			$boundary = end($boundaries);
-		}
-		if ($headers['content-type']
-		&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
-			$mimetype = trim(strtolower($m[1]));
-			++$mimecount;
+		if (isset($headers['content-type'])) {
+			if (preg_match('/charset=(["\']?)(\w+)\1/i', $headers['content-type'], $m)) {
+				$charset = trim($m[2]);
+			}
+		
+			if(preg_match('/boundary=(["\']?)(.+)\1/is', $headers['content-type'], $m)) {
+				$boundaries[] = trim($m[2]);
+				$boundary = end($boundaries);
+			}
+
+			if (preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
+				$mimetype = trim(strtolower($m[1]));
+				++$mimecount;
+			}
 		}
 		if (!$started) {
 			head("$group: ".format_title($headers['subject'], $charset));
@@ -66,17 +67,17 @@ while (!feof($s)) {
 			$started = 1;
 		}
 
-		$encoding = strtolower(trim($headers['content-transfer-encoding']));
+		$encoding = strtolower(trim(@$headers['content-transfer-encoding']));
 		if (strlen($mimetype)
 		&& $mimetype != "text/plain"
 		&& substr($mimetype,0,10) != "multipart/") {
 			# Display a link to the attachment
 			$name = '';
 			if ($headers['content-type']
-			&& preg_match("/name=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
+			&& preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
 				$name = trim($m[2]);
 			} else if ($headers['content-disposition']
-			&& preg_match("/filename=(\"|'|)(.+)\\1/s", $headers['content-type'], $m)) {
+			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
 				$name = trim($m[2]);
 			}
 
@@ -150,7 +151,11 @@ while (!feof($s)) {
 			$line = base64_decode($line);
 			break;
 		}
-		if (strlen($charset)) {
+
+		// we can't convert it to UTF, because cvs commits don't have charset info
+		// so its preferable to leave it as-is, and let users choose the correct charset
+		// in their browser. this is specially important for php.doc.* groups
+		if ($charset) {
 			$line = to_utf8($line, $charset);
 		}
 

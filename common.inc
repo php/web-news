@@ -53,7 +53,7 @@ function foot() {?>
 
 function to_utf8($str, $charset)
 {
-	$n = iconv(strlen($charset) ? $charset : "iso-8859-1", "utf-8", $str);
+	$n = iconv($charset ? $charset : 'iso-8859-1', 'utf-8', $str);
 	if ($n === false) {
 		return $str;
 	}
