@@ -172,7 +172,7 @@ while (!feof($s)) {
 		# differently, and turn links into real links. it actually appears
 		# to work fairly well, but could easily be made more sophistimicated.
 		$line = htmlentities($line,ENT_NOQUOTES,"utf-8");
-		$line = preg_replace("/((mailto|http|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/","<a href=\"\\1\">\\1</a>\\3",$line);
+		$line = preg_replace("/((mailto|https?|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/","<a href=\"\\1\">\\1</a>\\3",$line);
 		if (!$insig && $line == "-- \r\n") {
 			echo "<span class=\"signature\">";
 			$insig = 1;
