@@ -56,8 +56,8 @@ while ($line = fgets($s, 1024)) {
       <h1>Welcome!</h1>
       <p>
        This is a completely experimental interface to the PHP mailing lists as 
-       reflected on the <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/">
-       <?php echo $_SERVER['HTTP_HOST']; ?> NNTP server</a>.
+       reflected on the <a href="news://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'],ENT_QUOTES); ?>/">
+       <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES); ?> NNTP server</a>.
       </p>
       <p>
        There may be a little more info in the <a href="README">README</a> file.
