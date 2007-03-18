@@ -43,14 +43,15 @@ if (!$res) {
 	error("Failed to get xover data");
 }
 
+$host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
 switch($format) {
 	case 'rss':
 	header("Content-type: text/xml");
     echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";?>
 <rss version="0.93">
  <channel> 
-  <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?php echo $group?></title>
-  <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?php echo $group?></link>
+  <title><?php echo $host; ?>: <?php echo $group?></title>
+  <link>http://<?php echo $host; ?>/group.php?group=<?php echo $group?></link>
   <description></description>
 <?php  break;
 case 'rdf':
@@ -61,8 +62,8 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns="http://my.netscape.com/rdf/simple/0.9/">
  <channel>
-  <title><?php echo $_SERVER['HTTP_HOST']; ?>: <?php echo $group?></title>
-  <link>http://<?php echo $_SERVER['HTTP_HOST']; ?>/group.php?group=<?php echo $group?></link>
+  <title><?php echo $host; ?>: <?php echo $group?></title>
+  <link>http://<?php echo $host; ?>/group.php?group=<?php echo $group?></link>
   <description><?php echo $group?> Newsgroup at <?php echo NNTP_HOST; ?></description>
   <language>en-US</language>
  </channel>
@@ -99,7 +100,7 @@ while ($line = fgets($s, 16384)) {
 	switch($format) {
 		case 'rss':
 		echo "  <item>\n";
-		echo "   <link>http://{$_SERVER['HTTP_HOST']}/$group/$n</link>\n";
+		echo "   <link>http://$host/$group/$n</link>\n";
 		echo "   <title>", format_subject($subj, $charset), "</title>\n";
 		echo "   <description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
 		echo "   <pubDate>$date822</pubDate>\n";
@@ -108,7 +109,7 @@ while ($line = fgets($s, 16384)) {
 		case 'rdf':
 		echo " <item>\n";
 		echo "  <title>", format_subject($subj, $charset), "</title>\n";
-		echo "  <link>http://{$_SERVER['HTTP_HOST']}/$group/$n</link>\n";
+		echo "  <link>http://$host/$group/$n</link>\n";
 		echo "  <description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
 		echo "  <pubDate>$date822</pubDate>\n";
 		echo " </item>\n";
