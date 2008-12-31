@@ -260,4 +260,30 @@ function start_article ($group,$headers,$charset) {
 	echo "   <pre>\n";
 }
 
+// Does not check existence of next, so consider this the super duper fast [broken] version
+// Based off navbar() in group.php
+function navbar($group, $current) {
+
+	$group = htmlspecialchars($group, ENT_QUOTES);
+
+	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '   <tr class="alisthead">' . "\n";
+	echo '    <td class="nav">';
+
+	if ($current > 1) {
+		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
+	} else {
+		echo '&nbsp;';
+	}
+
+	echo '    </td>' . "\n";
+	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
+	echo '    <td align="right" class="nav">';
+	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>&laquo; next</b></a>';
+	echo '    </td>' . "\n";
+	echo '   </tr>' . "\n";
+	echo '  </table>' . "\n";
+}
+
+navbar($group, $article);
 foot();
