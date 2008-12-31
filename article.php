@@ -279,7 +279,7 @@ function navbar($group, $current) {
 	echo '    </td>' . "\n";
 	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
 	echo '    <td align="right" class="nav">';
-	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>&laquo; next</b></a>';
+	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
 	echo '    </td>' . "\n";
 	echo '   </tr>' . "\n";
 	echo '  </table>' . "\n";
