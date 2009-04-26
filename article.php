@@ -202,7 +202,7 @@ function start_article ($group,$headers,$charset) {
 	echo "  <blockquote>\n";
 	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	# from
-	echo '    <tr>' . "\n";
+	echo '    <tr class="vcard">' . "\n";
 	echo '     <td class="headerlabel">From:</td>' . "\n";
 	echo '     <td class="headervalue">' . format_author($headers['from'], $charset)."</td>\n";
 	# date

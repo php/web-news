@@ -121,7 +121,7 @@ while ($line = fgets($s, 16384)) {
 		echo "    <td class=\"$class\"><a href=\"/$group/$n\">";
 		echo format_subject($subj, $charset);
 		echo "</a></td>\n";
-		echo "    <td class=\"$class\">".format_author($author, $charset)."</td>\n";
+		echo "    <td class=\"$class vcard\">".format_author($author, $charset)."</td>\n";
 		echo "    <td align=\"center\" class=\"$class\"><tt>" . format_date($odate) . "</tt></td>\n";
 		echo "    <td align=\"right\" class=\"$class\">$lines</td>\n";
 		echo "   </tr>\n";
