@@ -44,7 +44,7 @@ function head($title="PHP news") {
 function foot() {?>
   <hr />
   <div class="small">
-   Written by Jim Winstead. no rights reserved. (<a href="http://cvs.php.net/cvs.php/php-news-web">source code</a>)
+   Written by Jim Winstead. no rights reserved. (<a href="http://svn.php.net/viewvc/web/php-news/trunk/">source code</a>)
   </div>
  </body>
 </html>
