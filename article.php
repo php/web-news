@@ -230,8 +230,12 @@ function start_article ($group,$headers,$charset) {
 			if (!preg_match("/^<.+>\$/", $v)) {
 				continue;
 			}
+			if (strlen($v) > 504) {
+				// 512 chars including CRLF
+				continue;
+			}
 			$res2 = nntp_cmd($s, "XPATH $v",223)
-			or print("failed to get reference article id ".htmlspecialchars($v)."<br />");
+			or print("<!-- failed to get reference article id ".htmlspecialchars($v)." -->");
 			list(,$v)  = split("/", trim($res2));
 			if (empty($v)) {
 				continue;
