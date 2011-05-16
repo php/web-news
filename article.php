@@ -161,7 +161,7 @@ while (!feof($s)) {
 
 		$line = $linebuf . $line;
 
-		if (substr($line, -2) == "\r\n") {
+		if (in_array(substr($line, -1), array("\n", "\r"))) {
 		   $linebuf = '';
 		} else {
 		   $linebuf = $line;
