@@ -47,7 +47,7 @@ while (!feof($s)) {
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
 		if (isset($headers['content-type'])) {
-			if (preg_match('/charset=(["\']?)(\w+)\1/i', $headers['content-type'], $m)) {
+			if (preg_match('/charset=(["\']?)([\w-]+)\1/i', $headers['content-type'], $m)) {
 				$charset = trim($m[2]);
 			}
 		
