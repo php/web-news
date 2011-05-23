@@ -43,7 +43,7 @@ if (!$res) {
 	error("Failed to get xover data");
 }
 
-$host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
+$host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8");
 switch($format) {
 	case 'rss':
 	header("Content-type: text/xml");
@@ -102,7 +102,7 @@ while ($line = fgets($s, 16384)) {
 		echo "  <item>\n";
 		echo "   <link>http://$host/$group/$n</link>\n";
 		echo "   <title>", format_subject($subj, $charset), "</title>\n";
-		echo "   <description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
+		echo "   <description>", htmlspecialchars(format_author($author, $charset), ENT_QUOTES, "UTF-8"), "</description>\n";
 		echo "   <pubDate>$date822</pubDate>\n";
 		echo "  </item>\n";
 		break;
@@ -110,7 +110,7 @@ while ($line = fgets($s, 16384)) {
 		echo " <item>\n";
 		echo "  <title>", format_subject($subj, $charset), "</title>\n";
 		echo "  <link>http://$host/$group/$n</link>\n";
-		echo "  <description>", htmlspecialchars(format_author($author, $charset)), "</description>\n";
+		echo "  <description>", htmlspecialchars(format_author($author, $charset), ENT_QUOTES, "UTF-8"), "</description>\n";
 		echo "  <pubDate>$date822</pubDate>\n";
 		echo " </item>\n";
 		break;
@@ -149,18 +149,18 @@ function navbar($g, $f, $l, $i) {
 	echo '    <td class="nav">';
 	if ($i > $f) {
 		$p = max($i-20,$f);
-		echo "<a href=\"/" . htmlspecialchars($g) . "/start/$p\"><b>&laquo; previous</b></a>";
+		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$p\"><b>&laquo; previous</b></a>";
 	} else {
 		echo "&nbsp;";
 	}
 	echo '</td>' . "\n";
 	$j = min($i + 20, $l);
 	$c = $l - $f + 1;
-	echo '    <td align="center" class="alisthead">'.htmlspecialchars($g)." ($i-$j of $c)</td>\n";
+	echo '    <td align="center" class="alisthead">'.htmlspecialchars($g, ENT_QUOTES, "UTF-8")." ($i-$j of $c)</td>\n";
 	echo '    <td align="right" class="nav">';
 	if ($i+20 <= $l) {
 		$n = min($i + 20, $l - 19);
-		echo "<a href=\"/" . htmlspecialchars($g) . "/start/$n\"><b>next &raquo;</b></a>";
+		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$n\"><b>next &raquo;</b></a>";
 	}
 	else {
 		echo "&nbsp;";

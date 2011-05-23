@@ -56,7 +56,7 @@ if ($q) {
       # yeah, this is a pretty dumb round-trip on formatting the time. whatever.
       echo $m > 0 ? format_date(strftime("%c", $m)) : "&nbsp;";
       echo "</td></tr>\n";
-      echo "<tr class=\"$class\"><td></td><td colspan=\"3\">".nl2br(htmlspecialchars($b))."</td></tr>\n";
+      echo "<tr class=\"$class\"><td></td><td colspan=\"3\">".nl2br(htmlspecialchars($b, ENT_QUOTES, "UTF-8"))."</td></tr>\n";
     }
     echo "</table>";
     navbar($q,$first,$last,$found,$wordinfo,$time);
@@ -84,7 +84,7 @@ function navbar($q,$first,$last,$found,$wordinfo,$time) {
   echo '<td width="20%">';
   $p = floor($first / 20);
   if ($p > 0) {
-    echo "<a href=\"search.php?q=".htmlspecialchars(urlencode($q))."&amp;p=".($p-1).($GLOBALS["t"]?"&amp;t=".$GLOBALS["t"]:"")."\"><b>&laquo; previous</b></a>";
+    echo "<a href=\"search.php?q=".htmlspecialchars(urlencode($q), ENT_QUOTES, "UTF-8")."&amp;p=".($p-1).($GLOBALS["t"]?"&amp;t=".$GLOBALS["t"]:"")."\"><b>&laquo; previous</b></a>";
   }
   else {
     echo "&nbsp;";
@@ -92,11 +92,11 @@ function navbar($q,$first,$last,$found,$wordinfo,$time) {
   echo '</td>';
   $j = min($i+20,$l);
   $c = $l - $f + 1;
-  echo '<td align="center" class="alisthead" width="60%">'.htmlspecialchars("found: $wordinfo in $time secs")." ($first-$last of $found)</td>";
+  echo '<td align="center" class="alisthead" width="60%">'.htmlspecialchars("found: $wordinfo in $time secs", ENT_QUOTES, "UTF-8")." ($first-$last of $found)</td>";
   echo '<td align="right" width="20%">';
   $maxpages = floor($found / 20);
   if ($p < $maxpages) {
-    echo "<a href=\"search.php?q=".htmlspecialchars(urlencode($q))."&amp;p=".($p+1).($GLOBALS["t"]?"&amp;t=".$GLOBALS["t"]:"")."\"><b>next &raquo;</b></a>";
+    echo "<a href=\"search.php?q=".htmlspecialchars(urlencode($q), ENT_QUOTES, "UTF-8")."&amp;p=".($p+1).($GLOBALS["t"]?"&amp;t=".$GLOBALS["t"]:"")."\"><b>next &raquo;</b></a>";
   }
   else {
     echo "&nbsp;";

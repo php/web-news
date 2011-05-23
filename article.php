@@ -235,12 +235,12 @@ function start_article ($group,$headers,$charset) {
 				continue;
 			}
 			$res2 = nntp_cmd($s, "XPATH $v",223)
-			or print("<!-- failed to get reference article id ".htmlspecialchars($v)." -->");
+			or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." -->");
 			list(,$v)  = split("/", trim($res2));
 			if (empty($v)) {
 				continue;
 			}
-			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v))."\">".($c++)."</a>&nbsp;";
+			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".($c++)."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
@@ -250,7 +250,7 @@ function start_article ($group,$headers,$charset) {
 		echo '     <td class="headervalue">';
 		$r = explode(",", chop($headers["newsgroups"]));
 		while (list($k,$v) = each($r)) {
-			echo "<a href=\"/".htmlspecialchars(urlencode($v))."\">".htmlspecialchars($v)."</a>&nbsp;";
+			echo "<a href=\"/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".htmlspecialchars($v, ENT_QUOTES, "UTF-8")."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
@@ -268,7 +268,7 @@ function start_article ($group,$headers,$charset) {
 // Based off navbar() in group.php
 function navbar($group, $current) {
 
-	$group = htmlspecialchars($group, ENT_QUOTES);
+	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
 	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	echo '   <tr class="alisthead">' . "\n";

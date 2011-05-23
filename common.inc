@@ -119,16 +119,16 @@ function spam_protect($txt) {
 function format_author($a, $charset) {
 	$a = recode_header($a, $charset);
 	if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/",$a,$ar)) {
-		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[1])))."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2]))."</a>";
+		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[1])), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2], ENT_QUOTES, "UTF-8"))."</a>";
 	}
 	if (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/",$a,$ar)) {
-		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[2])))."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[1]))."</a>";
+		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[2])), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[1], ENT_QUOTES, "UTF-8"))."</a>";
 	}
 	if (ereg("@",$a)) {
 		$a = spam_protect($a);
-		return "<a href=\"mailto:".htmlspecialchars(urlencode($a))."\" class=\"email fn n\">".htmlspecialchars($a)."</a>";
+		return "<a href=\"mailto:".htmlspecialchars(urlencode($a, ENT_QUOTES, "UTF-8"))."\" class=\"email fn n\">".htmlspecialchars($a, ENT_QUOTES, "UTF-8")."</a>";
 	}
-	return str_replace(" ", "&nbsp;", htmlspecialchars($a));
+	return str_replace(" ", "&nbsp;", htmlspecialchars($a, ENT_QUOTES, "UTF-8"));
 }
 
 function format_subject($s, $charset) {
@@ -141,7 +141,7 @@ function format_subject($s, $charset) {
 	} else {
 		$s = wordwrap($s, 150);
 	}
-	return nl2br(htmlspecialchars($s));
+	return nl2br(htmlspecialchars($s, ENT_QUOTES, "UTF-8"));
 }
 
 
@@ -155,7 +155,7 @@ function format_title($s, $charset) {
 	} else {
 		$s = wordwrap($s, 150);
 	}
-	return $s;
+	return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
 }
 
 function format_date($d) {
