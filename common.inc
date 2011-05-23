@@ -126,7 +126,7 @@ function format_author($a, $charset) {
 	}
 	if (ereg("@",$a)) {
 		$a = spam_protect($a);
-		return "<a href=\"mailto:".htmlspecialchars(urlencode($a, ENT_QUOTES, "UTF-8"))."\" class=\"email fn n\">".htmlspecialchars($a, ENT_QUOTES, "UTF-8")."</a>";
+		return "<a href=\"mailto:".htmlspecialchars(urlencode($a), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".htmlspecialchars($a, ENT_QUOTES, "UTF-8")."</a>";
 	}
 	return str_replace(" ", "&nbsp;", htmlspecialchars($a, ENT_QUOTES, "UTF-8"));
 }
