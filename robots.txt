@@ -1,6 +1,6 @@
 User-agent: *
 Disallow: /
 
-User-agent: msnbot
+User-agent: bingbot
 Crawl-delay: 5
 Disallow:
