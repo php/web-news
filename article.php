@@ -155,7 +155,7 @@ while (!feof($s)) {
 		// we can't convert it to UTF, because cvs commits don't have charset info
 		// so its preferable to leave it as-is, and let users choose the correct charset
 		// in their browser. this is specially important for php.doc.* groups
-		if ($charset && stripos($charset, 'utf-8') === false) {
+		if ($charset && strpos(strtolower($charset), 'utf-8') === false) {
 			$line = to_utf8($line, $charset);
 		}
 
