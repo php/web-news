@@ -149,3 +149,10 @@ function get_group_link($group,$index=-1) {
 			return sprintf("group.php?group=%s&i=%d",urlencode($group),$index);
 	}
 }
+
+function get_article_link($group,$article) {
+	if(USE_REWRITE)
+		return sprintf(REWRITE_ARTICLE,$group,$article);
+	else
+		return sprintf("article.php?group=%s&amp;article=%d",urlencode($group),$article);
+}

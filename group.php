@@ -117,8 +117,8 @@ while ($line = fgets($s, 16384)) {
 		case 'html':
 		default:
 		echo "   <tr>\n";
-		echo "    <td class=\"$class\"><a href=\"/$group/$n\">$n</a></td>\n";
-		echo "    <td class=\"$class\"><a href=\"/$group/$n\">";
+		echo "    <td class=\"$class\"><a href=\"".get_article_link($group,$n)."\">$n</a></td>\n";
+		echo "    <td class=\"$class\"><a href=\"".get_article_link($group,$n)."\">";
 		echo format_subject($subj, $charset);
 		echo "</a></td>\n";
 		echo "    <td class=\"$class vcard\">".format_author($author, $charset)."</td>\n";
@@ -149,7 +149,7 @@ function navbar($g, $f, $l, $i) {
 	echo '    <td class="nav">';
 	if ($i > $f) {
 		$p = max($i-20,$f);
-		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$p\"><b>&laquo; previous</b></a>";
+		echo "<a href=\"".get_group_link($g,$p)."\"><b>&laquo; previous</b></a>";
 	} else {
 		echo "&nbsp;";
 	}
@@ -160,7 +160,7 @@ function navbar($g, $f, $l, $i) {
 	echo '    <td align="right" class="nav">';
 	if ($i+20 <= $l) {
 		$n = min($i + 20, $l - 19);
-		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$n\"><b>next &raquo;</b></a>";
+		echo "<a href=\"".get_group_link($g,$n)."\"><b>next &raquo;</b></a>";
 	}
 	else {
 		echo "&nbsp;";
