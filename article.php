@@ -100,7 +100,8 @@ foreach($lines as $line) {
 			}
 
 			$dl_link = get_getpart_link($group,$article,$mimecount);
-
+			$link_desc = htmlspecialchars($link_desc,ENT_QUOTES,"UTF-8");
+			
 			echo "Attachment: <a href=\"$dl_link\">${link_desc}</a><br />\n";
 		}
 
