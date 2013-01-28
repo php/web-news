@@ -85,7 +85,7 @@ foreach($lines as $line) {
 			&& preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
 				$name = trim($m[2]);
 			} else if ($headers['content-disposition']
-			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
+			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-disposition'], $m)) {
 				$name = trim($m[2]);
 			}
 
