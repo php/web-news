@@ -164,3 +164,77 @@ function get_getpart_link($group,$article,$partid) {
 	else
 		return sprintf("getpart.php?group=%s&amp;article=%d&amp;part=%d",urlencode($group),$article,$partid);
 }
+
+//this takes a headers array and splits up content-type and content-disposition
+function split_headers($headers) {
+	foreach($headers as $k=>$value) {
+		if(array_search(strtolower($k),array("content-type","content-disposition"))===FALSE)
+			continue;
+		$value=trim($value);
+		$value=str_replace("\r"," ",$value);
+		$value=str_replace("\n"," ",$value);
+		$parts=array("");
+		$currentpart=0;
+		$mode=0;
+		$partbuf=&$parts[0];
+		for($i=0;$i<strlen($value);$i++) {
+			$char=$value[$i];
+			switch($char) {
+				case ";": //part separator
+					if($mode==0) {
+						$currentpart++;
+						$parts[$currentpart]="";
+						$partbuf=&$parts[$currentpart];
+					} else
+						$partbuf.=$char;
+					break;
+				case " ": //no spaces in part names
+					if($mode!=0)	
+						$partbuf.=$char;
+					break;
+				case "=": //key=value
+					$key=$partbuf;
+					$starpos=strpos($key,"*");
+					if($starpos!==FALSE) //original value was too long, so it was split up
+						$key=substr($key,0,$starpos);
+					else
+						$parts[$key]="";
+					unset($parts[$currentpart]);
+					$partbuf=&$parts[$key];
+					break;
+				case "\"": //strings
+					if($mode==0)
+						$mode=1;
+					else
+						$mode=0;
+					break;
+				case "\\": //escape, currently only supported \"
+					if($mode==0 || $value[$i+1]!="\"") {
+						$partbuf.=$char;
+						continue;
+					}
+					break;
+				default:
+					$partbuf.=$char;
+			}
+		}
+		$headers[$k]=$parts;
+	}
+	return $headers;
+}
+
+//return a header splitted with split_headers back to text form
+function reassemble_splitheader($header) {
+	if(!is_array($header))
+		return $header;
+	$elements=array();
+	foreach($header as $k=>$v) {
+		if(is_numeric($k)) { //stuff without keys gets appended as is
+			$elements[]=$v;
+			continue;
+		}
+		$v=str_replace("\"","\\\"",$v); //escape "
+		$elements[]="$k=$v";
+	}
+	return implode(";",$elements);
+}

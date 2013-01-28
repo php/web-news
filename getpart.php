@@ -53,30 +53,28 @@ while (!feof($s)) {
 	}
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
-		if ($headers['content-type']
-		&& preg_match("/charset=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
-			$charset = trim($m[2]);
+		$headers=split_headers($headers);
+		if (isset($headers['content-type']) && isset($headers['content-type']['charset'])) {
+			$charset = $headers['content-type']['charset'];
 		}
-		if ($headers['content-type']
-		&& preg_match("/boundary=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
-			$boundaries[] = trim($m[2]);
+		if (isset($headers['content-type']) && isset($headers['content-type']['boundary'])) {
+			$boundaries[] = $headers['content-type']['boundary'];
 			$boundary = end($boundaries);
 		}
-		if ($headers['content-type']
-		&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
+		if ($headers['content-type'][0]
+		&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'][0], $m)) {
 			$mimetype = trim(strtolower($m[1]));
 			++$mimecount;
 		}
 
 		$emit = ($mimecount == $part);
-
 		$encoding = strtolower(trim($headers['content-transfer-encoding']));
 		if ($emit) {
 			if (isset($headers['content-type'])) {
-				header('Content-Type: ' . $headers['content-type']);
+				header('Content-Type: ' . reassemble_splitheader($headers['content-type']));
 			}
 			if (isset($headers['content-disposition'])) {
-				header('Content-Disposition: ' . $headers['content-disposition']);
+				header('Content-Disposition: ' . reassemble_splitheader($headers['content-disposition']));
 			}
 			if (isset($headers['content-description'])) {
 				header('Content-Description: ' . $headers['content-description']);
@@ -117,7 +115,6 @@ while (!feof($s)) {
 				$headers = $masterheaders;
 				$mimetype = "";
 			}
-
 			continue;
 		}
 
