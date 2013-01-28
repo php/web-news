@@ -94,7 +94,8 @@ while (!feof($s)) {
 			}
 
 			$dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
-
+			$link_desc = htmlspecialchars($link_desc,ENT_QUOTES,"UTF-8");
+			
 			echo "Attachment: <a href=\"$dl_link\">${link_desc}</a><br />\n";
 		}
 
@@ -279,7 +280,7 @@ function navbar($group, $current) {
 	} else {
 		echo '&nbsp;';
 	}
-
+1
 	echo '    </td>' . "\n";
 	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
 	echo '    <td align="right" class="nav">';
