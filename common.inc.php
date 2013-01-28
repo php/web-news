@@ -233,6 +233,7 @@ function reassemble_splitheader($header) {
 			$elements[]=$v;
 			continue;
 		}
+		$v=str_replace("\\","\\\\",$v); //escape \
 		$v=str_replace("\"","\\\"",$v); //escape "
 		$elements[]="$k=$v";
 	}
