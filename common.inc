@@ -14,14 +14,8 @@ function head($title="PHP news") {
 	require("header.inc.php");
 }
 
-function foot() {?>
-  <hr />
-  <div class="small">
-   Written by Jim Winstead. no rights reserved. (<a href="https://git.php.net/?p=web/news.git">source code</a>)
-  </div>
- </body>
-</html>
-<?php
+function foot() {
+	require("footer.inc.php");
 }
 
 function to_utf8($str, $charset)
