@@ -1,6 +1,6 @@
 <?php
 
-require 'common.inc';
+require 'common.inc.php';
 require 'nntp.inc';
 
 if (isset($_GET['article'])) {

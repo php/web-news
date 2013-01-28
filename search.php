@@ -1,5 +1,5 @@
 <?php
-require 'common.inc';
+require 'common.inc.php';
 
 $q = isset($_GET['q']) ? $_GET['q'] : false;
 
