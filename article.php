@@ -41,8 +41,16 @@ $boundaries = array();
 $lk = '';
 $linebuf = '';
 $insig = false;
+
+//First read into buffer to allow later commands reuse the connection and save resources
+$lines=array();
 while (!feof($s)) {
-	$line = fgets($s);
+	$line=fgets($s);
+	$lines[]=$line;
+	if($line==".\r\n") break;
+}
+
+foreach($lines as $line) {
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
@@ -199,6 +207,7 @@ echo "   </pre>\n";
 echo "  </blockquote>\n";
 
 function start_article ($group,$headers,$charset) {
+	global $s;
 	echo "  <blockquote>\n";
 	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	# from
@@ -223,8 +232,6 @@ function start_article ($group,$headers,$charset) {
 		$ref=str_replace("\t"," ",$ref);
 		$r = explode(" ", $ref);
 		$c = 1;
-		$s = nntp_connect(NNTP_HOST)
-		or die("failed to connect to news server");
 		while (list($k,$v) = each($r)) {
 			if (!$v) continue;
 			$v = trim($v);
@@ -235,13 +242,14 @@ function start_article ($group,$headers,$charset) {
 				// 512 chars including CRLF
 				continue;
 			}
+
 			$res2 = nntp_cmd($s, "XPATH $v",223)
-			or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." -->");
+			or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." $v-->");
 			list(,$v)  = split("/", trim($res2));
 			if (empty($v)) {
 				continue;
 			}
-			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".($c++)."</a>&nbsp;";
+			echo "<a href=\"".get_article_link($group,$v)."\">".($c++)."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
@@ -251,7 +259,7 @@ function start_article ($group,$headers,$charset) {
 		echo '     <td class="headervalue">';
 		$r = explode(",", chop($headers["newsgroups"]));
 		while (list($k,$v) = each($r)) {
-			echo "<a href=\"/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".htmlspecialchars($v, ENT_QUOTES, "UTF-8")."</a>&nbsp;";
+			echo "<a href=\"".get_group_link($v)."\">".htmlspecialchars($v, ENT_QUOTES, "UTF-8")."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
@@ -276,7 +284,7 @@ function navbar($group, $current) {
 	echo '    <td class="nav">';
 
 	if ($current > 1) {
-		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
+		echo '     <a href="'.get_article_link($group,($current-1)).'"><b>&laquo; previous</b></a>';
 	} else {
 		echo '&nbsp;';
 	}
@@ -284,7 +292,7 @@ function navbar($group, $current) {
 	echo '    </td>' . "\n";
 	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
 	echo '    <td align="right" class="nav">';
-	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
+	echo '     <a href="'.get_article_link($group,($current+1)).'"><b>next &raquo;</b></a>';
 	echo '    </td>' . "\n";
 	echo '   </tr>' . "\n";
 	echo '  </table>' . "\n";
