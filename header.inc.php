@@ -17,7 +17,7 @@ echo "<?xml version=\"1.0\"?>\n"; /* allow it to work on servers with short_tags
      <a href="index.php"><img src="i/l.gif" width="120" height="67" alt="PHP" /></a>
     </td>
     <td align="right" valign="bottom">
-     PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface
+     PHP.net <a href="news://<?php echo NNTP_HOST; ?>/" class="top">news server</a> web interface
     </td>
    </tr>
    <tr class="subheader">
