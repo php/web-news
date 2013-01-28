@@ -1,13 +1,23 @@
 <?php
 
-define('NNTP_HOST', 'news.php.net');
+//check if we have a local config file
+if(is_file("config.local.inc.php"))
+	require "config.local.inc.php";
+
+if(!defined('NNTP_HOST'))
+	define('NNTP_HOST', 'news.php.net');
 
 //Rewrite strings for groups/articles
-define('USE_REWRITE',true);
-define('REWRITE_GROUP','%s');
-define('REWRITE_GROUP_INDEX','%s/start/%d');
-define('REWRITE_ARTICLE','%s/%d');
-define('REWRITE_GETPART','%s/%d/%d');
+if(!defined('USE_REWRITE'))
+	define('USE_REWRITE',false);
+if(!defined('REWRITE_GROUP'))
+	define('REWRITE_GROUP','%s');
+if(!defined('REWRITE_GROUP_INDEX'))
+	define('REWRITE_GROUP_INDEX','%s/start/%d');
+if(!defined('REWRITE_ARTICLE'))
+	define('REWRITE_ARTICLE','%s/%d');
+if(!defined('REWRITE_GETPATRT'))
+	define('REWRITE_GETPART','%s/%d/%d');
 
 function error($str) {
 	head("PHP news : error");
