@@ -54,17 +54,17 @@ foreach($lines as $line) {
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
+		$headers=split_headers($headers);
 		if (isset($headers['content-type'])) {
-			if (preg_match('/charset=(["\']?)([\w-]+)\1/i', $headers['content-type'], $m)) {
-				$charset = trim($m[2]);
+			if (isset($headers['content-type']['charset'])) {
+				$charset = $headers['content-type']['charset'];
 			}
-		
-			if(preg_match('/boundary=(["\']?)(.+)\1/is', $headers['content-type'], $m)) {
-				$boundaries[] = trim($m[2]);
+			if (isset($headers['content-type']['boundary'])) {
+				$boundaries[] = $headers['content-type']['boundary'];
 				$boundary = end($boundaries);
 			}
-
-			if (preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
+			if ($headers['content-type'][0]
+			&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'][0], $m)) {
 				$mimetype = trim(strtolower($m[1]));
 				++$mimecount;
 			}
@@ -81,12 +81,10 @@ foreach($lines as $line) {
 		&& substr($mimetype,0,10) != "multipart/") {
 			# Display a link to the attachment
 			$name = '';
-			if ($headers['content-type']
-			&& preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
-				$name = trim($m[2]);
-			} else if ($headers['content-disposition']
-			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-disposition'], $m)) {
-				$name = trim($m[2]);
+			if (isset($headers['content-type']['name'])) {
+				$name = $headers['content-type']['name'];
+			} else if (isset($headers['content-disposition']['filename'])) {
+				$name = $headers['content-disposition']['filename'];
 			}
 
 			if ($headers['content-description']) {
