@@ -220,6 +220,7 @@ function start_article ($group,$headers,$charset) {
 		$ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
 		echo '     <td class="headerlabel">References:</td>' . "\n";
 		echo '     <td class="headervalue">';
+		$ref=str_replace("\t"," ",$ref);
 		$r = explode(" ", $ref);
 		$c = 1;
 		$s = nntp_connect(NNTP_HOST)
