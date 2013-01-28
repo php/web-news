@@ -101,7 +101,7 @@ foreach($lines as $line) {
 				$link_desc .= " " . $description;
 			}
 
-			$dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
+			$dl_link = get_getpart_link($group,$article,$mimecount);
 
 			echo "Attachment: <a href=\"$dl_link\">${link_desc}</a><br />\n";
 		}
