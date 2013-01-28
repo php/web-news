@@ -34,7 +34,7 @@ while ($line = fgets($s, 1024)) {
 	$line = chop($line);
 	list($group, $high, $low, $active) = explode(" ", $line);
 	echo "       <tr>\n";
-	echo "        <td class=\"$class\"><a class=\"active$active\" href=\"/$group\">$group</a></td>\n";
+	echo "        <td class=\"$class\"><a class=\"active$active\" href=\"".get_group_link($group)."\">$group</a></td>\n";
 	echo "        <td align=\"right\" class=\"$class\">", $high-$low+1, "</td>\n";
 	echo "        <td class=\"$class\">";
 	if ($active != 'n') {

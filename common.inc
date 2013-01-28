@@ -1,7 +1,12 @@
 <?php
 
 define('NNTP_HOST', 'news.php.net');
-define('BASEDIR', dirname($_SERVER['REQUEST_URI']));
+
+//Rewrite strings for groups/articles
+define('USE_REWRITE',true);
+define('REWRITE_GROUP','%s');
+define('REWRITE_GROUP_INDEX','%s/start/%d');
+define('REWRITE_ARTICLE','%s/%d');
 
 function error($str) {
 	head("PHP news : error");
@@ -129,4 +134,18 @@ function format_date($d) {
 	$d = strtotime($d);
 	$d = strftime("%c", $d);
 	return str_replace(" ", "&nbsp;", $d);
+}
+
+function get_group_link($group,$index=-1) {
+	if($index===-1) {
+		if(USE_REWRITE)
+			return sprintf(REWRITE_GROUP,$group);
+		else
+			return sprintf("group.php?group=%s",urlencode($group));
+	} else {
+		if(USE_REWRITE)
+			return sprintf(REWRITE_GROUP_INDEX,$group,$index);
+		else
+			return sprintf("group.php?group=%s&i=%d",urlencode($group),$index);
+	}
 }
