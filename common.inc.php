@@ -7,6 +7,7 @@ define('USE_REWRITE',true);
 define('REWRITE_GROUP','%s');
 define('REWRITE_GROUP_INDEX','%s/start/%d');
 define('REWRITE_ARTICLE','%s/%d');
+define('REWRITE_GETPART','%s/%d/%d');
 
 function error($str) {
 	head("PHP news : error");
@@ -155,4 +156,11 @@ function get_article_link($group,$article) {
 		return sprintf(REWRITE_ARTICLE,$group,$article);
 	else
 		return sprintf("article.php?group=%s&amp;article=%d",urlencode($group),$article);
+}
+
+function get_getpart_link($group,$article,$partid) {
+	if(USE_REWRITE)
+		return sprintf(REWRITE_GETPART,$group,$article,$partid);
+	else
+		return sprintf("getpart.php?group=%s&amp;article=%d&amp;part=%d",urlencode($group),$article,$partid);
 }
