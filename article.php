@@ -280,7 +280,7 @@ function navbar($group, $current) {
 	} else {
 		echo '&nbsp;';
 	}
-1
+
 	echo '    </td>' . "\n";
 	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
 	echo '    <td align="right" class="nav">';
