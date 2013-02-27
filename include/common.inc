@@ -24,14 +24,10 @@ require 'include/preferences.inc';
 require 'include/language.inc';
 require 'include/template.inc';
 
-$temp = explode('/', $_SERVER['SCRIPT_NAME']);
-
-define('SERVER_NAME', 'news.php.net');
-define('SERVER_PATH', '/');
+define('SERVER_NAME', 'www.tuxxedo.net');
+define('SERVER_PATH', '/phpdotnet/news/');
 define('NNTP_SERVER', 'news.php.net');
-define('SCRIPT_NAME', end($temp));
-
-unset($temp);
+define('SCRIPT_NAME', end(explode('/', $_SERVER['SCRIPT_NAME'])));
 
 $langs    = Array(
                   'en', 
