@@ -15,33 +15,52 @@
   +----------------------------------------------------------------------+
   | Author:                                                              |
   |	Kalle Sommer Nielsen <kalle@php.net>                             |
-  | Based on code by:                                                    |
-  |     Jim Winstead <jimw@php.net>                                      |
   +----------------------------------------------------------------------+
 */
 
-require 'include/common.inc';
+class Template implements ArrayAccess {
+    protected $name;
+    protected $vars = Array();
 
-if (!$nntp->command('LIST', 215)) {
-    error($lang['index_error_list']);
+    public function __construct($template) {
+        global $prefs, $lang;
+
+        $this->name          = $template;
+        $this->vars['prefs'] = $prefs;
+        $this->vars['lang']  = $lang;
+    }
+
+    public function __toString() {
+        return (string) $this->parse();
+    }
+
+    public function parse() {
+        ob_start();
+        extract($this->vars, EXTR_SKIP);
+        include 'templates/' . $this->name . '.tpl';
+
+        return ob_get_clean();
+    }
+
+    public function offsetGet($offset) {
+        if (isset($this->vars[$offset])) {
+            return $this->vars[$offset];
+        }
+    }
+
+    public function offsetSet($offset, $value) {
+        $this->vars[$offset] = $value;
+    }
+
+    public function offsetUnset($offset) {
+        if (isset($this->vars[$offset])) {
+            unset($this->vars[$offset]);
+        }
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->vars[$offset]);
+    }
 }
-
-$groups = '';
-
-foreach ($nntp->getResults() as $line) {
-    $group 		= new Template('frontpage_groupbit');
-    $group['group']	= $line[0];
-    $group['high']	= $line[1];
-    $group['low']	= $line[2];
-
-    $groups             .= $group;
-}
-
-$content 		= new Template('frontpage');
-$content['groups']      = $groups;
-
-echo new Template('header');
-echo $content;
-echo new Template('footer');
 
 ?>

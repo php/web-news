@@ -1,0 +1,31 @@
+#  +----------------------------------------------------------------------+
+#  | PHP.net Website Systems                                              |
+#  +----------------------------------------------------------------------+
+#  | Copyright (c) 2011 The PHP Group                                     |
+#  +----------------------------------------------------------------------+
+#  | This source file is subject to version 3.01 of the PHP license,      |
+#  | that is bundled with this package in the file LICENSE, and is        |
+#  | available through the world-wide-web at the following url:           |
+#  | http://www.php.net/license/3_01.txt                                  |
+#  | If you did not receive a copy of the PHP license and are unable to   |
+#  | obtain it through the world-wide-web, please send a note to          |
+#  | license@php.net so we can mail you a copy immediately.               |
+#  +----------------------------------------------------------------------+
+#  | Author:                                                              |
+#  |	Jim Winstead <jimw@php.net>                                       |
+#  |	Kalle Sommer Nielsen <kalle@php.net>                              |
+#  |    Felipe Pena <felipe@php.net>                                      |
+#  +----------------------------------------------------------------------+
+
+RewriteEngine on
+
+RewriteRule ^((?:php|ug|svn).+)/start/([0-9]+)                          group.php?group=$1&start=$2 [L]
+RewriteRule ^((?:php|ug|svn).+)/([0-9]+)                                article.php?group=$1&id=$2 [L]
+RewriteRule ^((?:php|ug|svn)[^/]+)(/)?$                                 group.php?group=$1 [L]
+RewriteRule ^subscribe/((?:php|ug|svn).+)(/)?$                          subscribe.php?group=$1 [L]
+RewriteRule ^attachment/((?:php|ug|svn).+)/([0-9]+)/([0-9]+)(/)?$       attachment.php?group=$1&article=$2&id=$3 [L]
+RewriteRule ^preferences(/)?$                                           preferences.php [L]
+RewriteRule ^rss/((?:php|ug|svn)[^/]+)(/)?$                             group.php?group=$1&format=rss [L]
+RewriteRule ^rss/((?:php|ug|svn).+)/start/([0-9]+)                      group.php?group=$1&start=$2&format=rss [L]
+RewriteRule ^rdf/((?:php|ug|svn)[^/]+)(/)?$                             group.php?group=$1&format=rdf [L]
+RewriteRule ^rdf/((?:php|ug|svn).+)/start/([0-9]+)                      group.php?group=$1&start=$2&format=rdf [L]

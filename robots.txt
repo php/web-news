@@ -1,6 +1,6 @@
 User-agent: *
 Disallow: /
 
-User-agent: bingbot
+User-agent: Slurp
 Crawl-delay: 5
 Disallow:

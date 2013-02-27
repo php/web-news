@@ -15,33 +15,27 @@
   +----------------------------------------------------------------------+
   | Author:                                                              |
   |	Kalle Sommer Nielsen <kalle@php.net>                             |
-  | Based on code by:                                                    |
-  |     Jim Winstead <jimw@php.net>                                      |
   +----------------------------------------------------------------------+
 */
 
-require 'include/common.inc';
+require 'include/nntp.inc';
+require 'include/functions.inc';
+require 'include/preferences.inc';
+require 'include/language.inc';
+require 'include/template.inc';
 
-if (!$nntp->command('LIST', 215)) {
-    error($lang['index_error_list']);
-}
+define('SERVER_NAME', 'www.tuxxedo.net');
+define('SERVER_PATH', '/phpdotnet/news/');
+define('NNTP_SERVER', 'news.php.net');
+define('SCRIPT_NAME', end(explode('/', $_SERVER['SCRIPT_NAME'])));
 
-$groups = '';
+$langs    = Array(
+                  'en', 
+                  'da'
+                  );
 
-foreach ($nntp->getResults() as $line) {
-    $group 		= new Template('frontpage_groupbit');
-    $group['group']	= $line[0];
-    $group['high']	= $line[1];
-    $group['low']	= $line[2];
-
-    $groups             .= $group;
-}
-
-$content 		= new Template('frontpage');
-$content['groups']      = $groups;
-
-echo new Template('header');
-echo $content;
-echo new Template('footer');
+$prefs    = new Preferences;
+$lang     = new Language($prefs->language);
+$nntp     = new NNTP(NNTP_SERVER);
 
 ?>

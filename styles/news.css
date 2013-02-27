@@ -1,0 +1,156 @@
+section.layout-content p, aside p {
+    margin-bottom: 10px;
+}
+section.layout-content p a, 
+section.layout-content div.navigation a, 
+section.layout-content div.quote-depth a, 
+section.layout-content pre>a, 
+aside.tips li>a, 
+aside.tips td a {
+    border-bottom: 1px solid #C3ADD9;
+    color: #8E62BA;
+}
+    section.layout-content p a:hover, 
+    section.layout-content div.navigation a:hover, 
+    section.layout-content div.quote-depth a:hover, 
+    section.layout-content pre>a:hover, 
+    aside.tips li>a:hover, 
+    aside.tips td a:hover {
+        border-bottom: 1px solid #604080;
+        color: #604080;
+    }
+
+aside.tips {
+    border: 2px solid #8E62BA;
+    border-radius: 4px;
+}
+    aside.tips p.box {
+        background-color: #C3ADD9;
+        border: 2px solid #604080;
+        border-radius: 4px;
+        color: #604080;
+        font-weight: bold;
+        margin: 0px;
+        padding: 10px 0px;
+    }
+    aside.tips table {
+        margin-top: 10px;
+        width: 100%;
+    }
+    aside.tips td {
+        padding: 5px;
+    }
+        aside.tips td div.info {
+            background-color: #604080;
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 5px;
+        }
+
+footer .footmenu {
+    padding: 10px;
+}
+
+footer .footmenu a {
+    color: #8E62BA;
+}
+    footer .footmenu a:hover {   
+        color: #604080;
+    }
+
+#mega-drop-down dd a:hover {
+    color: #FFFFFF;
+}
+
+form.preferences input[type=text], form.preferences select {
+    width: 230px;
+}
+
+div.quote-depth {
+    border-left: 3px solid #604080;
+    margin: 10px;
+    padding-left: 10px;
+}
+    div.depth-2 {
+        border-left: 3px solid #C3ADD9;
+    }
+    div.depth-3 {
+        border-left: 3px solid #987DB3;
+    }
+
+div.navigation {
+    margin-top: 20px;
+}
+    div.navigation .clear {
+        clear: both;
+    }
+    div.navigation .left {
+        float: left;
+    }
+        section.layout-content div.navigation .left>a, 
+        section.layout-content div.navigation .right>a {
+            background-color: #604080;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 4px;
+        }
+            section.layout-content div.navigation .left>a:hover, 
+            section.layout-content div.navigation .right>a:hover {
+                border: 2px solid #604080;
+                background-color: #C3ADD9;
+                color: #604080;
+            }
+    div.navigation .right {
+        float: right;
+    }
+
+.table-wrapper {
+    border: 1px solid #604080;
+    border-radius: 3px;
+}
+.table-wrapper table {
+    width: 100%;
+}
+    .table-wrapper .heading {
+        border-bottom: 1px solid #604080;
+        border-top: 1px solid #604080;
+    }
+        .table-wrapper .heading td {
+            font-weight: bold;
+        }
+    .table-wrapper td {
+        padding: 5px;
+    }
+    .table-wrapper tbody tr:nth-child(odd) {
+        background-color: #EFEFEF;
+    }
+    .table-wrapper tbody tr:hover {
+        background-color: #D2D2D2;
+    }
+        .table-wrapper tbody tr.heading:hover {
+            background-color: #EFEFEF;
+        }
+    .table-wrapper table tfoot tr {
+        border-top: 1px solid #604080;
+    }
+    .table-wrapper table thead td, .table-wrapper table tfoot td {
+        background-color: #C3ADD9;
+        text-align: center;
+    }
+
+    .table-wrapper .column_id {
+        width: 20px;
+    }
+    .table-wrapper .column_lines, .table-wrapper .column_next {
+        text-align: right;
+    }
+
+    .table-wrapper .column_previous a, .table-wrapper .column_next a, .table-wrapper tbody a {
+        color: #000000;
+    }
+        .table-wrapper .column_previous a:hover, .table-wrapper .column_next a:hover, .table-wrapper tbody a:hover {
+            text-decoration: underline;
+        }

@@ -15,33 +15,23 @@
   +----------------------------------------------------------------------+
   | Author:                                                              |
   |	Kalle Sommer Nielsen <kalle@php.net>                             |
-  | Based on code by:                                                    |
-  |     Jim Winstead <jimw@php.net>                                      |
   +----------------------------------------------------------------------+
 */
 
 require 'include/common.inc';
 
-if (!$nntp->command('LIST', 215)) {
-    error($lang['index_error_list']);
+if (isset($_POST['save'])) {
+    $language = $prefs->language;
+
+    $prefs->save();
+
+    if ($language != $prefs->language) {
+       $lang = new Language($prefs->language);
+    }
 }
-
-$groups = '';
-
-foreach ($nntp->getResults() as $line) {
-    $group 		= new Template('frontpage_groupbit');
-    $group['group']	= $line[0];
-    $group['high']	= $line[1];
-    $group['low']	= $line[2];
-
-    $groups             .= $group;
-}
-
-$content 		= new Template('frontpage');
-$content['groups']      = $groups;
 
 echo new Template('header');
-echo $content;
+echo new Template('preferences');
 echo new Template('footer');
 
 ?>

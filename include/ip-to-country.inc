@@ -14,34 +14,38 @@
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
   | Author:                                                              |
-  |	Kalle Sommer Nielsen <kalle@php.net>                             |
-  | Based on code by:                                                    |
-  |     Jim Winstead <jimw@php.net>                                      |
+  |	Gabor Hojtsy <goba@php.net>                                      |
   +----------------------------------------------------------------------+
 */
 
-require 'include/common.inc';
+function i2c_realip() {
+    $ip = false;
+    
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }
 
-if (!$nntp->command('LIST', 215)) {
-    error($lang['index_error_list']);
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ips = explode (', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
+
+        if ($ip) {
+            array_unshift($ips, $ip);
+
+            $ip = false;
+        }
+
+        for ($i = 0; $i < count($ips); $i++) {
+            if (!preg_match('/^(?:10|172\.(?:1[6-9]|2\d|3[01])|192\.168)\./', $ips[$i])) {
+                if (ip2long($ips[$i]) != false) {
+                    $ip = $ips[$i];
+
+                    break;
+                }
+            }
+        }
+    }
+
+    return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
-
-$groups = '';
-
-foreach ($nntp->getResults() as $line) {
-    $group 		= new Template('frontpage_groupbit');
-    $group['group']	= $line[0];
-    $group['high']	= $line[1];
-    $group['low']	= $line[2];
-
-    $groups             .= $group;
-}
-
-$content 		= new Template('frontpage');
-$content['groups']      = $groups;
-
-echo new Template('header');
-echo $content;
-echo new Template('footer');
 
 ?>
