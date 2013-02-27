@@ -42,11 +42,11 @@ $start = (isset($_GET['start']) ? (integer) $_GET['start'] : 0);
 
 list(, $first, $last) = explode(' ', $data);
 
-if (!$start || $start > ($last - 19) || $start < $first) {
-    $start = ($last - $first) > 19 ? $last - 19 : $first;
+if (!$start || $start > ($last - 49) || $start < $first) {
+    $start = ($last - $first) > 49 ? $last - 49 : $first;
 }
 
-$n = min($last, $start + 19);
+$n = min($last, $start + 49);
 
 if (!$nntp->command('XOVER ' . $start . '-' . $n, 224)) {
     error($lang['groups_error_xover']);
