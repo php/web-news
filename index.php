@@ -1,6 +1,6 @@
 <?php
 
-require 'common.inc';
+require 'common.inc.php';
 require 'nntp.inc';
 
 $s = nntp_connect(NNTP_HOST);
@@ -34,7 +34,7 @@ while ($line = fgets($s, 1024)) {
 	$line = chop($line);
 	list($group, $high, $low, $active) = explode(" ", $line);
 	echo "       <tr>\n";
-	echo "        <td class=\"$class\"><a class=\"active$active\" href=\"/$group\">$group</a></td>\n";
+	echo "        <td class=\"$class\"><a class=\"active$active\" href=\"".get_group_link($group)."\">$group</a></td>\n";
 	echo "        <td align=\"right\" class=\"$class\">", $high-$low+1, "</td>\n";
 	echo "        <td class=\"$class\">";
 	if ($active != 'n') {
@@ -56,8 +56,8 @@ while ($line = fgets($s, 1024)) {
       <h1>Welcome!</h1>
       <p>
        This is a completely experimental interface to the PHP mailing lists as 
-       reflected on the <a href="news://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'],ENT_QUOTES,"UTF-8"); ?>/">
-       <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8"); ?> NNTP server</a>.
+       reflected on the <a href="news://<?php echo NNTP_HOST; ?>/">
+       <?php echo NNTP_HOST; ?> NNTP server</a>.
       </p>
       <p>
        There may be a little more info in the <a href="README">README</a> file.

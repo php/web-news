@@ -1,6 +1,6 @@
 <?php
 
-require 'common.inc';
+require 'common.inc.php';
 require 'nntp.inc';
 
 if (isset($_GET['article'])) {
@@ -41,22 +41,30 @@ $boundaries = array();
 $lk = '';
 $linebuf = '';
 $insig = false;
+
+//First read into buffer to allow later commands reuse the connection and save resources
+$lines=array();
 while (!feof($s)) {
-	$line = fgets($s);
+	$line=fgets($s);
+	$lines[]=$line;
+	if($line==".\r\n") break;
+}
+
+foreach($lines as $line) {
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
+		$headers=split_headers($headers);
 		if (isset($headers['content-type'])) {
-			if (preg_match('/charset=(["\']?)([\w-]+)\1/i', $headers['content-type'], $m)) {
-				$charset = trim($m[2]);
+			if (isset($headers['content-type']['charset'])) {
+				$charset = $headers['content-type']['charset'];
 			}
-		
-			if(preg_match('/boundary=(["\']?)(.+)\1/is', $headers['content-type'], $m)) {
-				$boundaries[] = trim($m[2]);
+			if (isset($headers['content-type']['boundary'])) {
+				$boundaries[] = $headers['content-type']['boundary'];
 				$boundary = end($boundaries);
 			}
-
-			if (preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
+			if ($headers['content-type'][0]
+			&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'][0], $m)) {
 				$mimetype = trim(strtolower($m[1]));
 				++$mimecount;
 			}
@@ -73,12 +81,10 @@ while (!feof($s)) {
 		&& substr($mimetype,0,10) != "multipart/") {
 			# Display a link to the attachment
 			$name = '';
-			if ($headers['content-type']
-			&& preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
-				$name = trim($m[2]);
-			} else if ($headers['content-disposition']
-			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
-				$name = trim($m[2]);
+			if (isset($headers['content-type']['name'])) {
+				$name = $headers['content-type']['name'];
+			} else if (isset($headers['content-disposition']['filename'])) {
+				$name = $headers['content-disposition']['filename'];
 			}
 
 			if ($headers['content-description']) {
@@ -93,7 +99,7 @@ while (!feof($s)) {
 				$link_desc .= " " . $description;
 			}
 
-			$dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
+			$dl_link = get_getpart_link($group,$article,$mimecount);
 			$link_desc = htmlspecialchars($link_desc,ENT_QUOTES,"UTF-8");
 			
 			echo "Attachment: <a href=\"$dl_link\">${link_desc}</a><br />\n";
@@ -200,6 +206,7 @@ echo "   </pre>\n";
 echo "  </blockquote>\n";
 
 function start_article ($group,$headers,$charset) {
+	global $s;
 	echo "  <blockquote>\n";
 	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	# from
@@ -221,10 +228,9 @@ function start_article ($group,$headers,$charset) {
 		$ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
 		echo '     <td class="headerlabel">References:</td>' . "\n";
 		echo '     <td class="headervalue">';
+		$ref=str_replace("\t"," ",$ref);
 		$r = explode(" ", $ref);
 		$c = 1;
-		$s = nntp_connect(NNTP_HOST)
-		or die("failed to connect to news server");
 		while (list($k,$v) = each($r)) {
 			if (!$v) continue;
 			$v = trim($v);
@@ -235,13 +241,14 @@ function start_article ($group,$headers,$charset) {
 				// 512 chars including CRLF
 				continue;
 			}
+
 			$res2 = nntp_cmd($s, "XPATH $v",223)
-			or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." -->");
+			or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." $v-->");
 			list(,$v)  = split("/", trim($res2));
 			if (empty($v)) {
 				continue;
 			}
-			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".($c++)."</a>&nbsp;";
+			echo "<a href=\"".get_article_link($group,$v)."\">".($c++)."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
@@ -251,7 +258,7 @@ function start_article ($group,$headers,$charset) {
 		echo '     <td class="headervalue">';
 		$r = explode(",", chop($headers["newsgroups"]));
 		while (list($k,$v) = each($r)) {
-			echo "<a href=\"/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".htmlspecialchars($v, ENT_QUOTES, "UTF-8")."</a>&nbsp;";
+			echo "<a href=\"".get_group_link($v)."\">".htmlspecialchars($v, ENT_QUOTES, "UTF-8")."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}
@@ -276,7 +283,7 @@ function navbar($group, $current) {
 	echo '    <td class="nav">';
 
 	if ($current > 1) {
-		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
+		echo '     <a href="'.get_article_link($group,($current-1)).'"><b>&laquo; previous</b></a>';
 	} else {
 		echo '&nbsp;';
 	}
@@ -284,7 +291,7 @@ function navbar($group, $current) {
 	echo '    </td>' . "\n";
 	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
 	echo '    <td align="right" class="nav">';
-	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
+	echo '     <a href="'.get_article_link($group,($current+1)).'"><b>next &raquo;</b></a>';
 	echo '    </td>' . "\n";
 	echo '   </tr>' . "\n";
 	echo '  </table>' . "\n";

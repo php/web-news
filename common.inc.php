@@ -1,6 +1,23 @@
 <?php
 
-define('NNTP_HOST', 'localhost');
+//check if we have a local config file
+if(is_file("config.local.inc.php"))
+	require "config.local.inc.php";
+
+if(!defined('NNTP_HOST'))
+	define('NNTP_HOST', 'news.php.net');
+
+//Rewrite strings for groups/articles
+if(!defined('USE_REWRITE'))
+	define('USE_REWRITE',false);
+if(!defined('REWRITE_GROUP'))
+	define('REWRITE_GROUP','%s');
+if(!defined('REWRITE_GROUP_INDEX'))
+	define('REWRITE_GROUP_INDEX','%s/start/%d');
+if(!defined('REWRITE_ARTICLE'))
+	define('REWRITE_ARTICLE','%s/%d');
+if(!defined('REWRITE_GETPATRT'))
+	define('REWRITE_GETPART','%s/%d/%d');
 
 function error($str) {
 	head("PHP news : error");
@@ -10,45 +27,11 @@ function error($str) {
 }
 
 function head($title="PHP news") {
-	header("Content-type: text/html; charset=utf-8");
-	echo '<?xml version="1.0"?>' . "\n";
-
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title><?php echo $title?></title>
-  <link rel="stylesheet" href="/style.css" type="text/css" />
- </head>
- <body>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-   <tr class="header">
-    <td>
-     <a href="/index.php"><img src="/i/l.gif" width="120" height="67" alt="PHP" /></a>
-    </td>
-    <td align="right" valign="bottom">
-     PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface
-    </td>
-   </tr>
-   <tr class="subheader">
-    <td colspan="2">
-     <img src="/i/g.gif" width="1" height="1" alt="" />
-    </td>
-   </tr>
-  </table>
-<?php
+	require("header.inc.php");
 }
 
-function foot() {?>
-  <hr />
-  <div class="small">
-   Written by Jim Winstead. no rights reserved. (<a href="https://git.php.net/?p=web/news.git">source code</a>)
-  </div>
- </body>
-</html>
-<?php
+function foot() {
+	require("footer.inc.php");
 }
 
 function to_utf8($str, $charset)
@@ -162,4 +145,107 @@ function format_date($d) {
 	$d = strtotime($d);
 	$d = strftime("%c", $d);
 	return str_replace(" ", "&nbsp;", $d);
+}
+
+function get_group_link($group,$index=-1) {
+	if($index===-1) {
+		if(USE_REWRITE)
+			return sprintf(REWRITE_GROUP,$group);
+		else
+			return sprintf("group.php?group=%s",urlencode($group));
+	} else {
+		if(USE_REWRITE)
+			return sprintf(REWRITE_GROUP_INDEX,$group,$index);
+		else
+			return sprintf("group.php?group=%s&i=%d",urlencode($group),$index);
+	}
+}
+
+function get_article_link($group,$article) {
+	if(USE_REWRITE)
+		return sprintf(REWRITE_ARTICLE,$group,$article);
+	else
+		return sprintf("article.php?group=%s&amp;article=%d",urlencode($group),$article);
+}
+
+function get_getpart_link($group,$article,$partid) {
+	if(USE_REWRITE)
+		return sprintf(REWRITE_GETPART,$group,$article,$partid);
+	else
+		return sprintf("getpart.php?group=%s&amp;article=%d&amp;part=%d",urlencode($group),$article,$partid);
+}
+
+//this takes a headers array and splits up content-type and content-disposition
+function split_headers($headers) {
+	foreach($headers as $k=>$value) {
+		if(array_search(strtolower($k),array("content-type","content-disposition"))===FALSE)
+			continue;
+		$value=trim($value);
+		$value=str_replace("\r"," ",$value);
+		$value=str_replace("\n"," ",$value);
+		$parts=array("");
+		$currentpart=0;
+		$mode=0;
+		$partbuf=&$parts[0];
+		for($i=0;$i<strlen($value);$i++) {
+			$char=$value[$i];
+			switch($char) {
+				case ";": //part separator
+					if($mode==0) {
+						$currentpart++;
+						$parts[$currentpart]="";
+						$partbuf=&$parts[$currentpart];
+					} else
+						$partbuf.=$char;
+					break;
+				case " ": //no spaces in part names
+					if($mode!=0)	
+						$partbuf.=$char;
+					break;
+				case "=": //key=value
+					$key=$partbuf;
+					$starpos=strpos($key,"*");
+					if($starpos!==FALSE) //original value was too long, so it was split up
+						$key=substr($key,0,$starpos);
+					else
+						$parts[$key]="";
+					unset($parts[$currentpart]);
+					$partbuf=&$parts[$key];
+					break;
+				case "\"": //strings
+					if($mode==0)
+						$mode=1;
+					else
+						$mode=0;
+					break;
+				case "\\": //escape, currently only supported \"
+					if($mode==0 || $value[$i+1]!="\"") {
+						$partbuf.=$char;
+						continue;
+					}
+					break;
+				default:
+					$partbuf.=$char;
+			}
+		}
+		$headers[$k]=$parts;
+	}
+	return $headers;
+}
+
+//return a header splitted with split_headers back to text form
+function reassemble_splitheader($header) {
+	if(!is_array($header))
+		return $header;
+	$elements=array();
+	foreach($header as $k=>$v) {
+		if(is_numeric($k)) { //stuff without keys gets appended as is
+			$elements[]=$v;
+			continue;
+		}
+		$v=str_replace("\\","\\\\",$v); //escape \
+		$v=str_replace("\"","\\\"",$v); //escape "
+		$elements[]="$k=$v";
+	}
+	return implode(";",$elements);
 }
