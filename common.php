@@ -82,32 +82,6 @@ function to_utf8($str, $charset)
 	return $n;
 }
 
-/*
-if (function_exists("mb_convert_encoding")) {
-function to_utf8($str, $charset)
-{
-return mb_convert_encoding($str, "utf-8", strlen($charset) ? $charset : "iso-8859-1");
-}
-} else if (function_exists("recode_string")) {
-function to_utf8($str, $charset)
-{
-if (strlen($charset) == 0)
-$charset = "iso-8859-1";
-return recode_string("$charset..utf-8", $str);
-}
-} else if (function_exists("iconv")) {
-function to_utf8($str, $charset)
-{
-return iconv(strlen($charset) ? $charset : "iso-8859-1", "utf-8", $str);
-}
-} else {
-function to_utf8($str, $charset)
-{
-return $str;
-}
-}
-*/
-
 function decode_header($charset,$encoding,$text) {
 	if (strtolower($encoding) == "b") {
 		$text = base64_decode($text);
