@@ -2,6 +2,28 @@
 
 define('NNTP_HOST', 'localhost');
 
+function nntp_connect($server, $port = 119) {
+	$s = @fsockopen($server, $port, $errno, $errstr, 30);
+	if (!$s) {
+		return false;
+	}
+	$hello = fgets($s, 1024);
+	if (substr($hello,0,4) != "200 ") {
+		return false;
+	}
+	return $s;
+}
+
+function nntp_cmd($conn, $command, $expected) {
+	if (strlen($command) > 510) {
+		die("command too long: $command");
+	}
+	fputs($conn, "$command\r\n");
+	$res = fgets($conn, 1024);
+	list($code, $extra) = explode(" ", $res, 2);
+	return ($code == $expected) ? $extra : false;
+}
+
 function error($str) {
 	head("PHP news : error");
 	echo "<blockquote><strong>Error:</strong> $str</blockquote>\n";
@@ -23,18 +45,13 @@ function head($title="PHP news") {
   <link rel="stylesheet" href="/style.css" type="text/css" />
  </head>
  <body>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-   <tr class="header">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="header">
+   <tr>
     <td>
      <a href="/index.php"><img src="/i/l.gif" width="120" height="67" alt="PHP" /></a>
     </td>
     <td align="right" valign="bottom">
      PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface
-    </td>
-   </tr>
-   <tr class="subheader">
-    <td colspan="2">
-     <img src="/i/g.gif" width="1" height="1" alt="" />
     </td>
    </tr>
   </table>
@@ -59,32 +76,6 @@ function to_utf8($str, $charset)
 	}
 	return $n;
 }
-
-/*
-if (function_exists("mb_convert_encoding")) {
-function to_utf8($str, $charset)
-{
-return mb_convert_encoding($str, "utf-8", strlen($charset) ? $charset : "iso-8859-1");
-}
-} else if (function_exists("recode_string")) {
-function to_utf8($str, $charset)
-{
-if (strlen($charset) == 0)
-$charset = "iso-8859-1";
-return recode_string("$charset..utf-8", $str);
-}
-} else if (function_exists("iconv")) {
-function to_utf8($str, $charset)
-{
-return iconv(strlen($charset) ? $charset : "iso-8859-1", "utf-8", $str);
-}
-} else {
-function to_utf8($str, $charset)
-{
-return $str;
-}
-}
-*/
 
 function decode_header($charset,$encoding,$text) {
 	if (strtolower($encoding) == "b") {

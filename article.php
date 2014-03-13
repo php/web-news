@@ -1,7 +1,6 @@
 <?php
 
-require 'common.inc';
-require 'nntp.inc';
+require 'common.php';
 
 if (isset($_GET['article'])) {
 	$article = (int)$_GET['article'];

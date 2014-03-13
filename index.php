@@ -1,7 +1,6 @@
 <?php
 
-require 'common.inc';
-require 'nntp.inc';
+require 'common.php';
 
 $s = nntp_connect(NNTP_HOST);
 if (!$s) {
@@ -19,7 +18,7 @@ head();
    <tr>
      <td>
       <table class="grouplist">
-       <tr class="grouplisthead">
+       <tr class="alisthead">
         <td>name</td>
         <td>messages</td>
         <td>rss</td>
