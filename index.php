@@ -19,7 +19,7 @@ head();
    <tr>
      <td>
       <table class="grouplist">
-       <tr class="grouplisthead">
+       <tr class="alisthead">
         <td>name</td>
         <td>messages</td>
         <td>rss</td>
