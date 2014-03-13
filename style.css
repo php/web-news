@@ -82,13 +82,9 @@ a.top {
 	text-decoration: none;
 }
 
-tr.header {
+table.header {
     background: #99C;
-}
-
-tr.subheader {
-    background: #669;
-    height: 2px;
+	border-bottom: 17px solid #669;
 }
 
 .small {
