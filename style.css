@@ -4,110 +4,87 @@ body, li, th, td {
 }
 
 body { 
-	margin: 0px; 
-	background: #ffffff;
-	color: #000000; 
+	margin: 0; 
+	background: #FFF;
+	color: #000;
 }
 
 td,th { 
-	color: #000000;
+	color: #000;
 }
 
-
 img { 
-	border : 0px;
+	border: 0;
 }
 
 a:link    { 
-	color: #000099;
+	color: #009;
 }
 
-a:hover   { 
-	color: #ff0000;
+a:hover, a:active   {
+	color: red;
 }
 
-a:active  { 
-	color: #ff0000;
-}
-
-a:visited { 
+a:visited {
 	color: purple;
 }
 
 .quote { 
-	color: green; 
+	color: green;
 }
 
-.signature { 
-	font-size: smaller; 
-	color: gray; 
+.signature {
+	font-size: smaller;
+	color: gray;
 }
 
-.signature a:link    { 
-	color: #9999ff; 
+.signature a:link    {
+	color: #99F;
 }
 
-.signature a:hover   { 
-	color: #ff9999; 
+.signature a:hover, .signature a:active   {
+	color: #F99; 
 }
 
-.signature a:active  { 
-	color: #ff9999; 
+.signature a:visited {
+	color: #F6F;
 }
 
-.signature a:visited { 
-	color: #ff66ff; 
-}
-
-.grouplisthead { 
-	background: #cccccc; 
-	font-weight: bold; 
-	text-align: center; 
-}
-
-.even { 
-	background: #eeeeee; 
-}
-
-.odd  { 
-	background: #dddddd; 
-}
-
-.grouplistmsgs { 
-	text-align: right; 
-}
-
-.alisthead { 
-	background: #cccccc;
+.alisthead {
+	background: #CCC;
 	font-weight: bold;
 	text-align: center;
 }
 
-.activen { 
-	color: gray; 
+.even {
+	background: #EEE;
 }
 
-.headerlabel { 
-	background: #cccccc; 
-	font-weight: bold; 
-	text-align: right; 
+.odd  {
+	background: #DDD;
 }
 
-.headervalue { 
-	background: #eeeeee; 
+.grouplistmsgs {
+	text-align: right;
 }
 
-a.top { 
-	text-decoration: none; 
+.headerlabel {
+	background: #CCC;
+	font-weight: bold;
+	text-align: right;
 }
 
-tr.header {
-    background: #9999cc;
+.headervalue {
+	background: #EEE;
 }
 
-tr.subheader {
-    background: #666699;
-    height : 2px;
+a.top {
+	text-decoration: none;
+}
+
+table.header {
+    background: #99C;
+	border-bottom: 17px solid #669;
 }
 
 .small {
