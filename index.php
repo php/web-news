@@ -1,7 +1,6 @@
 <?php
 
-require 'common.inc';
-require 'nntp.inc';
+require 'common.php';
 
 $s = nntp_connect(NNTP_HOST);
 if (!$s) {
