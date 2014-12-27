@@ -125,7 +125,13 @@ function format_author($a, $charset) {
 function format_subject($s, $charset) {
 	global $article;
 	$s = recode_header($s, $charset);
-	$s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
+
+	if ((($pos = strpos($s, '[PHP')) !== false || ($pos = strpos($s, '[PEAR')) !== false)) {
+		if (($end_pos = strpos($s, ']', $pos)) !== false) {
+			$s = ltrim(substr_replace($s, '', $pos, $end_pos - $pos + 1));
+		}
+	}
+
 	// make this look better on the preview page..
 	if (strlen($s) > 150 && !isset($article)) {
 		$s = substr($s, 0, 150) . "...";
