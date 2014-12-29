@@ -72,19 +72,18 @@ case 'html':
 default:
 head($group);
 navbar($group,$f,$l,$i);
-echo '  <table class="alist" width="100%">' . "\n";
+echo '  <table class="stripped" width="100%">' . "\n";
 echo '   <tr>' . "\n";
-echo '    <td class="alisthead">#</td>' . "\n";
-echo '    <td class="alisthead">subject</td>' . "\n";
-echo '    <td class="alisthead">author</td>' . "\n";
-echo '    <td class="alisthead">date</td>' . "\n";
-echo '    <td class="alisthead">lines</td>' . "\n";
+echo '    <th>#</td>' . "\n";
+echo '    <th>subject</th>' . "\n";
+echo '    <th>author</th>' . "\n";
+echo '    <th>date</th>' . "\n";
+echo '    <th>lines</th>' . "\n";
 echo '   </tr>' . "\n";
 break;
 }
 
 # list of articles
-$class = "even";
 # TODO: somehow determine the correct charset
 $charset = "";
 
@@ -116,16 +115,15 @@ while ($line = fgets($s, 16384)) {
 		case 'html':
 		default:
 		echo "   <tr>\n";
-		echo "    <td class=\"$class\"><a href=\"/$group/$n\">$n</a></td>\n";
-		echo "    <td class=\"$class\"><a href=\"/$group/$n\">";
+		echo "    <td><a href=\"/$group/$n\">$n</a></td>\n";
+		echo "    <td><a href=\"/$group/$n\">";
 		echo format_subject($subj, $charset);
 		echo "</a></td>\n";
-		echo "    <td class=\"$class vcard\">".format_author($author, $charset)."</td>\n";
-		echo "    <td align=\"center\" class=\"$class\"><tt>" . format_date($odate) . "</tt></td>\n";
-		echo "    <td align=\"right\" class=\"$class\">$lines</td>\n";
+		echo "    <td vcard\">".format_author($author, $charset)."</td>\n";
+		echo "    <td align=\"center\"><tt>" . format_date($odate) . "</tt></td>\n";
+		echo "    <td align=\"right\">$lines</td>\n";
 		echo "   </tr>\n";
 	}
-	$class = ($class == "even") ? "odd" : "even";
 }
 
 switch ($format) {
@@ -144,19 +142,19 @@ switch ($format) {
 
 function navbar($g, $f, $l, $i) {
 	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
-	echo '   <tr class="alisthead">' . "\n";
-	echo '    <td class="nav">';
+	echo '   <tr>' . "\n";
+	echo '    <th class="nav">';
 	if ($i > $f) {
 		$p = max($i-20,$f);
 		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$p\"><b>&laquo; previous</b></a>";
 	} else {
 		echo "&nbsp;";
 	}
-	echo '</td>' . "\n";
+	echo '</th>' . "\n";
 	$j = min($i + 20, $l);
 	$c = $l - $f + 1;
-	echo '    <td align="center" class="alisthead">'.htmlspecialchars($g, ENT_QUOTES, "UTF-8")." ($i-$j of $c)</td>\n";
-	echo '    <td align="right" class="nav">';
+	echo '    <th align="center">'.htmlspecialchars($g, ENT_QUOTES, "UTF-8")." ($i-$j of $c)</th>\n";
+	echo '    <th align="right" class="nav">';
 	if ($i+20 <= $l) {
 		$n = min($i + 20, $l - 19);
 		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$n\"><b>next &raquo;</b></a>";
@@ -164,7 +162,7 @@ function navbar($g, $f, $l, $i) {
 	else {
 		echo "&nbsp;";
 	}
-	echo '</td>' . "\n";
+	echo '</th>' . "\n";
 	echo '   </tr>' . "\n";
 	echo '  </table>' . "\n";
 }

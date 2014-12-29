@@ -17,15 +17,14 @@ head();
   <table border="0" cellpadding="6" cellspacing="0">
    <tr>
      <td>
-      <table class="grouplist">
-       <tr class="alisthead">
-        <td>name</td>
-        <td>messages</td>
-        <td>rss</td>
-        <td>rdf</td>
+      <table class="stripped">
+       <tr>
+        <th>name</th>
+        <th>messages</th>
+        <th>rss</th>
+        <th>rdf</th>
        </tr>
 <?php
-$class = "even";
 while ($line = fgets($s, 1024)) {
 	if ($line == ".\r\n") {
 		break;
@@ -33,20 +32,19 @@ while ($line = fgets($s, 1024)) {
 	$line = chop($line);
 	list($group, $high, $low, $active) = explode(" ", $line);
 	echo "       <tr>\n";
-	echo "        <td class=\"$class\"><a class=\"active$active\" href=\"/$group\">$group</a></td>\n";
-	echo "        <td align=\"right\" class=\"$class\">", $high-$low+1, "</td>\n";
-	echo "        <td class=\"$class\">";
+	echo "        <td><a class=\"active$active\" href=\"/$group\">$group</a></td>\n";
+	echo "        <td align=\"right\">", $high-$low+1, "</td>\n";
+	echo "        <td>";
 	if ($active != 'n') {
 		echo "<a href=\"group.php?group=$group&amp;format=rss\">rss</a>";
 	}
 	echo "</td>\n";
-	echo "        <td class=\"$class\">";
+	echo "        <td>";
 	if ($active != 'n') {
 		echo "<a href=\"group.php?group=$group&amp;format=rdf\">rdf</a>";
 	}
 	echo "</td>\n";
 	echo "       </tr>\n";
-	$class = ($class == "even") ? "odd" : "even";
 }
 ?>
       </table>

@@ -50,22 +50,18 @@ a:visited {
 	color: #F6F;
 }
 
-.alisthead {
+th {
 	background: #CCC;
 	font-weight: bold;
 	text-align: center;
 }
 
-.even {
+table.stripped tr:nth-child(even) td {
 	background: #EEE;
 }
 
-.odd  {
+table.stripped tr:nth-child(odd) td  {
 	background: #DDD;
-}
-
-.grouplistmsgs {
-	text-align: right;
 }
 
 .headerlabel {

@@ -271,8 +271,8 @@ function navbar($group, $current) {
 	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
 	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
-	echo '   <tr class="alisthead">' . "\n";
-	echo '    <td class="nav">';
+	echo '   <tr>' . "\n";
+	echo '    <th class="nav">';
 
 	if ($current > 1) {
 		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
@@ -280,11 +280,11 @@ function navbar($group, $current) {
 		echo '&nbsp;';
 	}
 
-	echo '    </td>' . "\n";
-	echo '    <td align="center" class="alisthead">' . "$group (#$current)</td>\n";
-	echo '    <td align="right" class="nav">';
+	echo '    </th>' . "\n";
+	echo '    <th align="center">' . "$group (#$current)</th>\n";
+	echo '    <th align="right" class="nav">';
 	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
-	echo '    </td>' . "\n";
+	echo '    </th>' . "\n";
 	echo '   </tr>' . "\n";
 	echo '  </table>' . "\n";
 }
