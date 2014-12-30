@@ -31,9 +31,13 @@ if (!$res) {
 	error("Failed to get article ". $article);
 }
 
+/* Prevents the poor mail server from suffering if it receives a message with many references */
+/* (References: <xxx> or In-Reply-To: <xxx>) */
+define( 'REFERENCES_LIMIT', 20 );
+
 $started = 0;
 $inheaders = 1; $headers = array();
-$masterheaders = null;
+$masterheaders = array();
 $mimetype = $boundary = $charset = $encoding = "";
 $mimecount = 0; // number of mime parts
 $boundaries = array();
@@ -44,6 +48,12 @@ while (!feof($s)) {
 	$line = fgets($s);
 	if ($line == ".\r\n") break;
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
+		if (empty($masterheaders)) {
+			/* $masterheaders should contain the first headers with From, Subject, */
+			/* etc., not the ones from multiparts */
+			$masterheaders = $headers;
+		}
+
 		$inheaders = 0;
 		if (isset($headers['content-type'])) {
 			if (preg_match('/charset=(["\']?)([\w-]+)\1/i', $headers['content-type'], $m)) {
@@ -62,7 +72,7 @@ while (!feof($s)) {
 		}
 		if (!$started) {
 			head("$group: ".format_title($headers['subject'], $charset));
-			start_article($group,$headers,$charset);
+			start_article($group, $masterheaders, $charset);
 			$started = 1;
 		}
 
@@ -95,12 +105,13 @@ while (!feof($s)) {
 			$dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
 			$link_desc = htmlspecialchars($link_desc,ENT_QUOTES,"UTF-8");
 			
-			echo "Attachment: <a href=\"$dl_link\">${link_desc}</a><br />\n";
+			/* Attachment filename and mimetype might contain malicious characters */
+			printf('Attachment: <a href="%s">%s</a><br />'."\n",
+				$dl_link,
+				htmlspecialchars($link_desc)
+			);
 		}
 
-		if ($masterheaders == null) {
-			$headers = $masterheaders;
-		}
 		continue;
 	}
 	# fix lines that started with a period and got escaped
@@ -108,14 +119,17 @@ while (!feof($s)) {
 		$line = substr($line,1);
 	}
 
-
 	if ($inheaders) {
-		@list($k,$v) = explode(": ", $line, 2);
-		if ($k && $v) {
-			$headers[strtolower($k)] = $v;
-			$lk = strtolower($k);
-		} else {
+		/* header fields can be split across lines: CRLF WSP where WSP */
+		/* is a space (ASCII 32) or tab (ASCII 9) */
+		if ($lk && ($line[0] == ' ' || $line[0] == "\t")) {
 			$headers[$lk] .= $line;
+		} else {
+			@list($k,$v) = explode(": ", $line, 2);
+			if ($k && $v) {
+				$headers[strtolower($k)] = $v;
+				$lk = strtolower($k);
+			} // else not a header field
 		}
 	}
 	else {
@@ -131,8 +145,9 @@ while (!feof($s)) {
 				array_pop($boundaries);
 				$boundary = end($boundaries);
 			} else {
-				# next section; start with an inherited set of headers
-				$headers = $masterheaders;
+				/* Next section: start with no headers, default content type should be
+				/* text/plain, but for now ignore that (see rfc 2046  5.1.3) */
+				$headers = array();
 				$mimetype = "";
 			}
 
@@ -171,7 +186,8 @@ while (!feof($s)) {
 		# this is some amazingly simplistic code to color quotes/signatures
 		# differently, and turn links into real links. it actually appears
 		# to work fairly well, but could easily be made more sophistimicated.
-		$line = htmlentities($line,ENT_NOQUOTES,"utf-8");
+		/* NOQUOTES? Why? It creates invalid HTML: http:"x */
+		$line = htmlentities($line,ENT_QUOTES,"utf-8");
 		$line = preg_replace("/((mailto|https?|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/","<a href=\"\\1\">\\1</a>\\3",$line);
 		if (!$insig && $line == "-- \r\n") {
 			echo "<span class=\"signature\">";
@@ -189,8 +205,8 @@ while (!feof($s)) {
 	}
 }
 if ($inheaders && !$started) {
-	head("$group: ". $headers[subject]);
-	start_article($group,$headers,$charset);
+	head("$group: ". $headers['subject']);
+	start_article($group, $masterheaders, $charset);
 }
 if ($insig) {
 	echo "</span>";
@@ -198,7 +214,7 @@ if ($insig) {
 echo "   </pre>\n";
 echo "  </blockquote>\n";
 
-function start_article ($group,$headers,$charset) {
+function start_article($group, $headers, $charset) {
 	echo "  <blockquote>\n";
 	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	# from
@@ -240,7 +256,12 @@ function start_article ($group,$headers,$charset) {
 			if (empty($v)) {
 				continue;
 			}
-			echo "<a href=\"/$group/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".($c++)."</a>&nbsp;";
+
+			echo "<a href=\"/$group/". urlencode($v) ."\">".($c++)."</a>&nbsp;";
+			if ($c > REFERENCES_LIMIT) {
+				printf('More than %d references', REFERENCES_LIMIT);
+				break;
+			}
 		}
 		echo "</td>\n";
 	}
@@ -250,7 +271,7 @@ function start_article ($group,$headers,$charset) {
 		echo '     <td class="headervalue">';
 		$r = explode(",", chop($headers["newsgroups"]));
 		while (list($k,$v) = each($r)) {
-			echo "<a href=\"/".htmlspecialchars(urlencode($v), ENT_QUOTES, "UTF-8")."\">".htmlspecialchars($v, ENT_QUOTES, "UTF-8")."</a>&nbsp;";
+			echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
 		}
 		echo "</td>\n";
 	}

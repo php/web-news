@@ -40,8 +40,7 @@ if (!$res) {
 $emit = false;
 
 $inheaders = 1; $headers = array();
-$masterheaders = null;
-$mimetype = $boundary = $charset = $encoding = "";
+$boundary = $charset = $encoding = "";
 $mimecount = 0; // number of mime parts
 $boundaries = array();
 $lk = '';
@@ -63,7 +62,6 @@ while (!feof($s)) {
 		}
 		if ($headers['content-type']
 		&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
-			$mimetype = trim(strtolower($m[1]));
 			++$mimecount;
 		}
 
@@ -71,20 +69,26 @@ while (!feof($s)) {
 
 		$encoding = strtolower(trim($headers['content-transfer-encoding']));
 		if ($emit) {
-			if (isset($headers['content-type'])) {
-				header('Content-Type: ' . $headers['content-type']);
+			/* check if content-type exist is made above */
+			header('Content-Type: ' . $headers['content-type']);
+			/* Do not rely on user-provided content-deposition header, generate own one to */
+			/* make the content downloadable, do NOT use inline, we can't trust the attachment*/
+			/* Downside of this approach: images should be downloaded before use */
+			/* this is safer though, and prevents doing evil things on php.net domain */
+			$contentdisposition = 'attachment';
+			if (isset($headers['content-disposition'])
+			&& preg_match('/filename=([\'"]?).+?\1/', $headers['content-disposition'], $m)) {
+				$contentdisposition .= '; ' . $m[0];
 			}
-			if (isset($headers['content-disposition'])) {
-				header('Content-Disposition: ' . $headers['content-disposition']);
-			}
+			header('Content-Disposition: ' . $contentdisposition);
+			// if (isset($headers['content-disposition'])) {
+			//	header('Content-Disposition: ' . $headers['content-disposition']);
+			//}
 			if (isset($headers['content-description'])) {
 				header('Content-Description: ' . $headers['content-description']);
 			}
 		}
 
-		if ($masterheaders == null) {
-			$headers = $masterheaders;
-		}
 		continue;
 	}
 	# fix lines that started with a period and got escaped
@@ -92,12 +96,16 @@ while (!feof($s)) {
 		$line = substr($line,1);
 	}
 	if ($inheaders) {
-		list($k,$v) = explode(": ", $line, 2);
-		if ($k && $v) {
-			$headers[strtolower($k)] = $v;
-			$lk = strtolower($k);
-		} else {
+		/* header fields can be split across lines: CRLF WSP where WSP */
+		/* is a space (ASCII 32) or tab (ASCII 9) */
+		if ($lk && ($line[0] == ' ' || $line[0] == "\t")) {
 			$headers[$lk] .= $line;
+		} else {
+			@list($k,$v) = explode(": ", $line, 2);
+			if ($k && $v) {
+				$headers[strtolower($k)] = $v;
+				$lk = strtolower($k);
+			} // else not a header field
 		}
 	} else {
 
@@ -112,9 +120,8 @@ while (!feof($s)) {
 				array_pop($boundaries);
 				$boundary = end($boundaries);
 			} else {
-				# next section; start with an inherited set of headers
-				$headers = $masterheaders;
-				$mimetype = "";
+				/* next section starts with no headers */
+				$headers = null;
 			}
 
 			continue;
@@ -135,6 +142,10 @@ while (!feof($s)) {
 
 		echo $line;
 
+		/* done with attachment, no need to continue */
+		if ($emit) {
+			break;
+		}
 	}
 }
 
