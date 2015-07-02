@@ -1,3 +1,16 @@
+# PHP.net News Server Web Interface
+
+You may run this project using PHP's [built-in web server][webserver]
+for local development.
+
+```
+git clone https://git.php.net/repository/web/news.git web-news
+cd web-news/
+NNTP_HOST=news.php.net php -S localhost:8080 .router.php
+```
+
+-----
+
 this is all very ugly. just proof-of-concept, really.
 
 the biggest thing to do would be to do something smart with
@@ -42,8 +55,11 @@ to the c-client code.
 ---
 SC.2004.09.03:
 Here are the appropriate Rewrite rules for apache:
-  RewriteEngine on
-  RewriteRule ^/(php.+)/start/([0-9]+) /group.php?group=$1&i=$2 [L]
-  RewriteRule ^/(php.+)/([0-9]+)       /article.php?group=$1&article=$2 [L]
-  RewriteRule ^/(php[^/]+)(/)?$        /group.php?group=$1 [L]
 
+    RewriteEngine on
+    RewriteRule ^/(php.+)/start/([0-9]+) /group.php?group=$1&i=$2 [L]
+    RewriteRule ^/(php.+)/([0-9]+)       /article.php?group=$1&article=$2 [L]
+    RewriteRule ^/(php[^/]+)(/)?$        /group.php?group=$1 [L]
+
+
+[webserver]: http://php.net/manual/en/features.commandline.webserver.php

@@ -1,6 +1,11 @@
 <?php
 
-define('NNTP_HOST', 'localhost');
+$NNTP_HOST = 'localhost';
+if (getenv('NNTP_HOST')) {
+	$NNTP_HOST = getenv('NNTP_HOST');
+}
+
+define('NNTP_HOST', $NNTP_HOST);
 
 function nntp_connect($server, $port = 119) {
 	$s = @fsockopen($server, $port, $errno, $errstr, 30);
