@@ -95,7 +95,13 @@ function recode_header($header, $basecharset) {
 	if (strpos($header, "=?") === false) {
 		return to_utf8($header, $basecharset);
 	}
-	return preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)(\\?=|$)/ie", "decode_header('\\1','\\2','\\3')", $header);
+	return preg_replace_callback(
+		"/=\\?(.+?)\\?([qb])\\?(.+?)(\\?=|$)/i",
+		function ($m) {
+			return decode_header($m[1], $m[2], $m[3]);
+		},
+		$header
+	);
 }
 
 /* Email spam protection (taken from php-bugs-web) */
