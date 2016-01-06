@@ -1,6 +1,11 @@
 <?php
 
-define('NNTP_HOST', 'localhost');
+$NNTP_HOST = 'localhost';
+if (getenv('NNTP_HOST')) {
+	$NNTP_HOST = getenv('NNTP_HOST');
+}
+
+define('NNTP_HOST', $NNTP_HOST);
 
 function nntp_connect($server, $port = 119) {
 	$s = @fsockopen($server, $port, $errno, $errstr, 30);
@@ -90,7 +95,13 @@ function recode_header($header, $basecharset) {
 	if (strpos($header, "=?") === false) {
 		return to_utf8($header, $basecharset);
 	}
-	return preg_replace("/=\\?(.+?)\\?([qb])\\?(.+?)(\\?=|$)/ie", "decode_header('\\1','\\2','\\3')", $header);
+	return preg_replace_callback(
+		"/=\\?(.+?)\\?([qb])\\?(.+?)(\\?=|$)/i",
+		function ($m) {
+			return decode_header($m[1], $m[2], $m[3]);
+		},
+		$header
+	);
 }
 
 /* Email spam protection (taken from php-bugs-web) */
@@ -115,7 +126,7 @@ function format_author($a, $charset) {
 	if (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/",$a,$ar)) {
 		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[2])), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[1], ENT_QUOTES, "UTF-8"))."</a>";
 	}
-	if (ereg("@",$a)) {
+	if (strpos("@",$a) !== false) {
 		$a = spam_protect($a);
 		return "<a href=\"mailto:".htmlspecialchars(urlencode($a), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".htmlspecialchars($a, ENT_QUOTES, "UTF-8")."</a>";
 	}
