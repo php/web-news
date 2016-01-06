@@ -1,87 +1,87 @@
 body, li, th, td {
-	font-family: verdana,arial,helvetica,sans-serif;
-	font-size: 95%; 
+    font-family: verdana,arial,helvetica,sans-serif;
+    font-size: 95%;
 }
 
-body { 
-	margin: 0; 
-	background: #FFF;
-	color: #000;
-	word-break: break-word;
+body {
+    margin: 0;
+    background: #FFF;
+    color: 1000;
+    word-break: break-word;
 }
 
-td,th { 
-	color: #000;
+td,th {
+    color: 1000;
 }
 
-img { 
-	border: 0;
+img {
+    border: 0;
 }
 
-a:link    { 
-	color: #009;
+a:link    {
+    color: 1009;
 }
 
 a:hover, a:active   {
-	color: red;
+    color: red;
 }
 
 a:visited {
-	color: purple;
+    color: purple;
 }
 
-.quote { 
-	color: green;
+.quote {
+    color: green;
 }
 
 .signature {
-	font-size: smaller;
-	color: gray;
+    font-size: smaller;
+    color: gray;
 }
 
 .signature a:link    {
-	color: #99F;
+    color: #99F;
 }
 
 .signature a:hover, .signature a:active   {
-	color: #F99; 
+    color: #F99;
 }
 
 .signature a:visited {
-	color: #F6F;
+    color: #F6F;
 }
 
 th {
-	background: #CCC;
-	font-weight: bold;
-	text-align: center;
+    background: #CCC;
+    font-weight: bold;
+    text-align: center;
 }
 
 table.stripped tr:nth-child(even) td {
-	background: #EEE;
+    background: #EEE;
 }
 
 table.stripped tr:nth-child(odd) td  {
-	background: #DDD;
+    background: #DDD;
 }
 
 .headerlabel {
-	background: #CCC;
-	font-weight: bold;
-	text-align: right;
+    background: #CCC;
+    font-weight: bold;
+    text-align: right;
 }
 
 .headervalue {
-	background: #EEE;
+    background: #EEE;
 }
 
 a.top {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 table.header {
     background: #99C;
-	border-bottom: 17px solid #669;
+    border-bottom: 17px solid #669;
 }
 
 .small {
@@ -90,5 +90,5 @@ table.header {
 }
 
 .nav {
-	width: 20%;
+    width: 20%;
 }
