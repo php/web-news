@@ -3,40 +3,41 @@
 require 'common.php';
 
 if (isset($_GET['article'])) {
-	$article = (int)$_GET['article'];
+    $article = (int)$_GET['article'];
 } else {
-	error("No article specified");
+    error("No article specified");
 }
 
 if (isset($_GET['group'])) {
-	$group = preg_replace('@[^A-Za-z0-9.-]@', '', $_GET['group']);
+    $group = preg_replace('@[^A-Za-z0-9.-]@', '', $_GET['group']);
 } else {
-	$group = false;
+    $group = false;
 }
 
 $s = nntp_connect(NNTP_HOST);
 if (!$s) {
-	error("Failed to connect to news server");
+    error("Failed to connect to news server");
 }
 
 if ($group) {
-	$res = nntp_cmd($s,"GROUP $group",211);
-	if (!$res) {
-		error("Failed to select group");
-	}
+    $res = nntp_cmd($s, "GROUP $group", 211);
+    if (!$res) {
+        error("Failed to select group");
+    }
 }
 
-$res = nntp_cmd($s, "ARTICLE $article",220);
+$res = nntp_cmd($s, "ARTICLE $article", 220);
 if (!$res) {
-	error("Failed to get article ". $article);
+    error("Failed to get article ". $article);
 }
 
 /* Prevents the poor mail server from suffering if it receives a message with many references */
 /* (References: <xxx> or In-Reply-To: <xxx>) */
-define( 'REFERENCES_LIMIT', 20 );
+define('REFERENCES_LIMIT', 20);
 
 $started = 0;
-$inheaders = 1; $headers = array();
+$inheaders = 1;
+$headers = array();
 $masterheaders = array();
 $mimetype = $boundary = $charset = $encoding = "";
 $mimecount = 0; // number of mime parts
@@ -45,271 +46,277 @@ $lk = '';
 $linebuf = '';
 $insig = false;
 while (!feof($s)) {
-	$line = fgets($s);
-	if ($line == ".\r\n") break;
-	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
-		if (empty($masterheaders)) {
-			/* $masterheaders should contain the first headers with From, Subject, */
-			/* etc., not the ones from multiparts */
-			$masterheaders = $headers;
-		}
+    $line = fgets($s);
+    if ($line == ".\r\n") {
+        break;
+    }
+    if ($inheaders && ($line == "\n" || $line == "\r\n")) {
+        if (empty($masterheaders)) {
+            /* $masterheaders should contain the first headers with From, Subject, */
+            /* etc., not the ones from multiparts */
+            $masterheaders = $headers;
+        }
 
-		$inheaders = 0;
-		if (isset($headers['content-type'])) {
-			if (preg_match('/charset=(["\']?)([\w-]+)\1/i', $headers['content-type'], $m)) {
-				$charset = trim($m[2]);
-			}
-		
-			if(preg_match('/boundary=(["\']?)(.+)\1/is', $headers['content-type'], $m)) {
-				$boundaries[] = trim($m[2]);
-				$boundary = end($boundaries);
-			}
+        $inheaders = 0;
+        if (isset($headers['content-type'])) {
+            if (preg_match('/charset=(["\']?)([\w-]+)\1/i', $headers['content-type'], $m)) {
+                $charset = trim($m[2]);
+            }
 
-			if (preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
-				$mimetype = trim(strtolower($m[1]));
-				++$mimecount;
-			}
-		}
-		if (!$started) {
-			head("$group: ".format_title($headers['subject'], $charset));
-			start_article($group, $masterheaders, $charset);
-			$started = 1;
-		}
+            if (preg_match('/boundary=(["\']?)(.+)\1/is', $headers['content-type'], $m)) {
+                $boundaries[] = trim($m[2]);
+                $boundary = end($boundaries);
+            }
 
-		if (!empty($headers['content-transfer-encoding'])) {
-			$encoding = strtolower(trim($headers['content-transfer-encoding']));
-		}
-		if (strlen($mimetype)
-		&& $mimetype != "text/plain"
-		&& substr($mimetype,0,10) != "multipart/") {
-			# Display a link to the attachment
-			$name = '';
-			if (!empty($headers['content-type'])
-			&& preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
-				$name = trim($m[2]);
-			} else if (!empty($headers['content-disposition'])
-			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-disposition'], $m)) {
-				$name = trim($m[2]);
-			}
+            if (preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
+                $mimetype = trim(strtolower($m[1]));
+                ++$mimecount;
+            }
+        }
+        if (!$started) {
+            head("$group: ".format_title($headers['subject'], $charset));
+            start_article($group, $masterheaders, $charset);
+            $started = 1;
+        }
 
-			if (!empty($headers['content-description'])) {
-				$description = trim($headers['content-description']) . " ";
-			} else {
-				$description = '';
-			}
+        if (!empty($headers['content-transfer-encoding'])) {
+            $encoding = strtolower(trim($headers['content-transfer-encoding']));
+        }
+        if (strlen($mimetype)
+        && $mimetype != "text/plain"
+        && substr($mimetype, 0, 10) != "multipart/") {
+            # Display a link to the attachment
+            $name = '';
+            if (!empty($headers['content-type'])
+            && preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
+                $name = trim($m[2]);
+            } elseif (!empty($headers['content-disposition'])
+            && preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-disposition'], $m)) {
+                $name = trim($m[2]);
+            }
 
-			$description .= $name;
-			$link_desc = "[$mimetype]";
-			if (strlen($description)) {
-				$link_desc .= " " . $description;
-			}
+            if (!empty($headers['content-description'])) {
+                $description = trim($headers['content-description']) . " ";
+            } else {
+                $description = '';
+            }
 
-			$dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
-			$link_desc = htmlspecialchars($link_desc,ENT_QUOTES,"UTF-8");
-			
-			/* Attachment filename and mimetype might contain malicious characters */
-			printf('Attachment: <a href="%s">%s</a><br />'."\n",
-				$dl_link,
-				htmlspecialchars($link_desc)
-			);
-		}
+            $description .= $name;
+            $link_desc = "[$mimetype]";
+            if (strlen($description)) {
+                $link_desc .= " " . $description;
+            }
 
-		continue;
-	}
-	# fix lines that started with a period and got escaped
-	if (substr($line,0,2) == "..") {
-		$line = substr($line,1);
-	}
+            $dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
+            $link_desc = htmlspecialchars($link_desc, ENT_QUOTES, "UTF-8");
 
-	if ($inheaders) {
-		/* header fields can be split across lines: CRLF WSP where WSP */
-		/* is a space (ASCII 32) or tab (ASCII 9) */
-		if ($lk && ($line[0] == ' ' || $line[0] == "\t")) {
-			$headers[$lk] .= $line;
-		} else {
-			@list($k,$v) = explode(": ", $line, 2);
-			if ($k && $v) {
-				$headers[strtolower($k)] = $v;
-				$lk = strtolower($k);
-			} // else not a header field
-		}
-	}
-	else {
+            /* Attachment filename and mimetype might contain malicious characters */
+            printf(
+                'Attachment: <a href="%s">%s</a><br />'."\n",
+                $dl_link,
+                htmlspecialchars($link_desc)
+            );
+        }
 
-		if ($boundary
-		&& substr($line,0,2) == '--'
-		&& substr($line,2,strlen($boundary)) == $boundary) {
+        continue;
+    }
+    # fix lines that started with a period and got escaped
+    if (substr($line, 0, 2) == "..") {
+        $line = substr($line, 1);
+    }
 
-			$inheaders = 1;
+    if ($inheaders) {
+        /* header fields can be split across lines: CRLF WSP where WSP */
+        /* is a space (ASCII 32) or tab (ASCII 9) */
+        if ($lk && ($line[0] == ' ' || $line[0] == "\t")) {
+            $headers[$lk] .= $line;
+        } else {
+            @list($k,$v) = explode(": ", $line, 2);
+            if ($k && $v) {
+                $headers[strtolower($k)] = $v;
+                $lk = strtolower($k);
+            } // else not a header field
+        }
+    } else {
 
-			if (substr($line,2+strlen($boundary)) == '--') {
-				# end of this container
-				array_pop($boundaries);
-				$boundary = end($boundaries);
-			} else {
-				/* Next section: start with no headers, default content type should be
+        if ($boundary
+        && substr($line, 0, 2) == '--'
+        && substr($line, 2, strlen($boundary)) == $boundary) {
+
+            $inheaders = 1;
+
+            if (substr($line, 2+strlen($boundary)) == '--') {
+                # end of this container
+                array_pop($boundaries);
+                $boundary = end($boundaries);
+            } else {
+                /* Next section: start with no headers, default content type should be
 				/* text/plain, but for now ignore that (see rfc 2046  5.1.3) */
-				$headers = array();
-				$mimetype = "";
-			}
+                $headers = array();
+                $mimetype = "";
+            }
 
-			continue;
-		}
+            continue;
+        }
 
-		if (strlen($mimetype) && $mimetype != "text/plain") {
-			continue;
-		}
+        if (strlen($mimetype) && $mimetype != "text/plain") {
+            continue;
+        }
 
-		switch($encoding) {
-			case "quoted-printable":
-			$line = quoted_printable_decode($line);
-			break;
-			case "base64":
-			$line = base64_decode($line);
-			break;
-		}
+        switch ($encoding) {
+            case "quoted-printable":
+                $line = quoted_printable_decode($line);
+                break;
+            case "base64":
+                $line = base64_decode($line);
+                break;
+        }
 
-		// we can't convert it to UTF, because cvs commits don't have charset info
-		// so its preferable to leave it as-is, and let users choose the correct charset
-		// in their browser. this is specially important for php.doc.* groups
-		if ($charset && strpos(strtolower($charset), 'utf-8') === false) {
-			$line = to_utf8($line, $charset);
-		}
+        // we can't convert it to UTF, because cvs commits don't have charset info
+        // so its preferable to leave it as-is, and let users choose the correct charset
+        // in their browser. this is specially important for php.doc.* groups
+        if ($charset && strpos(strtolower($charset), 'utf-8') === false) {
+            $line = to_utf8($line, $charset);
+        }
 
-		$line = $linebuf . $line;
+        $line = $linebuf . $line;
 
-		if (in_array(substr($line, -1), array("\n", "\r"))) {
-		   $linebuf = '';
-		} else {
-		   $linebuf = $line;
-		   continue;
-		}
+        if (in_array(substr($line, -1), array("\n", "\r"))) {
+            $linebuf = '';
+        } else {
+            $linebuf = $line;
+            continue;
+        }
 
-		# this is some amazingly simplistic code to color quotes/signatures
-		# differently, and turn links into real links. it actually appears
-		# to work fairly well, but could easily be made more sophistimicated.
-		/* NOQUOTES? Why? It creates invalid HTML: http:"x */
-		$line = htmlentities($line,ENT_QUOTES,"utf-8");
-		$line = preg_replace("/((mailto|https?|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/","<a href=\"\\1\">\\1</a>\\3",$line);
-		if (!$insig && $line == "-- \r\n") {
-			echo "<span class=\"signature\">";
-			$insig = 1;
-		}
-		if ($insig && $line == "\r\n") {
-			echo "</span>";
-			$insig = 0;
-		}
-		if (!$insig && substr($line,0,4) == "&gt;") {
-			echo "<span class=\"quote\">$line</span>";
-		} else {
-			echo $line;
-		}
-	}
+        # this is some amazingly simplistic code to color quotes/signatures
+        # differently, and turn links into real links. it actually appears
+        # to work fairly well, but could easily be made more sophistimicated.
+        /* NOQUOTES? Why? It creates invalid HTML: http:"x */
+        $line = htmlentities($line, ENT_QUOTES, "utf-8");
+        $line = preg_replace("/((mailto|https?|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/", "<a href=\"\\1\">\\1</a>\\3", $line);
+        if (!$insig && $line == "-- \r\n") {
+            echo "<span class=\"signature\">";
+            $insig = 1;
+        }
+        if ($insig && $line == "\r\n") {
+            echo "</span>";
+            $insig = 0;
+        }
+        if (!$insig && substr($line, 0, 4) == "&gt;") {
+            echo "<span class=\"quote\">$line</span>";
+        } else {
+            echo $line;
+        }
+    }
 }
 if ($inheaders && !$started) {
-	head("$group: ". $headers['subject']);
-	start_article($group, $masterheaders, $charset);
+    head("$group: ". $headers['subject']);
+    start_article($group, $masterheaders, $charset);
 }
 if ($insig) {
-	echo "</span>";
+    echo "</span>";
 }
 echo "   </pre>\n";
 echo "  </blockquote>\n";
 
-function start_article($group, $headers, $charset) {
-	echo "  <blockquote>\n";
-	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
-	# from
-	echo '    <tr class="vcard">' . "\n";
-	echo '     <td class="headerlabel">From:</td>' . "\n";
-	echo '     <td class="headervalue">' . format_author($headers['from'], $charset)."</td>\n";
-	# date
-	echo '     <td class="headerlabel">Date:</td>' . "\n";
-	echo '     <td class="headervalue">' . format_date($headers["date"])."</td>\n";
-	echo "    </tr>\n";
-	# subject
-	echo '    <tr>' . "\n";
-	echo '     <td class="headerlabel">Subject:</td>' . "\n";
-	echo '     <td class="headervalue" colspan="3">'.format_subject($headers["subject"], $charset)."</td>\n";
-	echo "    </tr>\n";
-	echo "    <tr>\n";
-	# references
-	if (!empty($headers['references']) || !empty($headers['in-reply-to'])) {
-		$ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
-		echo '     <td class="headerlabel">References:</td>' . "\n";
-		echo '     <td class="headervalue">';
-		$r = explode(" ", $ref);
-		$c = 1;
-		$s = nntp_connect(NNTP_HOST)
-		or die("failed to connect to news server");
-		while (list($k,$v) = each($r)) {
-			if (!$v) continue;
-			$v = trim($v);
-			if (!preg_match("/^<.+>\$/", $v)) {
-				continue;
-			}
-			if (strlen($v) > 504) {
-				// 512 chars including CRLF
-				continue;
-			}
-			$res2 = nntp_cmd($s, "XPATH $v",223)
-			or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." -->");
-			list(,$v)  = split("/", trim($res2));
-			if (empty($v)) {
-				continue;
-			}
+function start_article($group, $headers, $charset)
+{
+    echo "  <blockquote>\n";
+    echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+    # from
+    echo '    <tr class="vcard">' . "\n";
+    echo '     <td class="headerlabel">From:</td>' . "\n";
+    echo '     <td class="headervalue">' . format_author($headers['from'], $charset)."</td>\n";
+    # date
+    echo '     <td class="headerlabel">Date:</td>' . "\n";
+    echo '     <td class="headervalue">' . format_date($headers["date"])."</td>\n";
+    echo "    </tr>\n";
+    # subject
+    echo '    <tr>' . "\n";
+    echo '     <td class="headerlabel">Subject:</td>' . "\n";
+    echo '     <td class="headervalue" colspan="3">'.format_subject($headers["subject"], $charset)."</td>\n";
+    echo "    </tr>\n";
+    echo "    <tr>\n";
+    # references
+    if (!empty($headers['references']) || !empty($headers['in-reply-to'])) {
+        $ref = $headers["references"] ? $headers["references"] : $headers["in-reply-to"];
+        echo '     <td class="headerlabel">References:</td>' . "\n";
+        echo '     <td class="headervalue">';
+        $r = explode(" ", $ref);
+        $c = 1;
+        $s = nntp_connect(NNTP_HOST)
+        or die("failed to connect to news server");
+        while (list($k,$v) = each($r)) {
+            if (!$v) {
+                continue;
+            }
+            $v = trim($v);
+            if (!preg_match("/^<.+>\$/", $v)) {
+                continue;
+            }
+            if (strlen($v) > 504) {
+                // 512 chars including CRLF
+                continue;
+            }
+            $res2 = nntp_cmd($s, "XPATH $v", 223)
+            or print("<!-- failed to get reference article id ".htmlspecialchars($v, ENT_QUOTES, "UTF-8")." -->");
+            list(,$v)  = split("/", trim($res2));
+            if (empty($v)) {
+                continue;
+            }
 
-			echo "<a href=\"/$group/". urlencode($v) ."\">".($c++)."</a>&nbsp;";
-			if ($c > REFERENCES_LIMIT) {
-				printf('More than %d references', REFERENCES_LIMIT);
-				break;
-			}
-		}
-		echo "</td>\n";
-	}
-	# groups
-	if (!empty($headers["newsgroups"])) {
-		echo '     <td class="headerlabel">Groups:</td>' . "\n";
-		echo '     <td class="headervalue">';
-		$r = explode(",", chop($headers["newsgroups"]));
-		while (list($k,$v) = each($r)) {
-			echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
-		}
-		echo "</td>\n";
-	}
-	echo "    </tr>\n";
-	//while (list($k,$v) = each($headers)) {
-	//  echo "<!-- ", htmlspecialchars($k),": ",preg_replace("/-+/", "-", htmlspecialchars($v))," -->\n";
-	//}
-	echo "   </table>\n";
-	echo "  </blockquote>\n";
-	echo "  <blockquote>\n";
-	echo "   <pre>\n";
+            echo "<a href=\"/$group/". urlencode($v) ."\">".($c++)."</a>&nbsp;";
+            if ($c > REFERENCES_LIMIT) {
+                printf('More than %d references', REFERENCES_LIMIT);
+                break;
+            }
+        }
+        echo "</td>\n";
+    }
+    # groups
+    if (!empty($headers["newsgroups"])) {
+        echo '     <td class="headerlabel">Groups:</td>' . "\n";
+        echo '     <td class="headervalue">';
+        $r = explode(",", chop($headers["newsgroups"]));
+        while (list($k,$v) = each($r)) {
+            echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
+        }
+        echo "</td>\n";
+    }
+    echo "    </tr>\n";
+    //while (list($k,$v) = each($headers)) {
+    //  echo "<!-- ", htmlspecialchars($k),": ",preg_replace("/-+/", "-", htmlspecialchars($v))," -->\n";
+    //}
+    echo "   </table>\n";
+    echo "  </blockquote>\n";
+    echo "  <blockquote>\n";
+    echo "   <pre>\n";
 }
 
 // Does not check existence of next, so consider this the super duper fast [broken] version
 // Based off navbar() in group.php
-function navbar($group, $current) {
+function navbar($group, $current)
+{
 
-	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
+    $group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
-	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
-	echo '   <tr>' . "\n";
-	echo '    <th class="nav">';
+    echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+    echo '   <tr>' . "\n";
+    echo '    <th class="nav">';
 
-	if ($current > 1) {
-		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
-	} else {
-		echo '&nbsp;';
-	}
+    if ($current > 1) {
+        echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
+    } else {
+        echo '&nbsp;';
+    }
 
-	echo '    </th>' . "\n";
-	echo '    <th align="center">' . "$group (#$current)</th>\n";
-	echo '    <th align="right" class="nav">';
-	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
-	echo '    </th>' . "\n";
-	echo '   </tr>' . "\n";
-	echo '  </table>' . "\n";
+    echo '    </th>' . "\n";
+    echo '    <th align="center">' . "$group (#$current)</th>\n";
+    echo '    <th align="right" class="nav">';
+    echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
+    echo '    </th>' . "\n";
+    echo '   </tr>' . "\n";
+    echo '  </table>' . "\n";
 }
 
 navbar($group, $article);
