@@ -76,21 +76,23 @@ while (!feof($s)) {
 			$started = 1;
 		}
 
-		$encoding = strtolower(trim(@$headers['content-transfer-encoding']));
+		if (!empty($headers['content-transfer-encoding'])) {
+			$encoding = strtolower(trim($headers['content-transfer-encoding']));
+		}
 		if (strlen($mimetype)
 		&& $mimetype != "text/plain"
 		&& substr($mimetype,0,10) != "multipart/") {
 			# Display a link to the attachment
 			$name = '';
-			if ($headers['content-type']
+			if (!empty($headers['content-type'])
 			&& preg_match('/name=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
 				$name = trim($m[2]);
-			} else if ($headers['content-disposition']
-			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-type'], $m)) {
+			} else if (!empty($headers['content-disposition'])
+			&& preg_match('/filename=(["\']?)(.+)\1/s', $headers['content-disposition'], $m)) {
 				$name = trim($m[2]);
 			}
 
-			if ($headers['content-description']) {
+			if (!empty($headers['content-description'])) {
 				$description = trim($headers['content-description']) . " ";
 			} else {
 				$description = '';
@@ -266,7 +268,7 @@ function start_article($group, $headers, $charset) {
 		echo "</td>\n";
 	}
 	# groups
-	if ($headers["newsgroups"]) {
+	if (!empty($headers["newsgroups"])) {
 		echo '     <td class="headerlabel">Groups:</td>' . "\n";
 		echo '     <td class="headervalue">';
 		$r = explode(",", chop($headers["newsgroups"]));

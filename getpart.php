@@ -51,23 +51,25 @@ while (!feof($s)) {
 	}
 	if ($inheaders && ($line == "\n" || $line == "\r\n")) {
 		$inheaders = 0;
-		if ($headers['content-type']
+		if (!empty($headers['content-type'])
 		&& preg_match("/charset=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
 			$charset = trim($m[2]);
 		}
-		if ($headers['content-type']
+		if (!empty($headers['content-type'])
 		&& preg_match("/boundary=(\"|'|)(.+)\\1/is", $headers['content-type'], $m)) {
 			$boundaries[] = trim($m[2]);
 			$boundary = end($boundaries);
 		}
-		if ($headers['content-type']
+		if (!empty($headers['content-type'])
 		&& preg_match("/([^;]+)(;|\$)/", $headers['content-type'], $m)) {
 			++$mimecount;
 		}
 
 		$emit = ($mimecount == $part);
 
-		$encoding = strtolower(trim($headers['content-transfer-encoding']));
+		if (!empty($headers['content-transfer-encoding'])) {
+			$encoding = strtolower(trim($headers['content-transfer-encoding']));
+		}
 		if ($emit) {
 			/* check if content-type exist is made above */
 			header('Content-Type: ' . $headers['content-type']);
