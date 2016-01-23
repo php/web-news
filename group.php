@@ -21,25 +21,11 @@ if (isset($_GET['i'])) {
 	$i = 0;
 }
 
-$s = nntp_connect(NNTP_HOST);
-if (!$s) {
-	error("Failed to connect to news server");
-}
-
-$res = nntp_cmd($s,"GROUP $group",211);
-if (!$res) {
-	error("Failed to get info on group");
-}
-
-list (, $f, $l, $g) = explode(" ", $res);
-if (!$i || $i > $l - 19 || $i < $f) {
-	$i = $l - $f > 19 ? $l - 19 : $f;
-}
-$n = min($l, $i + 19);
-
-$res = nntp_cmd($s,"XOVER $i-$n", 224);
-if (!$res) {
-	error("Failed to get xover data");
+try {
+	$nntpClient = new \Web\News\Nntp(NNTP_HOST);
+	$overview = $nntpClient->getArticlesOverview($group, $i);
+} catch (Exception $e) {
+	error($e->getMessage());
 }
 
 $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8");
@@ -71,7 +57,7 @@ break;
 case 'html':
 default:
 head($group);
-navbar($group,$f,$l,$i);
+navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 echo '  <table class="stripped" width="100%">' . "\n";
 echo '   <tr>' . "\n";
 echo '    <th>#</td>' . "\n";
@@ -85,43 +71,39 @@ break;
 
 # list of articles
 # TODO: somehow determine the correct charset
-$charset = "";
+$charset = "utf-8";
 
-while ($line = fgets($s, 16384)) {
-	if ($line == ".\r\n") break;
-	$line = chop($line);
-	list($n,$subj,$author,$odate,$messageid,$references,$bytes,$lines,$extra)
-	= explode("\t", $line, 9);
+foreach ($overview['articles'] as $articleNumber => $details) {
 	/*  $date = date("H:i:s M/d/y", strtotime($odate)); */
-	$date822 = date("r", strtotime($odate));
+	$date822 = date("r", strtotime($details['date']));
 
 	switch($format) {
 		case 'rss':
 		echo "  <item>\n";
-		echo "   <link>http://$host/$group/$n</link>\n";
-		echo "   <title>", format_subject($subj, $charset), "</title>\n";
-		echo "   <description>", htmlspecialchars(format_author($author, $charset), ENT_QUOTES, "UTF-8"), "</description>\n";
+		echo "   <link>http://$host/$group/$articleNumber</link>\n";
+		echo "   <title>", format_subject($details['subject'], $charset), "</title>\n";
+		echo "   <description>", htmlspecialchars(format_author($details['author'], $charset), ENT_QUOTES, "UTF-8"), "</description>\n";
 		echo "   <pubDate>$date822</pubDate>\n";
 		echo "  </item>\n";
 		break;
 		case 'rdf':
 		echo " <item>\n";
-		echo "  <title>", format_subject($subj, $charset), "</title>\n";
-		echo "  <link>http://$host/$group/$n</link>\n";
-		echo "  <description>", htmlspecialchars(format_author($author, $charset), ENT_QUOTES, "UTF-8"), "</description>\n";
+		echo "  <title>", format_subject($details['subject'], $charset), "</title>\n";
+		echo "  <link>http://$host/$group/$articleNumber</link>\n";
+		echo "  <description>", htmlspecialchars(format_author($details['author'], $charset), ENT_QUOTES, "UTF-8"), "</description>\n";
 		echo "  <pubDate>$date822</pubDate>\n";
 		echo " </item>\n";
 		break;
 		case 'html':
 		default:
 		echo "   <tr>\n";
-		echo "    <td><a href=\"/$group/$n\">$n</a></td>\n";
-		echo "    <td><a href=\"/$group/$n\">";
-		echo format_subject($subj, $charset);
+		echo "    <td><a href=\"/$group/$articleNumber\">$articleNumber</a></td>\n";
+		echo "    <td><a href=\"/$group/$articleNumber\">";
+		echo format_subject($details['subject'], $charset);
 		echo "</a></td>\n";
-		echo "    <td vcard\">".format_author($author, $charset)."</td>\n";
-		echo "    <td align=\"center\"><tt>" . format_date($odate) . "</tt></td>\n";
-		echo "    <td align=\"right\">$lines</td>\n";
+		echo "    <td vcard\">".format_author($details['author'], $charset)."</td>\n";
+		echo "    <td align=\"center\"><tt>" . format_date($details['date']) . "</tt></td>\n";
+		echo "    <td align=\"right\">{$details['lines']}</td>\n";
 		echo "   </tr>\n";
 	}
 }
@@ -136,7 +118,7 @@ switch ($format) {
 	case 'html':
 	default:
 	echo "  </table>\n";
-	navbar($group, $f, $l, $i);
+	navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 	foot();
 }
 
