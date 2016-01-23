@@ -374,7 +374,7 @@ class fMailbox
 				if (!empty($pieces[1])) {
 					preg_match_all('#(\w+)=("([^"]+)"|([^\s;]+))(?=;|$)#', $pieces[1], $matches, PREG_SET_ORDER);
 					foreach ($matches as $match) {
-						$fields[$match[1]] = self::decodeHeader(!empty($match[4]) ? $match[4] : $match[3]);
+						$fields[strtolower($match[1])] = self::decodeHeader(!empty($match[4]) ? $match[4] : $match[3]);
 					}
 				}
 				$headers[$header]['fields'] = $fields;
