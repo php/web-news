@@ -235,7 +235,8 @@ class fMailbox
 			$info[$structure['disposition']][] = array(
 				'filename' => $filename,
 				'mimetype' => $structure['type'] . '/' . $structure['subtype'],
-				'data'     => $content
+				'data'     => $content,
+				'description' => $structure['description'],
 			);
 			return $info;
 		}
@@ -552,6 +553,7 @@ class fMailbox
 				'encoding'           => isset($headers['content-transfer-encoding']) ? strtolower($headers['content-transfer-encoding']) : '8bit',
 				'disposition'        => isset($headers['content-disposition']) ? strtolower($headers['content-disposition']['value']) : null,
 				'disposition_fields' => isset($headers['content-disposition']) ? $headers['content-disposition']['fields'] : array(),
+				'description'        => isset($headers['content-description']) ? $headers['content-description'] : null,
 				'data'               => $data
 			);
 		}
