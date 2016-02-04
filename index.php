@@ -2,13 +2,11 @@
 
 require 'common.php';
 
-$s = nntp_connect(NNTP_HOST);
-if (!$s) {
-	error("Failed to connect to news server");
-}
-
-if (!nntp_cmd($s,"LIST",215)) {
-	error("failed to get list of news groups");
+try {
+	$nntpClient = new \Web\News\Nntp(NNTP_HOST);
+	$groups = $nntpClient->listGroups();
+} catch (Exception $e) {
+	error($e->getMessage());
 }
 
 head();
@@ -25,22 +23,17 @@ head();
         <th>rdf</th>
        </tr>
 <?php
-while ($line = fgets($s, 1024)) {
-	if ($line == ".\r\n") {
-		break;
-	}
-	$line = chop($line);
-	list($group, $high, $low, $active) = explode(" ", $line);
+foreach ($groups as $group => $details) {
 	echo "       <tr>\n";
-	echo "        <td><a class=\"active$active\" href=\"/$group\">$group</a></td>\n";
-	echo "        <td align=\"right\">", $high-$low+1, "</td>\n";
+	echo "        <td><a class=\"active{$details['status']}\" href=\"/$group\">$group</a></td>\n";
+	echo "        <td align=\"right\">", $details['high']-$details['low']+1, "</td>\n";
 	echo "        <td>";
-	if ($active != 'n') {
+	if ($details['status'] != 'n') {
 		echo "<a href=\"group.php?group=$group&amp;format=rss\">rss</a>";
 	}
 	echo "</td>\n";
 	echo "        <td>";
-	if ($active != 'n') {
+	if ($details['status'] != 'n') {
 		echo "<a href=\"group.php?group=$group&amp;format=rdf\">rdf</a>";
 	}
 	echo "</td>\n";
