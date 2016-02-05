@@ -50,7 +50,7 @@ foreach ($groups as $group => $details) {
        <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8"); ?> NNTP server</a>.
       </p>
       <p>
-       There may be a little more info in the <a href="README">README</a> file.
+       There may be a little more info in the <a href="README.md">README</a> file.
       </p>
       <p>
        The news server software that is used is <a
