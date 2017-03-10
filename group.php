@@ -33,7 +33,7 @@ switch($format) {
 	case 'rss':
 	header("Content-type: text/xml");
     echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";?>
-<rss version="0.93">
+<rss version="2.0">
  <channel> 
   <title><?php echo $host; ?>: <?php echo $group?></title>
   <link>http://<?php echo $host; ?>/group.php?group=<?php echo $group?></link>
