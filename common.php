@@ -149,6 +149,6 @@ function format_title($s, $charset) {
 
 function format_date($d) {
 	$d = strtotime($d);
-	$d = strftime("%c", $d);
+	$d = date('r', $d);
 	return str_replace(" ", "&nbsp;", $d);
 }
