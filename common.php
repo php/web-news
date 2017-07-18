@@ -19,36 +19,35 @@ function error($str) {
 
 function head($title="PHP news") {
 	header("Content-type: text/html; charset=utf-8");
-	echo '<?xml version="1.0"?>' . "\n";
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html lang="en">
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title); ?></title>
+  <link rel="stylesheet" href="/fonts/Fira/fira.css" type="text/css" />
   <link rel="stylesheet" href="/style.css" type="text/css" />
  </head>
  <body>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="header">
-   <tr>
-    <td>
-     <a href="/index.php"><img src="/i/l.gif" width="120" height="67" alt="PHP" /></a>
-    </td>
-    <td align="right" valign="bottom">
-     PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface
-    </td>
-   </tr>
-  </table>
+  <header class="header">
+   <div class="header-inner">
+    <a href="/" class="header-brand"><img src="/i/php-logo.svg" alt="PHP News" height="24" width="48"></a>
+    <div class="header-baseline">PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface</div>
+   </div>
+  </header>
+    <section class="content">
 <?php
 }
 
 function foot() {?>
-  <hr />
-  <div class="small">
-   Written by Jim Winstead. no rights reserved. (<a href="https://git.php.net/?p=web/news.git">source code</a>)
-  </div>
+ </section>
+  <footer class="footer">
+   <div class="small">
+    Written by Jim Winstead. no rights reserved. (<a class="alt-link" href="https://git.php.net/?p=web/news.git">source code</a>) . Redesign By <a class="alt-link" href="https://wixiweb.fr">Wixiweb</a>
+   </div>
+  </footer>
  </body>
 </html>
 <?php

@@ -58,7 +58,7 @@ case 'html':
 default:
 head($group);
 navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
-echo '  <table class="stripped" width="100%">' . "\n";
+echo '  <table class="standard" width="100%">' . "\n";
 echo '   <tr>' . "\n";
 echo '    <th>#</td>' . "\n";
 echo '    <th>subject</th>' . "\n";
@@ -123,7 +123,7 @@ switch ($format) {
 }
 
 function navbar($g, $f, $l, $i) {
-	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '  <table class="standard" border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	echo '   <tr>' . "\n";
 	echo '    <th class="nav">';
 	if ($i > $f) {

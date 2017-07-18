@@ -135,8 +135,11 @@ echo "   </pre>\n";
 echo "  </blockquote>\n";
 
 function start_article($mail, $refsResolved) {
+
+    echo '<h1>'.format_subject($mail['headers']['subject'], 'utf-8')."</h1>\n";
+
 	echo "  <blockquote>\n";
-	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '   <table class="standard" border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	# from
 	echo '    <tr class="vcard">' . "\n";
 	echo '     <td class="headerlabel">From:</td>' . "\n";
@@ -183,7 +186,7 @@ function navbar($group, $current) {
 
 	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
-	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '  <table class="standard" border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
 	echo '   <tr>' . "\n";
 	echo '    <th class="nav">';
 
