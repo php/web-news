@@ -12,7 +12,7 @@ define('NNTP_HOST', $NNTP_HOST);
 
 function error($str) {
 	head("PHP news : error");
-	echo "<blockquote><strong>Error:</strong> $str</blockquote>\n";
+	echo "<blockquote><strong>Error:</strong> ".to_utf8($str)."</blockquote>\n";
 	foot();
 	die();
 }
@@ -54,9 +54,9 @@ function foot() {?>
 <?php
 }
 
-function to_utf8($str, $charset)
+function to_utf8($str, $charset = 'iso-8859-1')
 {
-	$n = iconv($charset ? $charset : 'iso-8859-1', 'utf-8', $str);
+	$n = iconv($charset , 'utf-8', $str);
 	if ($n === false) {
 		return $str;
 	}
