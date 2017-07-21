@@ -34,7 +34,7 @@ function head($title="PHP news") {
  <body>
   <header class="header">
    <nav class="header-inner">
-    <a href="/" class="header-brand"><img src="/i/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">news</span></a><ul class="header-menu">
+    <a href="/" class="header-brand"><img src="/i/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">lists</span></a><ul class="header-menu">
       <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/downloads.php">Downloads</a></li>
       <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/docs.php">Documentation</a></li>
       <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
