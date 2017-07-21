@@ -72,9 +72,14 @@ table.header {
 	border-bottom: 17px solid #669;
 }
 
-.small {
+.footer-mentions {
+	opacity: .3;
     font-size: 75%;
     text-align: right;
+}
+a.alt-link{
+	color: #F2F2F2;;
+	text-decoration: none;
 }
 
 .nav {
@@ -252,10 +257,24 @@ pre{
 	max-width: 1440px;
 	margin:auto;
 	padding: 1.5rem;
+	line-height: 3rem;
 }
-
-a.alt-link{
+.footer-nav{
+	margin: 0;
+	padding: 0;
+}
+.footer-nav-item{
+	display: inline-block;
+	margin: 0 0.75rem;
+}
+a.footer-nav-item-link{
 	color: #ccc;
+	text-decoration: none;
+}
+a.footer-nav-item-link:hover{
+	color: #AE508D;
+	border-color: #AE508D;
+	outline: 0;
 }
 
 /* Standard Tables */
