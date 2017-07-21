@@ -52,7 +52,7 @@ function foot() {?>
 
  <footer class="footer">
     <ul class="footer-nav">
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/copyright.php">Copyright © 2001-2017 The PHP Group</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/copyright.php">Copyright © 2001-<?php echo date('Y'); ?> The PHP Group</a></li>
      <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/my.php">My PHP.net</a></li>
      <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/contact.php">Contact</a></li>
      <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/sites.php">Other PHP.net sites</a></li>
