@@ -111,7 +111,7 @@ function spam_protect($txt) {
 
 
 # this turns some common forms of email addresses into mailto: links
-function format_author($a, $charset) {
+function format_author($a, $charset = 'iso-8859-1') {
 	$a = recode_header($a, $charset);
 	if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/",$a,$ar)) {
 		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[1])), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2], ENT_QUOTES, "UTF-8"))."</a>";
@@ -126,7 +126,7 @@ function format_author($a, $charset) {
 	return str_replace(" ", "&nbsp;", htmlspecialchars($a, ENT_QUOTES, "UTF-8"));
 }
 
-function format_subject($s, $charset) {
+function format_subject($s, $charset = 'iso-8859-1') {
 	global $article;
 	$s = recode_header($s, $charset);
 
@@ -146,7 +146,7 @@ function format_subject($s, $charset) {
 }
 
 
-function format_title($s, $charset) {
+function format_title($s, $charset = 'iso-8859-1') {
 	global $article;
 	$s = recode_header($s, $charset);
 	$s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
