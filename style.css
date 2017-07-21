@@ -213,6 +213,17 @@ a.breadcrumbs-item-link{
 	margin:auto;
 	padding: 1.5rem;
 }
+.content a{
+	color :#369;
+}
+.content a:hover{
+	color: #AE508D;
+	border-color: #AE508D;
+	outline: 0;
+}
+.content a:visited{
+	color: #8895A2;
+}
 
 h1{
 	font-weight: 500;
