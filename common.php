@@ -33,7 +33,7 @@ function head($title="PHP news") {
  <body>
   <header class="header">
    <div class="header-inner">
-    <a href="/" class="header-brand"><img src="/i/php-logo.svg" alt="PHP News" height="24" width="48"></a>
+    <a href="/" class="header-brand"><img src="/i/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">news</span></a>
     <div class="header-baseline">PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface</div>
    </div>
   </header>
