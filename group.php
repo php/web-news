@@ -56,8 +56,15 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 break;
 case 'html':
 default:
-head($group);
+head($group.' mailing list');
+echo '<nav class="secondary-nav">';
+echo ' <ul class="breadcrumbs">';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'">'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</a></li>';
+echo ' </ul>';
+echo '</nav>';
 echo '<section class="content">';
+echo '<h1>'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</h1>';
 navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 echo '  <table class="standard" width="100%">' . "\n";
 echo '   <tr>' . "\n";

@@ -206,11 +206,19 @@ a.header-menu-item-link:hover{
 	margin: 0;
 	padding: 0;
 }
+.breadcrumbs-item{
+	display: inline-block;
+}
+.breadcrumbs-item + .breadcrumbs-item::before {
+	padding: 0 .5rem 0;
+	content: "\203A";
+}
 a.breadcrumbs-item-link{
 	color: #ccc;
 	text-decoration: none;
 	line-height: 24px;
 }
+
 
 .content{
 	background: #F2F2F2;
