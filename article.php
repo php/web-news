@@ -63,6 +63,13 @@ try {
 }
 
 head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
+echo '<nav class="secondary-nav">';
+echo ' <ul class="breadcrumbs">';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'">'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</a></li>';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'/'.$article.'">'.format_title($mail['headers']['subject']).'</a></li>';
+echo ' </ul>';
+echo '</nav>';
 echo '<section class="content">';
 start_article($mail, $refsResolved);
 
