@@ -29,6 +29,7 @@ function head($title="PHP news") {
   <title><?php echo htmlspecialchars($title); ?></title>
   <link rel="stylesheet" href="/fonts/Fira/fira.css" type="text/css" />
   <link rel="stylesheet" href="/style.css" type="text/css" />
+  <link rel="shortcut icon" href="/i/favicon.ico">
  </head>
  <body>
   <header class="header">
