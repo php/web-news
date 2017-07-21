@@ -40,6 +40,9 @@ function head($title="PHP news") {
       <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
       <li class="header-menu-item mod-active"><a class="header-menu-item-link" href="http://php.net/support.php">Help</a></li>
      </ul>
+     <form class="search-form" action="http://php.net/search.php">
+      <input class="search-input" value="" name="pattern" placeholder="Search">
+     </form>
    </nav>
   </header>
     <section class="content">
