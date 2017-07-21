@@ -166,6 +166,9 @@ a.header-menu-item-link{
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 	line-height: 24px;
 }
+a.header-menu-item-link:hover{
+	color: #fff;
+}
 
 .content{
 	background: #F2F2F2;
