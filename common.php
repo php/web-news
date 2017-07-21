@@ -45,12 +45,10 @@ function head($title="PHP news") {
      </form>
    </nav>
   </header>
-    <section class="content">
 <?php
 }
 
 function foot() {?>
- </section>
   <footer class="footer">
    <div class="small">
     Written by Jim Winstead. no rights reserved. (<a class="alt-link" href="https://git.php.net/?p=web/news.git">source code</a>) . Redesign By <a class="alt-link" href="https://wixiweb.fr">Wixiweb</a>

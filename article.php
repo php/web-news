@@ -63,6 +63,7 @@ try {
 }
 
 head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
+echo '<section class="content">';
 start_article($mail, $refsResolved);
 
 $lines = preg_split("@(?<=\r\n|\n)@", $mail['text']);
@@ -206,4 +207,5 @@ function navbar($group, $current) {
 }
 
 navbar($group, $article);
+echo '</section>';
 foot();

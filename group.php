@@ -56,6 +56,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 break;
 case 'html':
 default:
+echo '<section class="content">';
 head($group);
 navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 echo '  <table class="standard" width="100%">' . "\n";
@@ -119,6 +120,7 @@ switch ($format) {
 	default:
 	echo "  </table>\n";
 	navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
+	echo "</section>";
 	foot();
 }
 

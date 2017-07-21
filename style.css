@@ -189,6 +189,24 @@ a.header-menu-item-link:hover{
 	font-size: 16px;
 }
 
+.secondary-nav{
+	max-width: 1440px;
+	margin:auto;
+	padding: .75rem 1.5rem;
+	font-size: 14px;
+}
+.breadcrumbs{
+	color: #999;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+a.breadcrumbs-item-link{
+	color: #ccc;
+	text-decoration: none;
+	line-height: 24px;
+}
+
 .content{
 	background: #F2F2F2;
 	max-width: 1440px;

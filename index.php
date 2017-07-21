@@ -12,6 +12,15 @@ try {
 head();
 
 ?>
+
+<nav class="secondary-nav">
+ <ul class="breadcrumbs">
+  <li><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>
+ </ul>
+</nav>
+
+ <section class="content">
+
   <table border="0" cellpadding="6" cellspacing="0" width="100%">
    <tr>
      <td>
@@ -62,6 +71,7 @@ foreach ($groups as $group => $details) {
      </td>
     </tr>
    </table>
+ </section>
 <?php
 
 foot();
