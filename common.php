@@ -33,10 +33,14 @@ function head($title="PHP news") {
  </head>
  <body>
   <header class="header">
-   <div class="header-inner">
-    <a href="/" class="header-brand"><img src="/i/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">news</span></a>
-    <div class="header-baseline">PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface</div>
-   </div>
+   <nav class="header-inner">
+    <a href="/" class="header-brand"><img src="/i/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">news</span></a><ul class="header-menu">
+      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/downloads.php">Downloads</a></li>
+      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/docs.php">Documentation</a></li>
+      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
+      <li class="header-menu-item mod-active"><a class="header-menu-item-link" href="http://php.net/support.php">Help</a></li>
+     </ul>
+   </nav>
   </header>
     <section class="content">
 <?php
