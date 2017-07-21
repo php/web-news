@@ -56,8 +56,8 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 break;
 case 'html':
 default:
-echo '<section class="content">';
 head($group);
+echo '<section class="content">';
 navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 echo '  <table class="standard" width="100%">' . "\n";
 echo '   <tr>' . "\n";
