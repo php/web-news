@@ -21,17 +21,28 @@ head();
 
  <section class="content">
 
-  <table border="0" cellpadding="6" cellspacing="0" width="100%">
+  <div class="welcome">
+   <h1>PHP Mailing Lists</h1>
+   <p>
+    This is a completely experimental interface to the PHP mailing lists as
+    reflected on the <a href="news://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'],ENT_QUOTES,"UTF-8"); ?>/">
+    <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8"); ?> NNTP server</a>.
+   </p>
+   <p>
+    There may be a little more info in the <a href="README.md">README</a> file.
+   </p>
+   <p>
+    The news server software that is used is <a
+      href="http://trainedmonkey.com/colobus/">colobus</a>.
+   </p>
+  </div>
+  <table class="standard" width="100%">
    <tr>
-     <td>
-      <b class="welcome-mobile">Welcome to PHP News!</b>
-      <table class="standard">
-       <tr>
-        <th>name</th>
-        <th>messages</th>
-        <th>rss</th>
-        <th>rdf</th>
-       </tr>
+    <th>name</th>
+    <th>messages</th>
+    <th>rss</th>
+    <th>rdf</th>
+   </tr>
 <?php
 foreach ($groups as $group => $details) {
 	echo "       <tr>\n";
@@ -50,27 +61,7 @@ foreach ($groups as $group => $details) {
 	echo "       </tr>\n";
 }
 ?>
-      </table>
-     </td>
-     <td valign="top">
-      <div class="welcome">
-       <h1>Welcome to PHP News!</h1>
-       <p>
-        This is a completely experimental interface to the PHP mailing lists as
-        reflected on the <a href="news://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'],ENT_QUOTES,"UTF-8"); ?>/">
-        <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8"); ?> NNTP server</a>.
-       </p>
-       <p>
-        There may be a little more info in the <a href="README.md">README</a> file.
-       </p>
-       <p>
-        The news server software that is used is <a
-        href="http://trainedmonkey.com/colobus/">colobus</a>.
-       </p>
-      </div>
-     </td>
-    </tr>
-   </table>
+  </table>
  </section>
 <?php
 
