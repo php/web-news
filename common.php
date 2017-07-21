@@ -17,7 +17,7 @@ function error($str) {
 	die();
 }
 
-function head($title="PHP news") {
+function head($title="PHP Mailing Lists (PHP News)") {
 	header("Content-type: text/html; charset=utf-8");
 
 ?>
