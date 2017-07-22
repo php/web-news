@@ -66,7 +66,6 @@ function foot() {?>
      <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/mirrors.php">Mirror sites</a></li>
      <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/privacy.php">Privacy policy</a></li>
     </ul>
-    <div class="footer-mentions">Written by Jim Winstead, redesigned by <a class="alt-link" href="https://wixiweb.fr">Wixiweb</a>.</div>
  </footer>
  </body>
 </html>
