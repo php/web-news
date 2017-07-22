@@ -66,6 +66,7 @@ echo '</nav>';
 echo '<section class="content">';
 echo '<h1>'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</h1>';
 navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
+echo ' <div class="responsive-table">' . "\n";
 echo '  <table class="standard">' . "\n";
 echo '   <tr>' . "\n";
 echo '    <th>#</th>' . "\n";
@@ -126,6 +127,7 @@ switch ($format) {
 	case 'html':
 	default:
 	echo "  </table>\n";
+	echo " </div>\n";
 	navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 	echo "</section>";
 	foot();
@@ -137,7 +139,7 @@ function navbar($g, $f, $l, $i) {
 	echo '    <th class="nav">';
 	if ($i > $f) {
 		$p = max($i-20,$f);
-		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$p\"><b>&laquo; previous</b></a>";
+		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$p\"><b>&laquo; <span>previous</span></b></a>";
 	} else {
 		echo "&nbsp;";
 	}
@@ -148,7 +150,7 @@ function navbar($g, $f, $l, $i) {
 	echo '    <th class="nav align-right">';
 	if ($i+20 <= $l) {
 		$n = min($i + 20, $l - 19);
-		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$n\"><b>next &raquo;</b></a>";
+		echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$n\"><b><span>next</span> &raquo;</b></a>";
 	}
 	else {
 		echo "&nbsp;";
