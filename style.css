@@ -45,6 +45,10 @@ a:visited {
 .monospace.mod-small{
 	font-size: 14px;
 }
+pre{
+	font-family: "Fira Mono", monospace;
+	font-size: 14px;
+}
 th {
 	background: #CCC;
 	font-weight: bold;
