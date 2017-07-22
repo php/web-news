@@ -43,6 +43,13 @@ function head($title="PHP Mailing Lists (PHP News)") {
      <form class="search-form" action="http://php.net/search.php">
       <input class="search-input" value="" name="pattern" placeholder="Search">
      </form>
+    <div class="menu-icon" onclick="document.querySelector('.menu-mobile').classList.toggle('hide')">☰ MENU</div>
+     <ul class="menu-mobile hide">
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/downloads.php">Downloads</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/docs.php">Documentation</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
+      <li class="menu-mobile-item mod-active"><a class="menu-mobile-item-link" href="http://php.net/support.php">Help</a></li>
+     </ul>
    </nav>
   </header>
 <?php

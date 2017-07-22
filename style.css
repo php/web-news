@@ -176,6 +176,28 @@ a.header-menu-item-link:hover{
 }
 
 
+.menu-mobile{
+	background: #4F5B93;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.menu-mobile-item{
+	text-align: right;
+	display: inline-block;
+}
+a.menu-mobile-item-link{
+	display: inline-block;
+	text-decoration: none;
+	float: none;
+	padding: .75rem;
+	color: #E2E4EF;
+	border: 0;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	line-height: 24px;
+}
+
+
 .search-form {
 	float: right;
 	width: 25%;
@@ -330,20 +352,39 @@ table.standard th.subr {
 	text-align: right;
 }
 
+.menu-icon {
+	display: none;
+	background: #4F5B93;
+	padding: 14px 24px 10px;
+	line-height: 24px;
+	float: right;
+	color: #fff;
+	cursor: pointer;
+}
 
-.welcome-mobile{
+.hide{
 	display: none;
 }
+
 
 @media screen and (max-width: 760px) {
 	.welcome{
 		display: none;
 	}
-	.welcome-mobile{
-		display: block;
+	.search-form{
+		display: none;
 	}
 	blockquote{
 		margin: 16px;
+	}
+}
+
+@media screen and (max-width: 580px) {
+	.menu-icon{
+		display: block;
+	}
+	.header-menu{
+		display: none;
 	}
 }
 
