@@ -17,38 +17,57 @@ function error($str) {
 	die();
 }
 
-function head($title="PHP news") {
+function head($title="PHP Mailing Lists (PHP News)") {
 	header("Content-type: text/html; charset=utf-8");
-	echo '<?xml version="1.0"?>' . "\n";
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!doctype html>
+<html lang="en">
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title); ?></title>
+  <link rel="stylesheet" href="/fonts/Fira/fira.css" type="text/css" />
   <link rel="stylesheet" href="/style.css" type="text/css" />
+  <link rel="shortcut icon" href="/i/favicon.ico">
  </head>
  <body>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="header">
-   <tr>
-    <td>
-     <a href="/index.php"><img src="/i/l.gif" width="120" height="67" alt="PHP" /></a>
-    </td>
-    <td align="right" valign="bottom">
-     PHP.net <a href="news://<?php echo $_SERVER['HTTP_HOST']; ?>/" class="top">news server</a> web interface
-    </td>
-   </tr>
-  </table>
+  <header class="header">
+   <nav class="header-inner">
+    <a href="/" class="header-brand"><img src="/i/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">lists</span></a><ul class="header-menu">
+      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/downloads.php">Downloads</a></li>
+      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/docs.php">Documentation</a></li>
+      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
+      <li class="header-menu-item mod-active"><a class="header-menu-item-link" href="http://php.net/support.php">Help</a></li>
+     </ul>
+     <form class="search-form" action="http://php.net/search.php">
+      <input class="search-input" value="" name="pattern" placeholder="Search">
+     </form>
+    <div class="menu-icon" onclick="document.querySelector('.menu-mobile').classList.toggle('hide')">☰ MENU</div>
+     <ul class="menu-mobile hide">
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/downloads.php">Downloads</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/docs.php">Documentation</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
+      <li class="menu-mobile-item mod-active"><a class="menu-mobile-item-link" href="http://php.net/support.php">Help</a></li>
+     </ul>
+   </nav>
+  </header>
 <?php
 }
 
 function foot() {?>
-  <hr />
-  <div class="small">
-   Written by Jim Winstead. no rights reserved. (<a href="https://git.php.net/?p=web/news.git">source code</a>)
-  </div>
+
+ <footer class="footer">
+    <ul class="footer-nav">
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/copyright.php">Copyright © 2001-<?php echo date('Y'); ?> The PHP Group</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/my.php">My PHP.net</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/contact.php">Contact</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/sites.php">Other PHP.net sites</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/mirrors.php">Mirror sites</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/privacy.php">Privacy policy</a></li>
+    </ul>
+    <div class="footer-mentions">Written by Jim Winstead, redesigned by <a class="alt-link" href="https://wixiweb.fr">Wixiweb</a>.</div>
+ </footer>
  </body>
 </html>
 <?php
@@ -99,7 +118,7 @@ function spam_protect($txt) {
 
 
 # this turns some common forms of email addresses into mailto: links
-function format_author($a, $charset) {
+function format_author($a, $charset = 'iso-8859-1') {
 	$a = recode_header($a, $charset);
 	if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/",$a,$ar)) {
 		return "<a href=\"mailto:".htmlspecialchars(urlencode(spam_protect($ar[1])), ENT_QUOTES, "UTF-8")."\" class=\"email fn n\">".str_replace(" ", "&nbsp;", htmlspecialchars($ar[2], ENT_QUOTES, "UTF-8"))."</a>";
@@ -114,7 +133,7 @@ function format_author($a, $charset) {
 	return str_replace(" ", "&nbsp;", htmlspecialchars($a, ENT_QUOTES, "UTF-8"));
 }
 
-function format_subject($s, $charset) {
+function format_subject($s, $charset = 'iso-8859-1') {
 	global $article;
 	$s = recode_header($s, $charset);
 
@@ -134,7 +153,7 @@ function format_subject($s, $charset) {
 }
 
 
-function format_title($s, $charset) {
+function format_title($s, $charset = 'iso-8859-1') {
 	global $article;
 	$s = recode_header($s, $charset);
 	$s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);

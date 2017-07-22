@@ -63,6 +63,14 @@ try {
 }
 
 head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
+echo '<nav class="secondary-nav">';
+echo ' <ul class="breadcrumbs">';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'">'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</a></li>';
+echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'/'.$article.'">'.format_title($mail['headers']['subject']).'</a></li>';
+echo ' </ul>';
+echo '</nav>';
+echo '<section class="content">';
 start_article($mail, $refsResolved);
 
 $lines = preg_split("@(?<=\r\n|\n)@", $mail['text']);
@@ -135,8 +143,11 @@ echo "   </pre>\n";
 echo "  </blockquote>\n";
 
 function start_article($mail, $refsResolved) {
+
+    echo '<h1>'.format_subject($mail['headers']['subject'], 'utf-8')."</h1>\n";
+
 	echo "  <blockquote>\n";
-	echo '   <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '   <table class="standard">' . "\n";
 	# from
 	echo '    <tr class="vcard">' . "\n";
 	echo '     <td class="headerlabel">From:</td>' . "\n";
@@ -154,7 +165,7 @@ function start_article($mail, $refsResolved) {
 	# references
 	if (!empty($refsResolved)) {
 		echo '     <td class="headerlabel">References:</td>' . "\n";
-		echo '     <td class="headervalue">';
+		echo '     <td class="headervalue" '.(empty($mail['headers']['newsgroups']) ? 'colspan="3"' : null).'>';
 		foreach ($refsResolved as $k => $ref) {
 			echo "<a href=\"/". urlencode($ref['group']) . '/' . urlencode($ref['articleId']) ."\">".($k + 1)."</a>&nbsp;";
 		}
@@ -163,7 +174,7 @@ function start_article($mail, $refsResolved) {
 	# groups
 	if (!empty($mail['headers']['newsgroups'])) {
 		echo '     <td class="headerlabel">Groups:</td>' . "\n";
-		echo '     <td class="headervalue">';
+		echo '     <td class="headervalue" '.(empty($refsResolved) ? 'colspan="3"' : null).'>';
 		$r = explode(",", rtrim($mail['headers']['newsgroups']));
 		while (list($k,$v) = each($r)) {
 			echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
@@ -183,7 +194,7 @@ function navbar($group, $current) {
 
 	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
-	echo '  <table border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '  <table class="standard">' . "\n";
 	echo '   <tr>' . "\n";
 	echo '    <th class="nav">';
 
@@ -194,8 +205,8 @@ function navbar($group, $current) {
 	}
 
 	echo '    </th>' . "\n";
-	echo '    <th align="center">' . "$group (#$current)</th>\n";
-	echo '    <th align="right" class="nav">';
+	echo '    <th class="align-center">' . "$group (#$current)</th>\n";
+	echo '    <th class="nav align-right">';
 	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
 	echo '    </th>' . "\n";
 	echo '   </tr>' . "\n";
@@ -203,4 +214,5 @@ function navbar($group, $current) {
 }
 
 navbar($group, $article);
+echo '</section>';
 foot();
