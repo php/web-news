@@ -165,7 +165,7 @@ function start_article($mail, $refsResolved) {
 	# references
 	if (!empty($refsResolved)) {
 		echo '     <td class="headerlabel">References:</td>' . "\n";
-		echo '     <td class="headervalue" colspan="3">';
+		echo '     <td class="headervalue" '.(empty($mail['headers']['newsgroups']) ? 'colspan="3"' : null).'>';
 		foreach ($refsResolved as $k => $ref) {
 			echo "<a href=\"/". urlencode($ref['group']) . '/' . urlencode($ref['articleId']) ."\">".($k + 1)."</a>&nbsp;";
 		}
@@ -174,7 +174,7 @@ function start_article($mail, $refsResolved) {
 	# groups
 	if (!empty($mail['headers']['newsgroups'])) {
 		echo '     <td class="headerlabel">Groups:</td>' . "\n";
-		echo '     <td class="headervalue" colspan="3">';
+		echo '     <td class="headervalue" '.(empty($refsResolved) ? 'colspan="3"' : null).'>';
 		$r = explode(",", rtrim($mail['headers']['newsgroups']));
 		while (list($k,$v) = each($r)) {
 			echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
