@@ -12,7 +12,7 @@ define('NNTP_HOST', $NNTP_HOST);
 
 function error($str) {
 	head("PHP news : error");
-	echo "<blockquote><strong>Error:</strong> ".to_utf8($str)."</blockquote>\n";
+	echo "<section class=\"content\"><blockquote><strong>Error:</strong> ".to_utf8($str)."</blockquote></section>\n";
 	foot();
 	die();
 }
