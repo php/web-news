@@ -39,6 +39,12 @@ a:visited {
 	color: #F6F;
 }
 
+.monospace{
+	font-family: "Fira Mono", monospace;
+}
+.monospace.mod-small{
+	font-size: 14px;
+}
 th {
 	background: #CCC;
 	font-weight: bold;
@@ -313,11 +319,13 @@ table.standard {
 	border-style: hidden;
 	border:1px solid #d9d9d9;
 	width: 100%;
+	border-spacing:2px;
 }
 
 table.standard td,
 table.standard th {
 	border: 1px solid #d9d9d9;
+	padding: 2px;
 }
 
 table.standard tr:nth-child(even) td {

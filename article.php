@@ -147,7 +147,7 @@ function start_article($mail, $refsResolved) {
     echo '<h1>'.format_subject($mail['headers']['subject'], 'utf-8')."</h1>\n";
 
 	echo "  <blockquote>\n";
-	echo '   <table class="standard" border="0" cellpadding="2" cellspacing="2">' . "\n";
+	echo '   <table class="standard">' . "\n";
 	# from
 	echo '    <tr class="vcard">' . "\n";
 	echo '     <td class="headerlabel">From:</td>' . "\n";
@@ -165,7 +165,7 @@ function start_article($mail, $refsResolved) {
 	# references
 	if (!empty($refsResolved)) {
 		echo '     <td class="headerlabel">References:</td>' . "\n";
-		echo '     <td class="headervalue">';
+		echo '     <td class="headervalue" colspan="3">';
 		foreach ($refsResolved as $k => $ref) {
 			echo "<a href=\"/". urlencode($ref['group']) . '/' . urlencode($ref['articleId']) ."\">".($k + 1)."</a>&nbsp;";
 		}
@@ -174,7 +174,7 @@ function start_article($mail, $refsResolved) {
 	# groups
 	if (!empty($mail['headers']['newsgroups'])) {
 		echo '     <td class="headerlabel">Groups:</td>' . "\n";
-		echo '     <td class="headervalue">';
+		echo '     <td class="headervalue" colspan="3">';
 		$r = explode(",", rtrim($mail['headers']['newsgroups']));
 		while (list($k,$v) = each($r)) {
 			echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
@@ -194,7 +194,7 @@ function navbar($group, $current) {
 
 	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
-	echo '  <table class="standard" border="0" cellpadding="2" cellspacing="2">' . "\n";
+	echo '  <table class="standard">' . "\n";
 	echo '   <tr>' . "\n";
 	echo '    <th class="nav">';
 

@@ -109,8 +109,8 @@ foreach ($overview['articles'] as $articleNumber => $details) {
 		echo "    <td><a href=\"/$group/$articleNumber\">";
 		echo format_subject($details['subject'], $charset);
 		echo "</a></td>\n";
-		echo "    <td vcard\">".format_author($details['author'], $charset)."</td>\n";
-		echo "    <td class=\"align-center\"><tt>" . format_date($details['date']) . "</tt></td>\n";
+		echo "    <td class=\"vcard\">".format_author($details['author'], $charset)."</td>\n";
+		echo "    <td class=\"align-center\"><span class='monospace mod-small'>" . format_date($details['date']) . "</span></td>\n";
 		echo "    <td class=\"align-right\">{$details['lines']}</td>\n";
 		echo "   </tr>\n";
 	}
@@ -132,7 +132,7 @@ switch ($format) {
 }
 
 function navbar($g, $f, $l, $i) {
-	echo '  <table class="standard" border="0" cellpadding="2" cellspacing="2">' . "\n";
+	echo '  <table class="standard">' . "\n";
 	echo '   <tr>' . "\n";
 	echo '    <th class="nav">';
 	if ($i > $f) {
