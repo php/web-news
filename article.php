@@ -147,7 +147,7 @@ function start_article($mail, $refsResolved) {
     echo '<h1>'.format_subject($mail['headers']['subject'], 'utf-8')."</h1>\n";
 
 	echo "  <blockquote>\n";
-	echo '   <table class="standard" border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '   <table class="standard" border="0" cellpadding="2" cellspacing="2">' . "\n";
 	# from
 	echo '    <tr class="vcard">' . "\n";
 	echo '     <td class="headerlabel">From:</td>' . "\n";
@@ -194,7 +194,7 @@ function navbar($group, $current) {
 
 	$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 
-	echo '  <table class="standard" border="0" cellpadding="2" cellspacing="2" width="100%">' . "\n";
+	echo '  <table class="standard" border="0" cellpadding="2" cellspacing="2">' . "\n";
 	echo '   <tr>' . "\n";
 	echo '    <th class="nav">';
 
@@ -205,8 +205,8 @@ function navbar($group, $current) {
 	}
 
 	echo '    </th>' . "\n";
-	echo '    <th align="center">' . "$group (#$current)</th>\n";
-	echo '    <th align="right" class="nav">';
+	echo '    <th class="align-center">' . "$group (#$current)</th>\n";
+	echo '    <th class="nav align-right">';
 	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
 	echo '    </th>' . "\n";
 	echo '   </tr>' . "\n";

@@ -36,7 +36,7 @@ head();
       href="http://trainedmonkey.com/colobus/">colobus</a>.
    </p>
   </div>
-  <table class="standard" width="100%">
+  <table class="standard">
    <tr>
     <th>name</th>
     <th>messages</th>
@@ -47,7 +47,7 @@ head();
 foreach ($groups as $group => $details) {
 	echo "       <tr>\n";
 	echo "        <td><a class=\"active{$details['status']}\" href=\"/$group\">$group</a></td>\n";
-	echo "        <td align=\"right\">", $details['high']-$details['low']+1, "</td>\n";
+	echo "        <td class=\"align-right\">", $details['high']-$details['low']+1, "</td>\n";
 	echo "        <td>";
 	if ($details['status'] != 'n') {
 		echo "<a href=\"group.php?group=$group&amp;format=rss\">rss</a>";

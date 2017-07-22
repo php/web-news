@@ -352,6 +352,13 @@ table.standard th.subr {
 	text-align: right;
 }
 
+.align-right{
+	text-align: right;
+}
+.align-center{
+	text-align: center;
+}
+
 .menu-icon {
 	display: none;
 	background: #4F5B93;
