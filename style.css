@@ -320,8 +320,7 @@ a.footer-nav-item-link:hover{
 /* Standard Tables */
 table.standard {
 	border-collapse: collapse;
-	border-style: hidden;
-	border:1px solid #d9d9d9;
+	border: 1px solid #d9d9d9;
 	width: 100%;
 	border-spacing:2px;
 }
@@ -364,6 +363,9 @@ table.standard th.subr {
 	text-align: right;
 }
 
+.responsive-table { overflow-x: scroll; }
+.responsive-table table { word-break: normal; }
+
 .align-right{
 	text-align: right;
 }
@@ -399,6 +401,13 @@ table.standard th.subr {
 }
 
 @media screen and (max-width: 580px) {
+	th.nav a {
+		font-size: 2rem;
+		text-decoration: none;
+	}
+	th.nav span {
+		display: none;
+	}
 	.menu-icon{
 		display: block;
 	}

@@ -199,7 +199,7 @@ function navbar($group, $current) {
 	echo '    <th class="nav">';
 
 	if ($current > 1) {
-		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; previous</b></a>';
+		echo '     <a href="/' , $group , '/' , ($current-1) , '"><b>&laquo; <span>previous</span></b></a>';
 	} else {
 		echo '&nbsp;';
 	}
@@ -207,7 +207,7 @@ function navbar($group, $current) {
 	echo '    </th>' . "\n";
 	echo '    <th class="align-center">' . "$group (#$current)</th>\n";
 	echo '    <th class="nav align-right">';
-	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b>next &raquo;</b></a>';
+	echo '     <a href="/' , $group , '/' , ($current+1) , '"><b><span>next</span> &raquo;</b></a>';
 	echo '    </th>' . "\n";
 	echo '   </tr>' . "\n";
 	echo '  </table>' . "\n";
