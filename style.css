@@ -2,39 +2,6 @@ img {
 	border: 0;
 }
 
-a:link    { 
-	color: #009;
-}
-
-a:hover, a:active   {
-	color: red;
-}
-
-a:visited {
-	color: purple;
-}
-
-.quote { 
-	color: green;
-}
-
-.signature {
-	font-size: smaller;
-	color: gray;
-}
-
-.signature a:link    {
-	color: #99F;
-}
-
-.signature a:hover, .signature a:active   {
-	color: #F99; 
-}
-
-.signature a:visited {
-	color: #F6F;
-}
-
 .monospace{
 	font-family: "Fira Mono", monospace;
 }
