@@ -98,15 +98,15 @@ body {
 
 .header-inner {
     max-width: 1440px;
+    padding: 0 .75rem;
     margin: auto;
     position: relative;
 }
 
 .header-brand {
-    margin-right: .75rem;
     display: inline-block;
     max-height: 48px;
-    padding: .75rem .75rem .75rem 1.5rem;
+    padding: .75rem .75rem .75rem .75rem;
     margin-right: 1.5rem;
     text-decoration: none;
     line-height: 24px;
