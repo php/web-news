@@ -10,11 +10,6 @@ img {
     font-size: 14px;
 }
 
-pre {
-    font-family: "Fira Mono", monospace;
-    font-size: 14px;
-}
-
 th {
     background: #CCC;
     font-weight: bold;
@@ -48,17 +43,6 @@ table.header {
     border-bottom: 17px solid #669;
 }
 
-.footer-mentions {
-    opacity: .3;
-    font-size: 75%;
-    text-align: right;
-}
-
-a.alt-link {
-    color: #F2F2F2;;
-    text-decoration: none;
-}
-
 .nav {
     width: 20%;
 }
@@ -80,7 +64,6 @@ body {
     font-weight: 400;
     font-size: 1rem;
     color: #333;
-    word-break: break-word;
 }
 
 .header {
@@ -270,6 +253,8 @@ h1:after {
 }
 
 pre {
+    font-family: "Fira Mono", monospace;
+    font-size: 14px;
     white-space: pre-wrap;
     word-wrap: break-word;
 }
