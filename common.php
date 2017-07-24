@@ -34,21 +34,21 @@ function head($title="PHP Mailing Lists (PHP News)") {
  <body>
   <header class="header">
    <nav class="header-inner">
-    <a href="/" class="header-brand"><img src="http://php.net/images/logos/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">lists</span></a><ul class="header-menu">
-      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/downloads.php">Downloads</a></li>
-      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/docs.php">Documentation</a></li>
-      <li class="header-menu-item"><a class="header-menu-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
-      <li class="header-menu-item mod-active"><a class="header-menu-item-link" href="http://php.net/support.php">Help</a></li>
+    <a href="/" class="header-brand"><img src="//php.net/images/logos/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48"><span class="header-brand-text">lists</span></a><ul class="header-menu">
+      <li class="header-menu-item"><a class="header-menu-item-link" href="https://php.net/downloads.php">Downloads</a></li>
+      <li class="header-menu-item"><a class="header-menu-item-link" href="https://php.net/docs.php">Documentation</a></li>
+      <li class="header-menu-item"><a class="header-menu-item-link" href="https://php.net/get-involved.php">Get Involved</a></li>
+      <li class="header-menu-item mod-active"><a class="header-menu-item-link" href="https://php.net/support.php">Help</a></li>
      </ul>
-     <form class="search-form" action="http://php.net/search.php">
+     <form class="search-form" action="https://php.net/search.php">
       <input class="search-input" value="" name="pattern" placeholder="Search">
      </form>
     <div class="menu-icon" onclick="document.querySelector('.menu-mobile').classList.toggle('hide')">☰ MENU</div>
      <ul class="menu-mobile hide">
-      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/downloads.php">Downloads</a></li>
-      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/docs.php">Documentation</a></li>
-      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="http://php.net/get-involved.php">Get Involved</a></li>
-      <li class="menu-mobile-item mod-active"><a class="menu-mobile-item-link" href="http://php.net/support.php">Help</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="https://php.net/downloads.php">Downloads</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="https://php.net/docs.php">Documentation</a></li>
+      <li class="menu-mobile-item"><a class="menu-mobile-item-link" href="https://php.net/get-involved.php">Get Involved</a></li>
+      <li class="menu-mobile-item mod-active"><a class="menu-mobile-item-link" href="https://php.net/support.php">Help</a></li>
      </ul>
    </nav>
   </header>
@@ -59,12 +59,12 @@ function foot() {?>
 
  <footer class="footer">
     <ul class="footer-nav">
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/copyright.php">Copyright © 2001-<?php echo date('Y'); ?> The PHP Group</a></li>
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/my.php">My PHP.net</a></li>
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/contact.php">Contact</a></li>
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/sites.php">Other PHP.net sites</a></li>
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/mirrors.php">Mirror sites</a></li>
-     <li class="footer-nav-item"><a class="footer-nav-item-link" href="http://php.net/privacy.php">Privacy policy</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="https://php.net/copyright.php">Copyright © 2001-<?php echo date('Y'); ?> The PHP Group</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="https://php.net/my.php">My PHP.net</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="https://php.net/contact.php">Contact</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="https://php.net/sites.php">Other PHP.net sites</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="https://php.net/mirrors.php">Mirror sites</a></li>
+     <li class="footer-nav-item"><a class="footer-nav-item-link" href="https://php.net/privacy.php">Privacy policy</a></li>
     </ul>
  </footer>
  </body>

@@ -54,7 +54,7 @@ table.header {
 }
 
 html {
-    background: #333 url('/i/bg-texture-00.svg');
+    background: #333 url('//php.net/images/bg-texture-00.svg');
     color: #CCC;
 }
 
