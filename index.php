@@ -27,13 +27,8 @@ head();
     This is a completely experimental interface to the PHP mailing lists as
     reflected on the <a href="news://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'],ENT_QUOTES,"UTF-8"); ?>/">
     <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8"); ?> NNTP server</a>.
-   </p>
-   <p>
-    There may be a little more info in the <a href="README.md">README</a> file.
-   </p>
-   <p>
     The news server software that is used is <a
-      href="http://trainedmonkey.com/colobus/">colobus</a>.
+      href="https://trainedmonkey.com/projects/colobus/">colobus</a>.
    </p>
   </div>
   <table class="standard">
