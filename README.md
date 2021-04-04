@@ -4,7 +4,7 @@ You may run this project using PHP's [built-in web server][webserver]
 for local development.
 
 ```
-git clone https://git.php.net/repository/web/news.git web-news
+git clone https://github.com/php/web-news.git
 cd web-news/
 NNTP_HOST=news.php.net php -S localhost:8080 .router.php
 ```
