@@ -356,7 +356,7 @@ class fMailbox
 			list ($header, $value) = preg_split('#:\s*#', $header_line, 2);
 			$header = strtolower($header);
 
-			if (strpos($header, $filter) !== false) {
+			if ($filter !== null && strpos($header, $filter) !== false) {
 				continue;
 			}
 
