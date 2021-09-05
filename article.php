@@ -176,7 +176,7 @@ function start_article($mail, $refsResolved) {
 		echo '     <td class="headerlabel">Groups:</td>' . "\n";
 		echo '     <td class="headervalue" '.(empty($refsResolved) ? 'colspan="3"' : null).'>';
 		$r = explode(",", rtrim($mail['headers']['newsgroups']));
-		while (list($k,$v) = each($r)) {
+		foreach ($r as $v) {
 			echo "<a href=\"/".urlencode($v)."\">".htmlspecialchars($v)."</a>&nbsp;";
 		}
 		echo "</td>\n";
