@@ -348,7 +348,7 @@ class fMailbox
 		$multi_email_fields     = array('to', 'cc');
 		$additional_info_fields = array('content-type', 'content-disposition');
 
-		$headers = array();
+		$parsedHeaders = array();
 		foreach ($header_lines as $header_line) {
 			$header_line = preg_replace("#\r\n\s+#", ' ', $header_line);
 			$header_line = trim($header_line);
@@ -368,7 +368,7 @@ class fMailbox
 				$pieces = preg_split('#;\s*#', $value, 2);
 				$value = $pieces[0];
 
-				$headers[$header] = array('value' => self::decodeHeader($value));
+				$parsedHeaders[$header] = array('value' => self::decodeHeader($value));
 
 				$fields = array();
 				if (!empty($pieces[1])) {
@@ -377,10 +377,10 @@ class fMailbox
 						$fields[strtolower($match[1])] = self::decodeHeader(!empty($match[4]) ? $match[4] : $match[3]);
 					}
 				}
-				$headers[$header]['fields'] = $fields;
+				$parsedHeaders[$header]['fields'] = $fields;
 
 			} elseif ($is_single_email) {
-				$headers[$header] = self::parseEmail($value);
+				$parsedHeaders[$header] = self::parseEmail($value);
 
 			} elseif ($is_multi_email) {
 				$strings = array();
@@ -407,26 +407,26 @@ class fMailbox
 					);
 				}
 
-				$headers[$header] = array();
+				$parsedHeaders[$header] = array();
 				foreach ($emails as $email) {
-					$headers[$header][] = self::parseEmail($email);
+					$parsedHeaders[$header][] = self::parseEmail($email);
 				}
 
 			} elseif ($header == 'references') {
-				$headers[$header] = array_map(array('fMailbox', 'decodeHeader'), preg_split('#(?<=>)\s+(?=<)#', $value));
+				$parsedHeaders[$header] = array_map(array('fMailbox', 'decodeHeader'), preg_split('#(?<=>)\s+(?=<)#', $value));
 
 			} elseif ($header == 'received') {
-				if (!isset($headers[$header])) {
-					$headers[$header] = array();
+				if (!isset($parsedHeaders[$header])) {
+					$parsedHeaders[$header] = array();
 				}
-				$headers[$header][] = preg_replace('#\s+#', ' ', self::decodeHeader($value));
+				$parsedHeaders[$header][] = preg_replace('#\s+#', ' ', self::decodeHeader($value));
 
 			} else {
-				$headers[$header] = self::decodeHeader($value);
+				$parsedHeaders[$header] = self::decodeHeader($value);
 			}
 		}
 
-		return $headers;
+		return $parsedHeaders;
 	}
 
 	/**
