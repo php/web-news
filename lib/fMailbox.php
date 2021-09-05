@@ -348,7 +348,7 @@ class fMailbox
 		$multi_email_fields     = array('to', 'cc');
 		$additional_info_fields = array('content-type', 'content-disposition');
 
-		$parsedHeaders = array();
+		$parsed_headers = array();
 		foreach ($header_lines as $header_line) {
 			$header_line = preg_replace("#\r\n\s+#", ' ', $header_line);
 			$header_line = trim($header_line);
@@ -368,7 +368,7 @@ class fMailbox
 				$pieces = preg_split('#;\s*#', $value, 2);
 				$value = $pieces[0];
 
-				$parsedHeaders[$header] = array('value' => self::decodeHeader($value));
+				$parsed_headers[$header] = array('value' => self::decodeHeader($value));
 
 				$fields = array();
 				if (!empty($pieces[1])) {
@@ -377,10 +377,10 @@ class fMailbox
 						$fields[strtolower($match[1])] = self::decodeHeader(!empty($match[4]) ? $match[4] : $match[3]);
 					}
 				}
-				$parsedHeaders[$header]['fields'] = $fields;
+				$parsed_headers[$header]['fields'] = $fields;
 
 			} elseif ($is_single_email) {
-				$parsedHeaders[$header] = self::parseEmail($value);
+				$parsed_headers[$header] = self::parseEmail($value);
 
 			} elseif ($is_multi_email) {
 				$strings = array();
@@ -407,26 +407,26 @@ class fMailbox
 					);
 				}
 
-				$parsedHeaders[$header] = array();
+				$parsed_headers[$header] = array();
 				foreach ($emails as $email) {
-					$parsedHeaders[$header][] = self::parseEmail($email);
+					$parsed_headers[$header][] = self::parseEmail($email);
 				}
 
 			} elseif ($header == 'references') {
-				$parsedHeaders[$header] = array_map(array('fMailbox', 'decodeHeader'), preg_split('#(?<=>)\s+(?=<)#', $value));
+				$parsed_headers[$header] = array_map(array('fMailbox', 'decodeHeader'), preg_split('#(?<=>)\s+(?=<)#', $value));
 
 			} elseif ($header == 'received') {
-				if (!isset($parsedHeaders[$header])) {
-					$parsedHeaders[$header] = array();
+				if (!isset($parsed_headers[$header])) {
+					$parsed_headers[$header] = array();
 				}
-				$parsedHeaders[$header][] = preg_replace('#\s+#', ' ', self::decodeHeader($value));
+				$parsed_headers[$header][] = preg_replace('#\s+#', ' ', self::decodeHeader($value));
 
 			} else {
-				$parsedHeaders[$header] = self::decodeHeader($value);
+				$parsed_headers[$header] = self::decodeHeader($value);
 			}
 		}
 
-		return $parsedHeaders;
+		return $parsed_headers;
 	}
 
 	/**
