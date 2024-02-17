@@ -144,7 +144,7 @@ class Nntp
 			}
 
 			$line = rtrim($line);
-			list($n, $subject, $author, $date, $messageId, $references, $bytes, $lines, $extra) = explode("\t", $line, 9);
+			list($n, $subject, $author, $date, $messageId, $references, $lines, $extra) = explode("\t", $line, 9);
 
 			$overview['articles'][$n] = [
 				'subject' => $subject,
@@ -152,7 +152,6 @@ class Nntp
 				'date' => $date,
 				'messageId' => $messageId,
 				'references' => $references,
-				'bytes' => $bytes,
 				'lines' => $lines,
 				'extra' => $extra,
 			];
