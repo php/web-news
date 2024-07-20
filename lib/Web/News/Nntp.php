@@ -82,6 +82,22 @@ class Nntp
             }
         }
 
+        /* Get descriptions, too. */
+        $response = $this->sendCommand('LIST NEWSGROUPS', 215);
+
+        if ($response !== false) {
+            while ($line = fgets($this->connection)) {
+                if ($line == ".\r\n") {
+                    break;
+                }
+
+                $line = rtrim($line);
+                list($group, $description) = explode(' ', $line, 2);
+
+                $list[$group]['description'] = $description;
+            }
+        }
+
         return $list;
     }
 

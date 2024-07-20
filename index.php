@@ -38,24 +38,26 @@ head();
   <table class="standard">
    <tr>
     <th>name</th>
+    <th>description</th>
     <th>messages</th>
     <th>rss</th>
     <th>rdf</th>
    </tr>
    <tr>
-    <th colspan="4">Moderated Lists</th>
+    <th colspan="5">Moderated Lists</th>
    </tr>
 <?php
 $last_status = 'm';
 foreach ($groups as $group => $details) {
     if ($details['status'] != $last_status) {
         $last_status = $details['status'];
-        echo '<tr><th colspan="4">',
+        echo '<tr><th colspan="5">',
             $last_status == 'y' ? 'Discussion Lists' : 'Inactive Lists',
             "</th></tr>\n";
     }
     echo "       <tr>\n";
     echo "        <td><a class=\"active{$details['status']}\" href=\"/$group\">$group</a></td>\n";
+    echo "        <td>", htmlspecialchars($details['description']), "</td>\n";
     echo "        <td class=\"align-right\">", $details['high'] - $details['low'] + 1, "</td>\n";
     echo "        <td>";
     if ($details['status'] != 'n') {
