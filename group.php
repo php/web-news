@@ -63,8 +63,22 @@ echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/">P
 echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'">'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</a></li>';
 echo ' </ul>';
 echo '</nav>';
+
 echo '<section class="content">';
 echo '<h1>'.htmlspecialchars($group, ENT_QUOTES, "UTF-8").'</h1>';
+/* On main page, show a message if the group is not active. */
+if ($i == 0) {
+    $details = $nntpClient->listGroups($group);
+
+    if ($details[$group]['status'] == 'n') {
+?>
+    <p class="warning">
+        <strong>Warning:</strong>
+        This list is closed to new posts.
+    </p>
+<?php
+    }
+}
 navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
 echo ' <div class="responsive-table">' . "\n";
 echo '  <table class="standard">' . "\n";

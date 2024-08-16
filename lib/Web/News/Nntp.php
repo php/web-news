@@ -56,13 +56,19 @@ class Nntp
 
 	/**
 	 * Sends the LIST command to the server and returns an array of newsgroups
+         *
+         * TODO: this is actually 'LIST ACTIVE', could take an enum for types?
 	 *
 	 * @return array
 	 */
-	public function listGroups()
+	public function listGroups(string $match = "")
 	{
 		$list = [];
-		$response = $this->sendCommand('LIST', 215);
+                $command = 'LIST';
+                if ($match) {
+                    $command = 'LIST ACTIVE ' . $match;
+                }
+		$response = $this->sendCommand($command, 215);
 
 		if ($response !== false) {
 			while ($line = fgets($this->connection)) {
