@@ -38,21 +38,20 @@ head();
   </div>
   <table class="standard">
    <tr>
-    <th>name</th>
-    <th>description</th>
-    <th>messages</th>
-    <th>rss</th>
-    <th>rdf</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Messages</th>
+    <th>RSS</th>
    </tr>
    <tr>
-    <th colspan="5">Moderated Lists</th>
+    <th colspan="4">Moderated Lists</th>
    </tr>
 <?php
 $last_status = 'm';
 foreach ($groups as $group => $details) {
     if ($details['status'] != $last_status) {
         $last_status = $details['status'];
-        echo '<tr><th colspan="5">',
+        echo '<tr><th colspan="4">',
             $last_status == 'y' ? 'Discussion Lists' : 'Inactive Lists',
             "</th></tr>\n";
     }
@@ -60,14 +59,9 @@ foreach ($groups as $group => $details) {
     echo "        <td><a class=\"active{$details['status']}\" href=\"/$group\">$group</a></td>\n";
     echo "        <td>", htmlspecialchars($descriptions[$group]), "</td>\n";
     echo "        <td class=\"align-right\">", $details['high'] - $details['low'] + 1, "</td>\n";
-    echo "        <td>";
+    echo "        <td class=\"align-center\">";
     if ($details['status'] != 'n') {
-        echo "<a href=\"group.php?group=$group&amp;format=rss\">rss</a>";
-    }
-    echo "</td>\n";
-    echo "        <td>";
-    if ($details['status'] != 'n') {
-        echo "<a href=\"group.php?group=$group&amp;format=rdf\">rdf</a>";
+        echo "<a href=\"group.php?group=$group&amp;format=rss\">RSS</a>";
     }
     echo "</td>\n";
     echo "       </tr>\n";
