@@ -86,6 +86,34 @@ class Nntp
     }
 
     /**
+         * Sends the LIST NEWSGROUPS command to the server and returns an array of
+         * groups descriptions
+     *
+     * @return array
+     */
+    public function listGroupDescriptions()
+    {
+        $list = [];
+
+        $response = $this->sendCommand('LIST NEWSGROUPS', 215);
+
+        if ($response !== false) {
+            while ($line = fgets($this->connection)) {
+                if ($line == ".\r\n") {
+                    break;
+                }
+
+                $line = rtrim($line);
+                list($group, $description) = explode(' ', $line, 2);
+
+                $list[$group] = $description;
+            }
+        }
+
+        return $list;
+    }
+
+    /**
      * Sets the active group at the server and returns details about the group
      *
      * @param string $group Name of the group to set as the active group
