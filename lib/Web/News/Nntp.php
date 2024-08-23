@@ -82,7 +82,19 @@ class Nntp
             }
         }
 
-        /* Get descriptions, too. */
+        return $list;
+    }
+
+    /**
+         * Sends the LIST NEWSGROUPS command to the server and returns an array of
+         * groups descriptions
+     *
+     * @return array
+     */
+    public function listGroupDescriptions()
+    {
+        $list = [];
+
         $response = $this->sendCommand('LIST NEWSGROUPS', 215);
 
         if ($response !== false) {
@@ -94,7 +106,7 @@ class Nntp
                 $line = rtrim($line);
                 list($group, $description) = explode(' ', $line, 2);
 
-                $list[$group]['description'] = $description;
+                $list[$group] = $description;
             }
         }
 

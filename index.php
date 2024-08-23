@@ -5,6 +5,7 @@ require 'common.php';
 try {
     $nntpClient = new \Web\News\Nntp($NNTP_HOST);
     $groups = $nntpClient->listGroups();
+    $descriptions = $nntpClient->listGroupDescriptions();
     /* Reorder so it's moderated, active, and inactive */
     $order = [ 'm' => 1, 'y' => 2, 'n' => 3 ];
     uasort($groups, function ($a, $b) use ($order) {
@@ -57,7 +58,7 @@ foreach ($groups as $group => $details) {
     }
     echo "       <tr>\n";
     echo "        <td><a class=\"active{$details['status']}\" href=\"/$group\">$group</a></td>\n";
-    echo "        <td>", htmlspecialchars($details['description']), "</td>\n";
+    echo "        <td>", htmlspecialchars($descriptions[$group]), "</td>\n";
     echo "        <td class=\"align-right\">", $details['high'] - $details['low'] + 1, "</td>\n";
     echo "        <td>";
     if ($details['status'] != 'n') {
