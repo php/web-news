@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="Standard">
+    <rule ref="PSR12">
+    </rule>
+
+    <arg value="s" />
+    <arg name="colors" />
+    <arg name="extensions" value="php"/>
+
+    <file>article.php</file>
+    <file>common.php</file>
+    <file>getpart.php</file>
+    <file>group.php</file>
+    <file>index.php</file>
+    <file>lib</file>
+</ruleset>

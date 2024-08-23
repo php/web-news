@@ -1,0 +1,22 @@
+{
+    "name": "php/web-news",
+    "description": "Web end to the PHP mailing lists using the NNTP server",
+    "license": "proprietary",
+    "type": "project",
+    "homepage": "https://www.php.net/",
+    "support": {
+        "source": "https://github.com/php/web-news"
+    },
+    "require": {
+        "php": "~8.1.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.1.0"
+        },
+        "sort-packages": true
+    }
+}
