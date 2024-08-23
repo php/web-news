@@ -69,6 +69,36 @@ switch ($format) {
         echo '</nav>';
         echo '<section class="content">';
         echo '<h1>' . htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</h1>';
+        if ($i == 0) {
+            /* Special header of info for the main page for a group */
+            $groups = $nntpClient->listGroups($group);
+
+            if ($groups[$group]['status'] == 'n') {
+?>
+                <p class="warning">
+                    <strong>Warning:</strong> This list is closed to new posts and subscribers.
+                </p>
+<?php
+            } else {
+                if ($groups[$group]['status'] == 'm') {
+?>
+                <p class="warning">
+                    <strong>Note:</strong> This list is only for
+                    announcements, so only approved posters can send messages.
+                </p>
+<?php
+                }
+                $subscription_address = htmlspecialchars(get_subscribe_address($group));
+?>
+                <p>
+                    Subscribe to this list by sending a blank email to
+                    <a href="mailto:<?= $subscription_address ?>">
+                      <?= $subscription_address ?>
+                    </a>
+                </p>
+<?php
+            }
+        }
         navbar($group, $overview['group']['low'], $overview['group']['high'], $overview['group']['start']);
         echo ' <div class="responsive-table">' . "\n";
         echo '  <table class="standard">' . "\n";

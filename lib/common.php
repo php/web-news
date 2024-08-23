@@ -217,3 +217,34 @@ function format_date($d)
     $d = gmdate('r', $d);
     return str_replace(" ", "&nbsp;", $d);
 }
+
+/*
+ * Translate a group name to a subscription address for the list. It's almost
+ * easy but then we have a bunch of special cases.
+ */
+function get_subscribe_address($group)
+{
+    $address = str_replace('.', '-', $group); // php.internals -> php-internals
+    $address = str_replace('php-doc-', 'doc-', $address); // php-doc-fr -> doc-fr
+    $address = str_replace('php-pear-', 'pear-', $address); // php-pear-dev -> pear-dev
+    $address = str_replace('php-pecl-', 'pecl-', $address); // php-pecl-dev -> pecl-dev
+    $address = str_replace('php-standards', 'standards-', $address); // php-standards-cvs -> standards-cvs
+
+    $special = [
+        'doc-chm' => 'php-doc-chm', # revert earlier removal of php-
+        'php-internals' => 'internals',
+        'php-internals-win' => 'internals-win',
+        'php-doc' => 'phpdoc',
+        'php-general-bg' => 'general-bg',
+        'php-general-es' => 'general-es',
+        'php-git-pulls' => 'git-pulls',
+        'php-pres' => 'pres',
+        'php-pdo' => 'pdo',
+    ];
+
+    if (array_key_exists($address, $special)) {
+        $address = $special[$address];
+    }
+
+    return $address . '-subscribe@lists.php.net';
+}
