@@ -117,12 +117,17 @@ echo "  <blockquote>\n";
 echo "   <pre>\n";
 
 $lines = preg_split("@(?<=\r\n|\n)@", $mail['text']);
-$insig = 0;
+$insig = $is_commit = $is_diff = 0;
 
 foreach ($lines as $line) {
     # fix lines that started with a period and got escaped
     if (substr($line, 0, 2) == "..") {
         $line = substr($line, 1);
+    }
+
+    # Notice commit messages so we can highlight the diffs
+    if (str_starts_with($line, 'Commit: https://github.com/php')) {
+        $is_commit = 1;
     }
 
     # this is some amazingly simplistic code to color quotes/signatures
@@ -139,11 +144,19 @@ foreach ($lines as $line) {
         echo "<span class=\"signature\">";
         $insig = 1;
     }
+    if (!$insig && $is_commit && preg_match('/^[-+]/', $line, $m)) {
+        $is_diff = 1;
+        echo '<span class="' . ($m[0] == '+' ? 'added' : 'removed') . '">';
+    }
     if (!$insig && preg_match('/^((\w*?&gt; ?)+)/', $line, $m)) {
         $level = substr_count($m[1], '&gt;') % 4;
         echo "<span class=\"quote$level\">", wordwrap($line, 90, "\n" . $m[1]), "</span>";
     } else {
         echo wordwrap($line, 90);
+    }
+    if ($is_diff) {
+        $is_diff = 0;
+        echo '</span>';
     }
 }
 

@@ -370,6 +370,10 @@ table.standard th.subr {
 .quote3 { color: #a36008; }
 .quote0 { color: #909; }
 
+/* Highlight of diffs in commit messages */
+.added   { color: #000099; }
+.removed { color: #990000; }
+
 /* Dim signatures */
 .signature { font-size: smaller; color: gray; }
 .signature a:link    { color: #9999ff; }
