@@ -30,10 +30,16 @@ head();
   <div class="welcome">
    <h1>PHP Mailing Lists</h1>
    <p>
-    This is a completely experimental interface to the PHP mailing lists as
-    reflected on the <a href="news://news.php.net/">news.php.net NNTP server</a>.
-    The news server software that is used is <a
-      href="https://trainedmonkey.com/projects/colobus/">colobus</a>.
+    The PHP project collaborates across a number of mailing lists. The archives
+    are available through this site as well as <a href="http://marc.info/">MARC</a>.
+    They are also available via NNTP at <a href="news://<?= htmlspecialchars($NNTP_HOST) ?>">
+    <?= htmlspecialchars($NNTP_HOST) ?></a>.
+   </p>
+   <p>
+    Instructions for subscribing to active lists by email can be found on the page
+    for each list (just follow the links below). Participation on each list is governed
+    by the <a href="https://github.com/php/php-src/blob/master/docs/mailinglist-rules.md">
+    mailing list rules</a>.
    </p>
   </div>
   <table class="standard">
