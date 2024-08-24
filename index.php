@@ -17,6 +17,7 @@ try {
 
 head();
 
+$DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news.php.net' : $NNTP_HOST);
 ?>
 
 <nav class="secondary-nav">
@@ -32,8 +33,8 @@ head();
    <p>
     The PHP project collaborates across a number of mailing lists. The archives
     are available through this site as well as <a href="http://marc.info/">MARC</a>.
-    They are also available via NNTP at <a href="news://<?= htmlspecialchars($NNTP_HOST) ?>">
-    <?= htmlspecialchars($NNTP_HOST) ?></a>.
+    They are also available via NNTP at <a href="news://<?= $DISPLAY_NNTP_HOST ?>">
+    <?= $DISPLAY_NNTP_HOST ?></a>.
    </p>
    <p>
     Instructions for subscribing to active lists by email can be found on the page
