@@ -139,10 +139,11 @@ foreach ($lines as $line) {
         echo "<span class=\"signature\">";
         $insig = 1;
     }
-    if (!$insig && substr($line, 0, 4) == "&gt;") {
-        echo "<span class=\"quote\">$line</span>";
+    if (!$insig && preg_match('/^((\w*?&gt; ?)+)/', $line, $m)) {
+        $level = substr_count($m[1], '&gt;') % 4;
+        echo "<span class=\"quote$level\">", wordwrap($line, 90, "\n" . $m[1]), "</span>";
     } else {
-        echo $line;
+        echo wordwrap($line, 90);
     }
 }
 

@@ -364,6 +364,19 @@ table.standard th.subr {
     display: none;
 }
 
+/* Shading for quotes */
+.quote1 { color: #006486; }
+.quote2 { color: #900; }
+.quote3 { color: #a36008; }
+.quote0 { color: #909; }
+
+/* Dim signatures */
+.signature { font-size: smaller; color: gray; }
+.signature a:link    { color: #9999ff; }
+.signature a:hover   { color: #ff9999; }
+.signature a:active  { color: #ff9999; }
+.signature a:visited { color: #ff66ff; }
+
 @media screen and (max-width: 760px) {
     .welcome {
         display: none;
