@@ -246,5 +246,5 @@ function get_subscribe_address($group)
         $address = $special[$address];
     }
 
-    return $address . '-subscribe@lists.php.net';
+    return $address . '+subscribe@lists.php.net';
 }
