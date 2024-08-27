@@ -119,7 +119,7 @@ function decode_header($charset, $encoding, $text)
     if (strtolower($encoding) == "b") {
         $text = base64_decode($text);
     } else {
-        $text = quoted_printable_decode($text);
+        $text = str_replace('_', ' ', quoted_printable_decode($text));
     }
     return to_utf8($text, $charset);
 }
@@ -201,7 +201,7 @@ function format_title($s, $charset = 'iso-8859-1')
 {
     global $article;
     $s = recode_header($s, $charset);
-    $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*)?\] /i", "\\1", $s);
+    $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*?)?\] /i", "\\1", $s);
     // make this look better on the preview page..
     if (strlen($s) > 150 && !isset($article)) {
         $s = substr($s, 0, 150) . "...";
