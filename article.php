@@ -1,6 +1,7 @@
 <?php
 
 require 'common.php';
+require 'lib/ThreadTree.php';
 
 if (isset($_GET['article'])) {
     $article = (int)$_GET['article'];
@@ -226,6 +227,36 @@ if (!empty($mail['attachment'])) {
 
 echo "   </pre>\n";
 echo "  </blockquote>\n";
+
+try {
+    $overview = $nntpClient->getThreadOverview($group, $article);
+
+    $threads = new \PhpWeb\ThreadTree($overview['articles']);
+    ?>
+      <blockquote>
+        <h2>
+          Thread (<?= sprintf("%d message%s", $count = $threads->count(), $count > 1 ? 's' : '') ?>)
+        </h2>
+        <div class="responsive-table">
+          <table class="standard">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Author</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php $threads->printRows($group, 'utf8'); ?>
+            </tbody>
+          </table>
+        </div>
+      </blockquote>
+    <?php
+} catch (\Throwable $t) {
+    // We don't care if there's no thread. (There should be, though.)
+}
 
 // Does not check existence of next, so consider this the super duper fast [broken] version
 // Based off navbar() in group.php
