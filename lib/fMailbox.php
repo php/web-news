@@ -350,8 +350,8 @@ class Mailbox
 
         $parsed_headers = array();
         foreach ($header_lines as $header_line) {
-            # remove newlines + leading space or HTAB, per RFC822
-            $header_line = preg_replace("#\r\n[ \x09]#", '', $header_line);
+            # "unfolding" headers means just removing \r\n followed by WS per RFC 5322
+            $header_line = preg_replace("#\r\n(\s)#", '\1', $header_line);
             $header_line = trim($header_line);
 
             list ($header, $value) = preg_split('#:\s*#', $header_line, 2);
