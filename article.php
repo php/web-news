@@ -116,6 +116,25 @@ echo "  </blockquote>\n";
 echo "  <blockquote>\n";
 echo "   <pre>\n";
 
+/*
+ * If there was no text part of the message, see what we can do about creating
+ * one from a text/html part, or just inject a note that there was no text to
+ * avoid further errors.
+ */
+if (!array_key_exists('text', $mail)) {
+    if (array_key_exists('html', $mail)) {
+        /*
+         * This just aggressively strips out all tags. For the examples at
+         * hand, this looked okay-ish. Better than nothing, at least, and
+         * should be totally safe because all of the text get re-encoded
+         * later.
+         */
+        $mail['text'] = html_entity_decode(strip_tags($mail['html']), encoding: 'UTF-8');
+    } else {
+        $mail['text'] = "> There was no text content in this message.";
+    }
+}
+
 $lines = preg_split("@(?<=\r\n|\n)@", $mail['text']);
 $insig = $is_commit = $is_diff = 0;
 
