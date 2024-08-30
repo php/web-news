@@ -129,7 +129,7 @@ if (!array_key_exists('text', $mail)) {
          * should be totally safe because all of the text get re-encoded
          * later.
          */
-        // This makes HTML from Apple's Mail app retain paragraph breaks
+        // This makes HTML from Fastmail retain paragraph breaks
         $text = preg_replace('#<div><br></div>#', "\n\n", $mail['html']);
         // And this avoids extra linebreaks from another example (Android?)
         $text = preg_replace("#\n<br>\n#", "\n", $mail['html']);
