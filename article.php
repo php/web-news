@@ -129,7 +129,9 @@ if (!array_key_exists('text', $mail)) {
          * should be totally safe because all of the text get re-encoded
          * later.
          */
-        $mail['text'] = html_entity_decode(strip_tags($mail['html']), encoding: 'UTF-8');
+        // This makes HTML from Apple's Mail app retain paragraph breaks
+        $text = preg_replace('#<div><br></div>#', "\n\n", $mail['html']);
+        $mail['text'] = html_entity_decode(strip_tags($text), encoding: 'UTF-8');
     } else {
         $mail['text'] = "> There was no text content in this message.";
     }
