@@ -190,6 +190,48 @@ class Nntp
     }
 
     /**
+     * Returns an overview of the articles in the same thread as the specified
+     * message
+     *
+     * @param string $group The name of the group to select
+     * @param int $article The number of an article in the thread
+     * @return array
+     */
+    public function getThreadOverview($group, $article)
+    {
+        $groupDetails = $this->selectGroup($group);
+
+        $overview = [
+            'group' => $groupDetails,
+            'articles' => [],
+        ];
+
+        $response = $this->sendCommand("XTHREAD {$article}", 224);
+
+        while ($line = fgets($this->connection)) {
+            if ($line == ".\r\n") {
+                break;
+            }
+
+            $line = rtrim($line);
+            list($n, $subject, $author, $date, $messageId, $references, $lines, $extra) = explode("\t", $line, 9);
+
+            $overview['articles'][$n] = [
+                'subject' => $subject,
+                'author' => $author,
+                'date' => $date,
+                'messageId' => $messageId,
+                'references' => $references,
+                'lines' => $lines,
+                'extra' => $extra,
+            ];
+
+        }
+
+        return $overview;
+    }
+
+    /**
      * Returns the full content of the specified article (headers and body)
      *
      * @param int $articleId
