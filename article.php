@@ -133,7 +133,7 @@ if (!array_key_exists('text', $mail)) {
         // This makes HTML from Fastmail retain paragraph breaks
         $text = preg_replace('#<div><br></div>#', "\n\n", $mail['html']);
         // And this avoids extra linebreaks from another example (Android?)
-        $text = preg_replace("#\n<br>\n#", "\n", $mail['html']);
+        $text = preg_replace("#\n<br>\n#", "\n", $text);
         $mail['text'] = html_entity_decode(strip_tags($text), encoding: 'UTF-8');
     } else {
         $mail['text'] = "> There was no text content in this message.";
