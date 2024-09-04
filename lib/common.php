@@ -181,11 +181,8 @@ function format_subject($s, $charset = 'iso-8859-1')
     global $article;
     $s = recode_header($s, $charset);
 
-    if ((($pos = strpos($s, '[PHP')) !== false || ($pos = strpos($s, '[PEAR')) !== false)) {
-        if (($end_pos = strpos($s, ']', $pos)) !== false) {
-            $s = ltrim(substr_replace($s, '', $pos, $end_pos - $pos + 1));
-        }
-    }
+    /* Trim most of the prefixes we add for lists */
+    $s = preg_replace('/^(Re:\s*)?(\s*\[(DOC|PEAR|PECL|PHP|ANNOUNCE)(-.+?)?]\s*)+/', '\1', $s);
 
     // make this look better on the preview page..
     if (strlen($s) > 150 && !isset($article)) {
