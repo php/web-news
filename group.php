@@ -92,7 +92,7 @@ switch ($format) {
                 $subscription_address = htmlspecialchars(get_subscribe_address($group));
                 ?>
                     <form class="subscription-form" method="POST" action="/subscribe.php">
-                        <input type="hidden" name="group" value="<?= htmlspecialchars($group) ?>">
+                        <input type="hidden" name="group" value="<?= clean($group) ?>">
                         <div>
                             <label for="email">Email address:</label>
                             <input type="email" id="email" name="email" required>
