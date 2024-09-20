@@ -12,5 +12,6 @@
     <file>getpart.php</file>
     <file>group.php</file>
     <file>index.php</file>
+    <file>subscribe.php</file>
     <file>lib</file>
 </ruleset>

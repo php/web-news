@@ -13,6 +13,91 @@ function error($str)
     die();
 }
 
+/* Borrowed from web-php repo. */
+function clean($var)
+{
+    return htmlspecialchars($var, \ENT_QUOTES);
+}
+
+// Try to check that this email address is valid
+function is_emailable_address($email)
+{
+    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    // No email, no validation
+    if (!$email) {
+        return false;
+    }
+
+    $host = substr($email, strrpos($email, '@') + 1);
+    // addresses from our mailing-list servers
+    $host_regex = "!(lists\.php\.net|chek[^.*]\.com)!i";
+    if (preg_match($host_regex, $host)) {
+        return false;
+    }
+
+    return true;
+}
+
+// Returns the real IP address of the user
+function i2c_realip()
+{
+    // No IP found (will be overwritten by for
+    // if any IP is found behind a firewall)
+    $ip = false;
+
+    // If HTTP_CLIENT_IP is set, then give it priority
+    if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
+        $ip = $_SERVER["HTTP_CLIENT_IP"];
+    }
+
+    // User is behind a proxy and check that we discard RFC1918 IP addresses
+    // if they are behind a proxy then only figure out which IP belongs to the
+    // user.  Might not need any more hackin if there is a squid reverse proxy
+    // infront of apache.
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // Put the IP's into an array which we shall work with shortly.
+        $ips = explode(", ", $_SERVER['HTTP_X_FORWARDED_FOR']);
+        if ($ip) {
+            array_unshift($ips, $ip);
+            $ip = false;
+        }
+
+        for ($i = 0; $i < count($ips); $i++) {
+            // Skip RFC 1918 IP's 10.0.0.0/8, 172.16.0.0/12 and
+            // 192.168.0.0/16
+            // Also skip RFC 6598 IP's
+            $regex = '/^(?:10|100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7])|172\.(?:1[6-9]|2\d|3[01])|192\.168)\./';
+            if (!preg_match($regex, $ips[$i]) && ip2long($ips[$i])) {
+                $ip = $ips[$i];
+                break;
+            }
+        }
+    }
+
+    // Return with the found IP or the remote address
+    return $ip ?: $_SERVER['REMOTE_ADDR'];
+}
+
+/*
+ This code is used to post data to the central server which
+ can store the data in database and/or mail notices or requests
+ to PHP.net stuff and servers
+*/
+function posttohost($url, $data)
+{
+    $data = http_build_query($data);
+
+    $opts = [
+        'method' => 'POST',
+        'header' => 'Content-type: application/x-www-form-urlencoded',
+        'content' => $data,
+    ];
+
+    $ctx = stream_context_create(['http' => $opts]);
+
+    return file_get_contents($url, false, $ctx);
+}
+
 function head($title = "PHP Mailing Lists (PHP News)")
 {
     header("Content-type: text/html; charset=utf-8");
@@ -216,10 +301,10 @@ function format_date($d)
 }
 
 /*
- * Translate a group name to a subscription address for the list. It's almost
+ * Translate a group name to the email address for the list. It's almost
  * easy but then we have a bunch of special cases.
  */
-function get_subscribe_address($group)
+function get_list_address($group)
 {
     $address = str_replace('.', '-', $group); // php.internals -> php-internals
     $address = str_replace('php-doc-', 'doc-', $address); // php-doc-fr -> doc-fr
@@ -243,5 +328,10 @@ function get_subscribe_address($group)
         $address = $special[$address];
     }
 
-    return $address . '+subscribe@lists.php.net';
+    return $address;
+}
+
+function get_subscribe_address($group, $mode = '')
+{
+    return get_list_address($group) . '+subscribe' . ($mode ? '-' . $mode : '') . '@lists.php.net';
 }

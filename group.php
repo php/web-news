@@ -91,8 +91,34 @@ switch ($format) {
                 }
                 $subscription_address = htmlspecialchars(get_subscribe_address($group));
                 ?>
+                    <form class="subscription-form" method="POST" action="/subscribe.php">
+                        <input type="hidden" name="group" value="<?= clean($group) ?>">
+                        <div>
+                            <label for="email">Email address:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="radio" name="type" value="" checked>
+                                Standard
+                            </label>
+                            <label>
+                                <input type="radio" name="type" value="digest">
+                                Digest
+                            </label>
+                            <label>
+                                <input type="radio" name="type" value="nomail">
+                                No emails
+                            </label>
+                        </div>
+                        <div>
+                            <button type="submit">
+                                Subscribe
+                            </button>
+                        </div>
+                    </form>
                     <p>
-                        Subscribe to this list by sending a blank email to
+                        You can also subscribe to this list by sending a blank email to
                         <a href="mailto:<?= $subscription_address ?>">
                           <?= $subscription_address ?>
                         </a>

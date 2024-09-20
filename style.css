@@ -381,6 +381,12 @@ table.standard th.subr {
 .signature a:active  { color: #ff9999; }
 .signature a:visited { color: #ff66ff; }
 
+/* Subscription form */
+form.subscription-form {
+    display: flex;
+    gap: 1em;
+}
+
 @media screen and (max-width: 760px) {
     .welcome {
         display: none;
