@@ -31,10 +31,13 @@ if (
 } else {
     $remote_addr = i2c_realip();
     $maillist = get_list_address($_POST['group']);
+    if ($_POST['type'] != '') {
+        $maillist .= '-' . $_POST['type'];
+    }
 
     if ($maillist) {
-        // Get in contact with main server to [un]subscribe the user
-        $result = post_to_host(
+        // Get in contact with main server to subscribe the user
+        $result = posttohost(
             "https://main.php.net/entry/subscribe.php",
             [
                 "request" => 'subscribe',
@@ -47,7 +50,7 @@ if (
             ],
         );
 
-        // Provide error if unable to [un]subscribe
+        // Provide error if unable to subscribe
         if ($result) {
             $error = "We were unable to subscribe you due to some technical problems.<br>" .
                      "Please try again later.";
