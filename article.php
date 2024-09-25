@@ -112,6 +112,13 @@ if (!empty($mail['headers']['newsgroups'])) {
     echo "</td>\n";
 }
 echo "    </tr>\n";
+# email to request archived copy
+$request_address = get_list_address($group) . '+get-' . $article . '@lists.php.net';
+echo '    <tr>' . "\n";
+echo '     <td class="headerlabel">Request:</td>' . "\n";
+echo '     <td class="headervalue" colspan="3">Send a blank email to <a href="mailto:' . clean($request_address) . '">' . clean($request_address)  . "</a> to get a copy of this message</td>\n";
+echo "    </tr>\n";
+echo "    <tr>\n";
 echo "   </table>\n";
 echo "  </blockquote>\n";
 echo "  <blockquote>\n";
