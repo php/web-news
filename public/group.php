@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/../lib/common.php';
+require __DIR__ . '/../lib/autoload.php';
 require __DIR__ . '/../lib/group-navbar.php';
 
 if (isset($_GET['group'])) {
