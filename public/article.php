@@ -1,7 +1,7 @@
 <?php
 
-require 'common.php';
-require 'lib/ThreadTree.php';
+require __DIR__ . '/../lib/common.php';
+require __DIR__ . '/../lib/ThreadTree.php';
 
 if (isset($_GET['article'])) {
     $article = (int)$_GET['article'];

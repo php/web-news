@@ -1,6 +1,6 @@
 <?php
 
-require 'common.php';
+require __DIR__ . '/../lib/common.php';
 
 try {
     $nntpClient = new \Web\News\Nntp($NNTP_HOST);

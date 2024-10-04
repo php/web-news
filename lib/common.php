@@ -1,5 +1,10 @@
 <?php
 
+# Why autoload when you can just load?
+require_once __DIR__ . '/../lib/config.php';
+require_once __DIR__ . '/../lib/Web/News/Nntp.php';
+require_once __DIR__ . '/../lib/fMailbox.php';
+
 /* Prevents the poor mail server from suffering if it receives a message with many references */
 /* (References: <xxx> or In-Reply-To: <xxx>) */
 define('REFERENCES_LIMIT', 20);

@@ -225,7 +225,6 @@ class Nntp
                 'lines' => $lines,
                 'extra' => $extra,
             ];
-
         }
 
         return $overview;

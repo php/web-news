@@ -1,6 +1,7 @@
 <?php
 
-require 'common.php';
+require __DIR__ . '/../lib/common.php';
+
 head("Subscribe to a group");
 echo '<section class="content">';
 

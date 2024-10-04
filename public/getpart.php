@@ -1,6 +1,6 @@
 <?php
 
-require 'common.php';
+require __DIR__ . '/../lib/common.php';
 
 if (isset($_GET['group'])) {
     $group = preg_replace('@[^A-Za-z0-9.-]@', '', $_GET['group']);
