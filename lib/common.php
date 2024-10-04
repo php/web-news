@@ -111,7 +111,7 @@ function head($title = "PHP Mailing Lists (PHP News)")
   <title><?php echo htmlspecialchars($title); ?></title>
   <link href="//fonts.googleapis.com/css?family=Fira+Sans|Source+Sans+Pro:300,400,600,400italic,600italic|Source+Code+Pro&amp;subset=latin,latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="/style.css" type="text/css" />
-  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="//php.net/favicon.ico">
  </head>
  <body>
   <header class="header">
