@@ -109,7 +109,7 @@ function head($title = "PHP Mailing Lists (PHP News)")
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($title); ?></title>
-  <link rel="stylesheet" href="/fonts/Fira/fira.css" type="text/css" />
+  <link href="//fonts.googleapis.com/css?family=Fira+Sans|Source+Sans+Pro:300,400,600,400italic,600italic|Source+Code+Pro&amp;subset=latin,latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="/style.css" type="text/css" />
   <link rel="shortcut icon" href="/favicon.ico">
  </head>
