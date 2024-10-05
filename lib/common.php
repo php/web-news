@@ -98,96 +98,30 @@ function posttohost($url, $data)
     return file_get_contents($url, false, $ctx);
 }
 
-function head($title = "PHP Mailing Lists (PHP News)")
+function head($TITLE = "PHP Mailing Lists (PHP News)")
 {
-    header("Content-type: text/html; charset=utf-8");
-
-    ?>
-<!doctype html>
-<html lang="en">
- <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo htmlspecialchars($title); ?></title>
-  <link href="//fonts.googleapis.com/css?family=Fira+Sans|Source+Sans+Pro:300,400,600,400italic,600italic|Source+Code+Pro&amp;subset=latin,latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css" type="text/css" />
-  <link rel="shortcut icon" href="//php.net/favicon.ico">
- </head>
- <body>
-  <header class="header">
-   <nav class="header-inner">
-    <a href="/" class="header-brand">
-      <img src="//php.net/images/logos/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48">
-      <span class="header-brand-text">lists</span>
-    </a>
-    <ul class="header-menu">
-      <li class="header-menu-item">
-        <a class="header-menu-item-link" href="https://php.net/downloads.php">Downloads</a>
-      </li>
-      <li class="header-menu-item">
-        <a class="header-menu-item-link" href="https://php.net/docs.php">Documentation</a>
-      </li>
-      <li class="header-menu-item">
-        <a class="header-menu-item-link" href="https://php.net/get-involved.php">Get Involved</a>
-      </li>
-      <li class="header-menu-item mod-active">
-        <a class="header-menu-item-link" href="https://php.net/support.php">Help</a>
-      </li>
-     </ul>
-     <form class="search-form" action="https://php.net/search.php">
-      <input class="search-input" value="" name="pattern" placeholder="Search">
-     </form>
-    <div class="menu-icon" onclick="document.querySelector('.menu-mobile').classList.toggle('hide')">☰ MENU</div>
-     <ul class="menu-mobile hide">
-      <li class="menu-mobile-item">
-        <a class="menu-mobile-item-link" href="https://php.net/downloads.php">Downloads</a>
-      </li>
-      <li class="menu-mobile-item">
-        <a class="menu-mobile-item-link" href="https://php.net/docs.php">Documentation</a>
-      </li>
-      <li class="menu-mobile-item">
-        <a class="menu-mobile-item-link" href="https://php.net/get-involved.php">Get Involved</a>
-      </li>
-      <li class="menu-mobile-item mod-active">
-        <a class="menu-mobile-item-link" href="https://php.net/support.php">Help</a>
-      </li>
-     </ul>
-   </nav>
-  </header>
-    <?php
+    $SUBDOMAIN = 'lists';
+    $LINKS = [
+        [ 'href' => '//php.net/downloads.php',    'text' => 'Downloads' ],
+        [ 'href' => '//php.net/get-involved.php', 'text' => 'Get Involved' ],
+        [ 'href' => '//php.net/docs.php',         'text' => 'Documentation' ],
+        [ 'href' => '//php.net/support.php',      'text' => 'Help' ],
+    ];
+    $CURRENT_PAGE = 'Help';
+    $CSS = [ ]; // $CSS is relative to shared for some godforsaken reason
+    $HEAD_WIKI = '<link rel="stylesheet" href="/style.css" type="text/css" />';
+    $SEARCH = [
+                   "method"      => "get",
+                   "action"      => "//php.net/search.php",
+                   "placeholder" => "Search",
+                   "name"        => "pattern",
+    ];
+    include __DIR__ . '/../shared/templates/header.inc';
 }
 
 function foot()
 {
-    ?>
-
- <footer class="footer">
-    <ul class="footer-nav">
-     <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/copyright.php">
-         Copyright ©2001-<?php echo date('Y'); ?> The PHP Group
-       </a>
-     </li>
-     <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/my.php">My PHP.net</a>
-     </li>
-     <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/contact.php">Contact</a>
-     </li>
-     <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/sites.php">Other PHP.net sites</a>
-     </li>
-     <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/mirrors.php">Mirror sites</a>
-     </li>
-     <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/privacy.php">Privacy policy</a>
-     </li>
-    </ul>
- </footer>
- </body>
-</html>
-    <?php
+    include __DIR__ . '/../shared/templates/footer.inc';
 }
 
 function to_utf8($str, $charset = 'iso-8859-1')

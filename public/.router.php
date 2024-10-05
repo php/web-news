@@ -29,4 +29,24 @@ if (preg_match('#^/(php.+|svn.+|ug.+)(/)?$#', $requestUri, $matches)) {
     return true;
 }
 
+// Shared
+if (preg_match('#^/shared(.+?)(\\?.+)?$#', $requestUri, $matches)) {
+    $file = 'shared' . $matches[1];
+    if (file_exists($file)) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $file);
+        if (preg_match('#\\.js$#', $file)) {
+            $mime_type = 'application/javascript';
+        }
+        if (preg_match('#\\.css$#', $file)) {
+            $mime_type = 'text/css';
+        }
+        header('Content-type: ' . $mime_type);
+        readfile($file);
+        finfo_close($finfo);
+        error_log("GOT $file ($mime_type)");
+        return true;
+    }
+}
+
 return false;

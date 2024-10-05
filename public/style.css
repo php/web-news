@@ -3,7 +3,7 @@ img {
 }
 
 .monospace {
-    font-family: "Fira Mono", monospace;
+    font-family: var(--font-family-mono);
 }
 
 .monospace.mod-small {
@@ -14,14 +14,6 @@ th {
     background: #CCC;
     font-weight: bold;
     text-align: center;
-}
-
-table.stripped tr:nth-child(even) td {
-    background: #EEE;
-}
-
-table.stripped tr:nth-child(odd) td {
-    background: #DDD;
 }
 
 .headerlabel {
@@ -38,151 +30,6 @@ a.top {
     text-decoration: none;
 }
 
-table.header {
-    background: #99C;
-    border-bottom: 17px solid #669;
-}
-
-.nav {
-    width: 20%;
-}
-
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-html {
-    background: #333 url('//php.net/images/bg-texture-00.svg');
-    color: #CCC;
-}
-
-body {
-    margin: 3.25rem 0 0;
-    font-family: "Fira Sans", "Source Sans Pro", Helvetica, Arial, sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    color: #333;
-}
-
-.header {
-    background: #8892BF;
-    box-shadow: 0 .25em .25em rgba(0, 0, 0, .1);
-    border-bottom: .25rem solid #4F5B93;
-    color: #FFF;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1;
-    margin-bottom: 0;
-}
-
-.header-inner {
-    max-width: 1440px;
-    padding: 0 .75rem;
-    margin: auto;
-    position: relative;
-}
-
-.header-brand {
-    display: inline-block;
-    max-height: 48px;
-    padding: .75rem .75rem .75rem .75rem;
-    margin-right: 1.5rem;
-    text-decoration: none;
-    line-height: 24px;
-}
-
-.header-brand-img {
-    opacity: .75;
-}
-
-.header-brand-text {
-    color: #E2E4EF;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    text-decoration: none;
-    line-height: 24px;
-    vertical-align: top;
-}
-
-.header-menu {
-    padding: 0;
-    list-style: none;
-    position: relative;
-    left: 0;
-    display: inline-block;
-    margin: 0 10px 0 0;
-    vertical-align: top;
-}
-
-.header-menu-item {
-    float: left;
-}
-
-.header-menu-item.mod-active {
-    color: #fff;
-    background-color: #4F5B93;
-    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
-}
-
-a.header-menu-item-link {
-    display: inline-block;
-    text-decoration: none;
-    float: none;
-    padding: .75rem;
-    color: #E2E4EF;
-    border: 0;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    line-height: 24px;
-}
-
-a.header-menu-item-link:hover {
-    color: #fff;
-}
-
-.menu-mobile {
-    background: #4F5B93;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.menu-mobile-item {
-    text-align: right;
-    display: inline-block;
-}
-
-a.menu-mobile-item-link {
-    display: inline-block;
-    text-decoration: none;
-    float: none;
-    padding: .75rem;
-    color: #E2E4EF;
-    border: 0;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    line-height: 24px;
-}
-
-.search-form {
-    float: right;
-    width: 25%;
-    position: relative;
-    margin-top: .625rem;
-    margin-bottom: 0;
-}
-
-.search-input {
-    width: 100%;
-    border: 0;
-    border-radius: 2px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2);
-    line-height: 24px;
-    height: 24px;
-    padding: 2px 8px;
-    font-size: 16px;
-}
 
 .secondary-nav {
     max-width: 1440px;
@@ -259,34 +106,6 @@ pre {
     word-wrap: break-word;
 }
 
-.footer {
-    color: #F2F2F2;
-    max-width: 1440px;
-    margin: auto;
-    padding: 1.5rem;
-    line-height: 3rem;
-}
-
-.footer-nav {
-    margin: 0;
-    padding: 0;
-}
-
-.footer-nav-item {
-    display: inline-block;
-    margin: 0 0.75rem;
-}
-
-a.footer-nav-item-link {
-    color: #ccc;
-    text-decoration: none;
-}
-
-a.footer-nav-item-link:hover {
-    color: #AE508D;
-    border-color: #AE508D;
-    outline: 0;
-}
 
 /* Standard Tables */
 table.standard {
@@ -385,43 +204,4 @@ table.standard th.subr {
 form.subscription-form {
     display: flex;
     gap: 1em;
-}
-
-@media screen and (max-width: 760px) {
-    .welcome {
-        display: none;
-    }
-
-    .search-form {
-        display: none;
-    }
-
-    blockquote {
-        margin: 16px;
-    }
-}
-
-@media screen and (max-width: 580px) {
-    th.nav a {
-        font-size: 2rem;
-        text-decoration: none;
-    }
-
-    th.nav span {
-        display: none;
-    }
-
-    .menu-icon {
-        display: block;
-    }
-
-    .header-menu {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 420px) {
-    .content {
-        padding: 0.5rem;
-    }
 }
