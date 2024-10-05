@@ -3,7 +3,7 @@
 require __DIR__ . '/../lib/autoload.php';
 
 head("Subscribe to a group");
-echo '<section class="content">';
+echo '<section class="fullscreen">';
 
 // No error found yet
 $error = "";

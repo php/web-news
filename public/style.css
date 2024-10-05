@@ -1,41 +1,13 @@
-img {
-    border: 0;
+.article {
+    background: #fff;
 }
-
-.monospace {
-    font-family: var(--font-family-mono);
+.article > :not(h1) {
+    padding: 0 2em;
 }
-
-.monospace.mod-small {
-    font-size: 14px;
-}
-
-th {
-    background: #CCC;
-    font-weight: bold;
-    text-align: center;
-}
-
-.headerlabel {
-    background: #CCC;
-    font-weight: bold;
-    text-align: right;
-}
-
-.headervalue {
-    background: #EEE;
-}
-
-a.top {
-    text-decoration: none;
-}
-
-
 .secondary-nav {
-    max-width: 1440px;
     margin: auto;
-    padding: .75rem 1.5rem;
-    font-size: 14px;
+    padding: 0 1.5rem;
+    font-size: 0.8rem;
 }
 
 .breadcrumbs {
@@ -54,111 +26,25 @@ a.top {
     content: "\203A";
 }
 
-a.breadcrumbs-item-link {
-    color: #ccc;
+.breadcrumbs a.breadcrumbs-item-link {
+    color: var(--dark-grey-color);
     text-decoration: none;
-    line-height: 24px;
+    border-bottom: none;
 }
-
-.content {
-    background: #F2F2F2;
-    max-width: 1440px;
-    margin: auto;
-    padding: 1.5rem;
-}
-
-.content a {
-    color: #369;
-}
-
-.content a:hover {
-    color: #AE508D;
-    border-color: #AE508D;
-    outline: 0;
-}
-
-.content a:visited {
-    color: #8895A2;
-}
-
-h1 {
-    font-weight: 500;
-    color: #333;
-    font-size: 1.75rem;
-    line-height: 3rem;
-    margin: 0 0 1.5rem;
-    overflow: hidden;
-    text-rendering: optimizeLegibility;
-}
-
-h1:after {
-    display: table;
-    width: 100%;
-    content: " ";
-    margin-top: -1px;
-    border-bottom: 1px dotted;
+.breadcrumbs a.breadcrumbs-item-link:hover {
+    color: var(--dark-magenta-color);
+    border-bottom: 1px solid var(--dark-magenta-color);
 }
 
 pre {
-    font-family: "Fira Mono", monospace;
-    font-size: 14px;
+    font-family: var(--font-family-mono);
     white-space: pre-wrap;
     word-wrap: break-word;
 }
 
-
-/* Standard Tables */
-table.standard {
-    border-collapse: collapse;
-    border: 1px solid #d9d9d9;
-    width: 100%;
-    border-spacing: 2px;
-}
-
-table.standard td,
-table.standard th {
-    border: 1px solid #d9d9d9;
-    padding: 2px;
-}
-
-table.standard tr:nth-child(even) td {
-    background-color: #E6E6E6;
-}
-
-table.standard th {
-    font-size: 1.125rem;
-    padding: 20px 10px 5px 10px;
-    color: #666;
-    font-weight: normal;
-}
-
-table.standard td {
-    padding: 5px 10px;
-    vertical-align: middle;
-}
-
-table.standard tr:nth-child(even) td.subr,
-table.standard tr:nth-child(even) th.subr,
-table.standard tr td.subr,
-table.standard tr th.subr,
-table.standard tr:nth-child(even) td.sub,
-table.standard tr:nth-child(even) th.sub,
-table.standard tr td.sub,
-table.standard tr th.sub {
-    background: #E6E6E6;
-}
-
-table.standard td.subr,
-table.standard th.subr {
+.headerlabel {
+    font-weight: bold;
     text-align: right;
-}
-
-.responsive-table {
-    overflow-x: scroll;
-}
-
-.responsive-table table {
-    word-break: normal;
 }
 
 .align-right {
@@ -167,20 +53,6 @@ table.standard th.subr {
 
 .align-center {
     text-align: center;
-}
-
-.menu-icon {
-    display: none;
-    background: #4F5B93;
-    padding: 14px 24px 10px;
-    line-height: 24px;
-    float: right;
-    color: #fff;
-    cursor: pointer;
-}
-
-.hide {
-    display: none;
 }
 
 /* Shading for quotes */
@@ -204,4 +76,8 @@ table.standard th.subr {
 form.subscription-form {
     display: flex;
     gap: 1em;
+}
+
+.tertiary-nav {
+    margin-top: 2em;
 }

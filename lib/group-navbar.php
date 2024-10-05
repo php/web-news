@@ -2,7 +2,7 @@
 
 function navbar($g, $f, $l, $i)
 {
-    echo '  <table class="standard">' . "\n";
+    echo '  <table class="tertiary-nav">' . "\n";
     echo '   <tr>' . "\n";
     echo '    <th class="nav">';
     if ($i > $f) {

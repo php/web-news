@@ -67,7 +67,7 @@ switch ($format) {
             htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</a></li>';
         echo ' </ul>';
         echo '</nav>';
-        echo '<section class="content">';
+        echo '<section class="article">';
         echo '<h1>' . htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</h1>';
         if ($i == 0) {
             /* Special header of info for the main page for a group */
@@ -176,8 +176,8 @@ foreach ($overview['articles'] as $articleNumber => $details) {
             echo format_subject($details['subject'], $charset);
             echo "</a></td>\n";
             echo "    <td class=\"vcard\">" . format_author($details['author'], $charset) . "</td>\n";
-            echo "    <td class=\"align-center\"><span class='monospace mod-small'>" .
-                format_date($details['date']) . "</span></td>\n";
+            echo "    <td class=\"align-center\">" .
+                format_date($details['date']) . "</td>\n";
             echo "    <td class=\"align-right\">{$details['lines']}</td>\n";
             echo "   </tr>\n";
     }

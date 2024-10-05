@@ -7,7 +7,7 @@ define('REFERENCES_LIMIT', 20);
 function error($str)
 {
     head("PHP news : error");
-    echo "<section class=\"content\"><blockquote><strong>Error:</strong> ",
+    echo "<section class=\"fullscreen\"><blockquote><strong>Error:</strong> ",
        to_utf8($str), "</blockquote></section>\n";
     foot();
     die();
@@ -109,7 +109,7 @@ function head($TITLE = "PHP Mailing Lists (PHP News)")
     ];
     $CURRENT_PAGE = 'Help';
     $CSS = [ ]; // $CSS is relative to shared for some godforsaken reason
-    $HEAD_WIKI = '<link rel="stylesheet" href="/style.css" type="text/css" />';
+    $HEAD_RAND = '<link rel="stylesheet" href="/style.css" type="text/css" />';
     $SEARCH = [
                    "method"      => "get",
                    "action"      => "//php.net/search.php",
