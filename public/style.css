@@ -1,0 +1,83 @@
+.article {
+    background: #fff;
+}
+.article > :not(h1) {
+    padding: 0 2em;
+}
+.secondary-nav {
+    margin: auto;
+    padding: 0 1.5rem;
+    font-size: 0.8rem;
+}
+
+.breadcrumbs {
+    color: #999;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.breadcrumbs-item {
+    display: inline-block;
+}
+
+.breadcrumbs-item + .breadcrumbs-item::before {
+    padding: 0 .5rem 0;
+    content: "\203A";
+}
+
+.breadcrumbs a.breadcrumbs-item-link {
+    color: var(--dark-grey-color);
+    text-decoration: none;
+    border-bottom: none;
+}
+.breadcrumbs a.breadcrumbs-item-link:hover {
+    color: var(--dark-magenta-color);
+    border-bottom: 1px solid var(--dark-magenta-color);
+}
+
+pre {
+    font-family: var(--font-family-mono);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.headerlabel {
+    font-weight: bold;
+    text-align: right;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+/* Shading for quotes */
+.quote1 { color: #006486; }
+.quote2 { color: #900; }
+.quote3 { color: #a36008; }
+.quote0 { color: #909; }
+
+/* Highlight of diffs in commit messages */
+.added   { color: #000099; }
+.removed { color: #990000; }
+
+/* Dim signatures */
+.signature { font-size: smaller; color: gray; }
+.signature a:link    { color: #9999ff; }
+.signature a:hover   { color: #ff9999; }
+.signature a:active  { color: #ff9999; }
+.signature a:visited { color: #ff66ff; }
+
+/* Subscription form */
+form.subscription-form {
+    display: flex;
+    gap: 1em;
+}
+
+.tertiary-nav {
+    margin-top: 2em;
+}

@@ -1,12 +1,14 @@
 # PHP.net News Server Web Interface
 
-You may run this project using PHP's [built-in web server][webserver]
-for local development.
+This can be run using PHP's [built-in web server][webserver]
+for local development. All message data is retrieved via NNTP,
+so there's no need for any other local setup.
 
-```
-git clone https://github.com/php/web-news.git
-cd web-news/
-NNTP_HOST=news.php.net php -S localhost:8080 .router.php
+```sh
+$ git clone https://github.com/php/web-news.git
+$ cd web-news/
+$ git clone https://github.com/php/web-shared.git shared
+$ NNTP_HOST=news.php.net php -S localhost:8080 -t public public/.router.php
 ```
 
 -----

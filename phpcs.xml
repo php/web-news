@@ -7,11 +7,6 @@
     <arg name="colors" />
     <arg name="extensions" value="php"/>
 
-    <file>article.php</file>
-    <file>common.php</file>
-    <file>getpart.php</file>
-    <file>group.php</file>
-    <file>index.php</file>
-    <file>subscribe.php</file>
     <file>lib</file>
+    <file>public</file>
 </ruleset>

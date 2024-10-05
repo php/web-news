@@ -69,8 +69,8 @@ class ThreadTree
             echo format_subject($details['subject'], $charset);
             echo "</a></td>\n";
             echo "    <td class=\"vcard\">" . format_author($details['author'], $charset) . "</td>\n";
-            echo "    <td class=\"align-center\"><span class='monospace mod-small'>" .
-                format_date($details['date']) . "</span></td>\n";
+            echo "    <td class=\"align-center\">" .
+                format_date($details['date']) . "</td>\n";
             echo "   </tr>\n";
         }
 

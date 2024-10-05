@@ -1,7 +1,7 @@
 <?php
 
-require 'common.php';
-require 'lib/ThreadTree.php';
+require __DIR__ . '/../lib/autoload.php';
+require __DIR__ . '/../lib/ThreadTree.php';
 
 if (isset($_GET['article'])) {
     $article = (int)$_GET['article'];
@@ -68,14 +68,13 @@ echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/' .
     htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</a></li>';
 echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/' .
     htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '/' . $article . '">' .
-    format_title($mail['headers']['subject']) . '</a></li>';
+    format_title($mail['headers']['subject'], 'utf-8') . '</a></li>';
 echo ' </ul>';
 echo '</nav>';
-echo '<section class="content">';
+echo '<section class="article">';
 
 echo '<h1>' . format_subject($mail['headers']['subject'], 'utf-8') . "</h1>\n";
 
-echo "  <blockquote>\n";
 echo '   <table class="standard">' . "\n";
 # from
 echo '    <tr class="vcard">' . "\n";
@@ -120,8 +119,6 @@ echo '     <td class="headervalue" colspan="3">Send a blank email to <a href="ma
 echo "    </tr>\n";
 echo "    <tr>\n";
 echo "   </table>\n";
-echo "  </blockquote>\n";
-echo "  <blockquote>\n";
 echo "   <pre>\n";
 
 /*
@@ -233,14 +230,12 @@ if (!empty($mail['attachment'])) {
 }
 
 echo "   </pre>\n";
-echo "  </blockquote>\n";
 
 try {
     $overview = $nntpClient->getThreadOverview($group, $article);
 
     $threads = new \PhpWeb\ThreadTree($overview['articles']);
     ?>
-      <blockquote>
         <h2>
           Thread (<?= sprintf("%d message%s", $count = $threads->count(), $count > 1 ? 's' : '') ?>)
         </h2>
@@ -259,7 +254,6 @@ try {
             </tbody>
           </table>
         </div>
-      </blockquote>
     <?php
 } catch (\Throwable $t) {
     // We don't care if there's no thread. (There should be, though.)
@@ -270,7 +264,7 @@ try {
 $group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 $current = $article;
 
-echo '  <table class="standard">' . "\n";
+echo '  <table class="tertiary-nav">' . "\n";
 echo '   <tr>' . "\n";
 echo '    <th class="nav">';
 

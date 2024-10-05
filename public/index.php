@@ -1,6 +1,6 @@
 <?php
 
-require 'common.php';
+require __DIR__ . '/../lib/autoload.php';
 
 try {
     $nntpClient = new \Web\News\Nntp($NNTP_HOST);
@@ -20,13 +20,7 @@ head();
 $DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news.php.net' : $NNTP_HOST);
 ?>
 
-<nav class="secondary-nav">
- <ul class="breadcrumbs">
-  <li><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>
- </ul>
-</nav>
-
- <section class="content">
+ <section class="article">
 
   <div class="welcome">
    <h1>PHP Mailing Lists</h1>
@@ -76,6 +70,9 @@ foreach ($groups as $group => $details) {
 ?>
   </table>
  </section>
+
+    <section class="secondaryscreen">
+    </section>
 <?php
 
 foot();
