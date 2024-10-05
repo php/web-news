@@ -7,6 +7,7 @@ so there's no need for any other local setup.
 ```sh
 $ git clone https://github.com/php/web-news.git
 $ cd web-news/
+$ git clone https://github.com/php/web-shared.git shared
 $ NNTP_HOST=news.php.net php -S localhost:8080 -t public public/.router.php
 ```
 
