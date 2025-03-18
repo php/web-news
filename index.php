@@ -32,9 +32,8 @@ $DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news.php.ne
    <h1>PHP Mailing Lists</h1>
    <p>
     The PHP project collaborates across a number of mailing lists. The archives
-    are available through this site as well as <a href="http://marc.info/">MARC</a>.
-    They are also available via NNTP at <a href="news://<?= $DISPLAY_NNTP_HOST ?>">
-    <?= $DISPLAY_NNTP_HOST ?></a>.
+    are available through this site and via NNTP at
+    <a href="news://<?= $DISPLAY_NNTP_HOST ?>"> <?= $DISPLAY_NNTP_HOST ?></a>.
    </p>
    <p>
     Instructions for subscribing to active lists by email can be found on the page
