@@ -387,6 +387,68 @@ form.subscription-form {
     gap: 1em;
 }
 
+/* Thread tree, based on: https://www.cssscript.com/tree-view-unlimited-nesting/ */
+.list-tree {
+  --tree-clr: #075985;
+  --tree-font-size: 1rem;
+  --tree-item-height: 1.5;
+  --tree-offset: 0.5rem;
+  --tree-indent: 0.5rem;
+  --tree-thickness: 1px;
+  --tree-style: solid;
+}
+.list-tree ul{
+  display: grid;
+  list-style: none;
+  font-size: var(--tree-font-size);
+  padding-inline-start: var(--tree-indent);
+}
+.list-tree li{
+  line-height: var(--tree-item-height);
+  padding-inline-start: var(--tree-offset);
+  border-left: var(--tree-thickness) var(--tree-style) var(--tree-clr);
+  position: relative;
+  text-indent: .5rem;
+
+  &:last-child {
+    border-color: transparent; /* hide (not remove!) border on last li element*/
+  }
+  & span{
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: 100;
+    opacity: .65;
+
+  }
+  &::before{
+    content: '';
+    position: absolute;
+    top: calc(var(--tree-font-size) / 2 + var(--tree-item-height) / 2 * -1 * var(--tree-font-size) + var(--tree-thickness));
+    left: calc(var(--tree-thickness) * -1);
+    width: calc(var(--tree-offset) + var(--tree-thickness) * 2);
+    height: calc(var(--tree-item-height)  * var(--tree-font-size) - var(--tree-font-size) / 2);
+    border-left: var(--tree-thickness) var(--tree-style) var(--tree-clr);
+    border-bottom: var(--tree-thickness) var(--tree-style) var(--tree-clr);
+  }
+  &::after{
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--tree-clr);
+    top: calc(var(--tree-item-height) / 2 * 1rem);
+    left: var(--tree-offset) ;
+    translate: calc(var(--tree-thickness) * -1) calc(var(--tree-thickness) * -1);
+  }
+  & li li{
+    /*
+    change line color etc.
+    --tree-clr: rgb(175, 208, 84);
+    */
+  }
+}
+
 @media screen and (max-width: 760px) {
     .welcome {
         display: none;

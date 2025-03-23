@@ -238,36 +238,39 @@ function spam_protect($txt)
 
 
 # this turns some common forms of email addresses into mailto: links
-function format_author($a, $charset = 'iso-8859-1')
+function format_author($a, $charset = 'iso-8859-1', $nameOnly = false)
 {
     $a = recode_header($a, $charset);
     if (preg_match("/^\s*(.+)\s+\\(\"?(.+?)\"?\\)\s*$/", $a, $ar)) {
+        $email= spam_protect($ar[1]);
+        $name = $ar[2];
+    }
+    elseif (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/", $a, $ar)) {
+        $email = spam_protect($ar[2]);
+        $name = $ar[1];
+    }
+    elseif (strpos("@", $a) !== false) {
+       $email = $name = spam_protect($a);
+    } else {
+        $email = $name = $a;
+    }
+    if ($nameOnly) {
+        return str_replace(" ", "&nbsp;", htmlspecialchars($name, ENT_QUOTES, "UTF-8"));
+    } else {
         return "<a href=\"mailto:" .
-            htmlspecialchars(urlencode(spam_protect($ar[1])), ENT_QUOTES, "UTF-8") .
+            htmlspecialchars(urlencode($email), ENT_QUOTES, "UTF-8") .
             "\" class=\"email fn n\">" .
-            str_replace(" ", "&nbsp;", htmlspecialchars($ar[2], ENT_QUOTES, "UTF-8")) . "</a>";
+            str_replace(" ", "&nbsp;", $name) . "</a>";
     }
-    if (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/", $a, $ar)) {
-        return "<a href=\"mailto:" .
-            htmlspecialchars(urlencode(spam_protect($ar[2])), ENT_QUOTES, "UTF-8") .
-            "\" class=\"email fn n\">" .
-            str_replace(" ", "&nbsp;", htmlspecialchars($ar[1], ENT_QUOTES, "UTF-8")) . "</a>";
-    }
-    if (strpos("@", $a) !== false) {
-        $a = spam_protect($a);
-        return "<a href=\"mailto:" . htmlspecialchars(urlencode($a), ENT_QUOTES, "UTF-8") .
-            "\" class=\"email fn n\">" . htmlspecialchars($a, ENT_QUOTES, "UTF-8") . "</a>";
-    }
-    return str_replace(" ", "&nbsp;", htmlspecialchars($a, ENT_QUOTES, "UTF-8"));
 }
 
-function format_subject($s, $charset = 'iso-8859-1')
+function format_subject($s, $charset = 'iso-8859-1', $trimRe = false)
 {
     global $article;
     $s = recode_header($s, $charset);
 
     /* Trim most of the prefixes we add for lists */
-    $s = preg_replace('/^(Re:\s*)?(\s*\[(DOC|PEAR|PECL|PHP|ANNOUNCE|GIT-PULLS|STANDARDS|php-standards)(-.+?)?]\s*)+/', '\1', $s);
+    $s = preg_replace('/^(Re:\s*)?(\s*\[(DOC|PEAR|PECL|PHP|ANNOUNCE|GIT-PULLS|STANDARDS|php-standards)(-.+?)?]\s*)+/i', $trimRe ? '' : '\1', $s);
 
     // make this look better on the preview page..
     if (strlen($s) > 150 && !isset($article)) {
@@ -279,11 +282,11 @@ function format_subject($s, $charset = 'iso-8859-1')
 }
 
 
-function format_title($s, $charset = 'iso-8859-1')
+function format_title($s, $charset = 'iso-8859-1', $trimRe = false)
 {
     global $article;
     $s = recode_header($s, $charset);
-    $s = preg_replace("/^(Re: *)?\[(PHP|PEAR)(-.*?)?\] /i", "\\1", $s);
+    $s = preg_replace("/^(Re:\s*)?\[(PHP|PEAR)(-.*?)?\]\s/i", $trimRe ? "" : "\\1", $s);
     // make this look better on the preview page..
     if (strlen($s) > 150 && !isset($article)) {
         $s = substr($s, 0, 150) . "...";
@@ -293,10 +296,10 @@ function format_title($s, $charset = 'iso-8859-1')
     return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
 }
 
-function format_date($d)
+function format_date($d, $format = 'r')
 {
     $d = strtotime($d);
-    $d = gmdate('r', $d);
+    $d = gmdate($format, $d);
     return str_replace(" ", "&nbsp;", $d);
 }
 
