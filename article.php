@@ -122,7 +122,8 @@ echo "    <tr>\n";
 echo "   </table>\n";
 echo "  </blockquote>\n";
 echo "  <blockquote>\n";
-echo "   <pre>\n";
+$class = $mail['flowed'] ? ' class="flowed"' : '';
+echo "   <pre$class>\n";
 
 /*
  * If there was no text part of the message, see what we can do about creating
@@ -149,10 +150,16 @@ if (!array_key_exists('text', $mail)) {
 
 $lines = preg_split("@(?<=\r\n|\n)@", $mail['text']);
 $insig = $is_commit = $is_diff = 0;
+$level = 0;
+$in_flow = $was_flowed = false;
+$in_code_block = false;
 
 foreach ($lines as $line) {
+    # Trim end of line
+    $line = preg_replace('/\r?\n$/', '', $line);
+
     # fix lines that started with a period and got escaped
-    if (substr($line, 0, 2) == "..") {
+    if (str_starts_with($line, "..")) {
         $line = substr($line, 1);
     }
 
@@ -161,39 +168,159 @@ foreach ($lines as $line) {
         $is_commit = 1;
     }
 
-    # this is some amazingly simplistic code to color quotes/signatures
-    # differently, and turn links into real links. it actually appears
-    # to work fairly well, but could easily be made more sophistimicated.
-    /* NOQUOTES? Why? It creates invalid HTML: http:"x */
-    $line = htmlentities($line, ENT_QUOTES, "utf-8");
+    # We don't use htmlentities() because it seems like overkill and that
+    # makes all of the later substitutions more complicated.
+    $line = htmlspecialchars($line, ENT_QUOTES|ENT_SUBSTITUTE|ENT_HTML5, "utf-8");
+
+    # Turn bare links, not within [] or (), to HTML links
     $line = preg_replace(
-        "/((mailto|https?|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/",
-        "<a href=\"\\1\">\\1</a>\\3",
+        "/(^|[^[(])((mailto|https?|ftp|nntp|news):.+?)(&gt;|\\s|\\)|\\.\\s|$)/",
+        "\\1<a href=\"\\2\">\\2</a>\\4",
         $line
     );
-    if (!$insig && ($line == "-- \r\n" || $line == "--\r\n")) {
+
+    # Turn Markdown links to HTML links
+    $line = preg_replace(
+        "/\[((mailto|https?|ftp|nntp|news):.+?)\]\((.+?)\)/",
+        "<a href=\"\\1\">\\3</a>",
+        $line
+    );
+
+    # Highlight inline code
+    $line = preg_replace(
+        "/`([^`]+?)`/",
+        "<code>\\1</code>",
+        $line
+    );
+
+    # Begin signature when we see the tell-tale '-- ' line
+    if (!$insig && $line == "-- ") {
         echo "<span class=\"signature\">";
         $insig = 1;
     }
+
+    # In commit messages, highlight lines that start with + or -
     if (!$insig && $is_commit && preg_match('/^[-+]/', $line, $m)) {
         $is_diff = 1;
         echo '<span class="' . ($m[0] == '+' ? 'added' : 'removed') . '">';
     }
-    if (!$insig && preg_match('/^((\w*?&gt; ?)+)/', $line, $m)) {
-        $level = substr_count($m[1], '&gt;') % 4;
-        echo "<span class=\"quote$level\">", wordwrap($line, 90, "\n" . $m[1]), "</span>";
-    } else {
-        echo wordwrap($line, 90);
+
+    # This gets a little tricker -- "flowed" messages basically have long
+    # quoted lines broken up, so we can put quoted blocks in levels of <div>
+    # blocks instead of highlighting them per-line
+
+    if (!$insig && $mail['flowed']) {
+        $flowed = false;
+        $new_level = 0;
+
+        if (preg_match('/^((\s*&gt;)+)(.*)/', $line, $m)) {
+            $new_level = substr_count($m[1], $m[2]);
+            $line = $m[3];
+        }
+
+        # Trim leading space (a format=flowed thing)
+        if (str_starts_with($line, ' ')) {
+            $line = substr($line, 1);
+        }
+
+        # A "flowed" line ends with a space. We also remove it if DelSp = "Yes".
+        if (str_ends_with($line, ' ')) {
+            $flowed = true;
+            if ($mail['delsp']) {
+                $line = substr($line, 0, -1);
+            }
+        }
+
+        # If this line had more quoting, go ahead and open to that level
+        if ($new_level && $new_level > $level) {
+            foreach (range($level + 1, $new_level) as $this_level) {
+                echo "<div class=\"quote quote{$this_level}\">";
+            }
+            $level = $new_level;
+            $in_flow = true;
+        }
+        # Otherwise if we are in a flow, but this line's level is lower (but
+        # not 0), we need to close up the higher levels
+        elseif ($in_flow && $new_level && $new_level < $level) {
+            echo str_repeat('</div>', $level - $new_level);
+            $level = $new_level;
+        }
+
+        # Handle indented code blocks
+        if (preg_match('/( |\xC2\xA0){4}/', $line)) {
+            if (!$in_code_block) {
+                echo '<pre>';
+                $in_code_block = true;
+            }
+        } elseif (!$flowed && !$was_flowed) {
+            if ($in_code_block && is_bool($in_code_block)) {
+                echo '</pre>';
+                $in_code_block = false;
+            }
+        }
+
+        # Handle ``` delimited code blocks
+        if (preg_match('/^```(\w+)?$/', $line, $m)) {
+            if ($in_code_block) {
+                echo '</pre>';
+                $in_code_block = false;
+                continue;
+            } else {
+                $language = $m[1] ?? 'php';
+                echo "<pre class=\"language_{$language}\">";
+                $in_code_block = $language;
+                continue;
+            }
+        }
+
+        # Hey, it's the actual line of text!
+        echo $line;
+
+        # If the line is fixed, we close a flow or just add a newline
+        if (!$flowed) {
+            if ($level != $new_level) {
+                # Close out code block if we were in one
+                if ($in_code_block) {
+                    echo '</pre>';
+                    $in_code_block = false;
+                }
+                echo str_repeat("</div>", $level) . "\n";
+                $level = 0;
+                $in_flow = false;
+            } else {
+                echo "\n";
+            }
+        }
+
+        $was_flowed = $flowed;
     }
+    # Otherwise we're in a signature or not flowed
+    else {
+        if (!$insig && preg_match('/^((\s*\w*?&gt; ?)+)/', $line, $m)) {
+            $level = substr_count($m[1], '&gt;') % 4;
+            echo "<span class=\"quote$level\">", wordwrap($line, 100, "\n" . $m[1]), "</span>";
+        } else {
+            echo wordwrap($line, 100);
+        }
+        echo "\n";
+    }
+
+    # If this line was a diff, close out the <span>
     if ($is_diff) {
         $is_diff = 0;
         echo '</span>';
     }
 }
 
+if ($in_code_block) {
+    echo '</pre>';
+}
 if ($insig) {
     echo "</span>";
     $insig = 0;
+}
+if ($mail['flowed'] && $level) {
+    echo str_repeat('</div>', $level);
 }
 
 echo "<br><br>";

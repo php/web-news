@@ -189,8 +189,12 @@ class Mailbox
 
 
         $has_disposition = !empty($structure['disposition']);
-        $is_text         = $structure['type'] == 'text' && $structure['subtype'] == 'plain';
         $is_html         = $structure['type'] == 'text' && $structure['subtype'] == 'html';
+        $is_text         = $structure['type'] == 'text' && $structure['subtype'] == 'plain';
+        if ($is_text) {
+            $info['flowed']  = strtolower($structure['type_fields']['format'] ?? "") == 'flowed';
+            $info['delsp']   = strtolower($structure['type_fields']['delsp'] ?? "") == 'yes';
+        }
 
         // If the part doesn't have a disposition and is not the default text or html, set the disposition to inline
         if (!$has_disposition && ((!$is_text || !empty($info['text'])) && (!$is_html || !empty($info['html'])))) {
