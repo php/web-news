@@ -274,5 +274,26 @@ echo '    </th>' . "\n";
 echo '   </tr>' . "\n";
 echo '  </table>' . "\n";
 echo '</section>';
+?>
+<script>
+    function localizeTimeElements() {
+      const timeElements = document.querySelectorAll('time[datetime]');
+
+      timeElements.forEach(timeElement => {
+        const iso8601String = timeElement.getAttribute('datetime');
+        const date = new Date(iso8601String);
+
+        if (!isNaN(date.getTime())) { // Check if the date is valid
+          timeElement.textContent = date.toLocaleString();
+        } else {
+          console.error(`Invalid datetime attribute: ${iso8601String}`);
+        }
+      });
+    }
+
+    // Call the function when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', localizeTimeElements);
+</script>
+<?
 
 foot();

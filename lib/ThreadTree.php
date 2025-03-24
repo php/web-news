@@ -155,7 +155,9 @@ class ThreadTree
                 format_author($details['author'], $charset, nameOnly: true),
                 '</span>',
                 '<span class="date">',
+                '<time datetime="', format_date($details['date'], 'c'), '">',
                 format_date($details['date'], "D, j M Y H:i"),
+                '</time>',
                 '</span>';
 
             $newSubject = format_subject($details['subject'], $charset, trimRe: true);
