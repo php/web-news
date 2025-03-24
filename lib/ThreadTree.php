@@ -156,7 +156,7 @@ class ThreadTree
                 '</span>',
                 '<span class="date">',
                 '<time datetime="', format_date($details['date'], 'c'), '">',
-                format_date($details['date'], "D, j M Y H:i"),
+                format_date($details['date']),
                 '</time>',
                 '</span>';
 
