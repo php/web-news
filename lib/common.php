@@ -270,7 +270,7 @@ function format_subject($s, $charset = 'iso-8859-1', $trimRe = false)
     $s = recode_header($s, $charset);
 
     /* Trim most of the prefixes we add for lists */
-    $s = preg_replace('/^(Re:\s*)?(\s*\[(DOC|PEAR|PECL|PHP|ANNOUNCE|GIT-PULLS|STANDARDS|php-standards)(-.+?)?]\s*)+/i', $trimRe ? '' : '\1', $s);
+    $s = preg_replace('/^(Re:\s*)?(\s*\[(DOC|PEAR|PECL|PHP|ANNOUNCE|GIT-PULLS|STANDARDS|php-standards)(-.+?)?]\s*(Re:\s*)?)+/', $trimRe ? '' : '\1\5', $s);
 
     // make this look better on the preview page..
     if (strlen($s) > 150 && !isset($article)) {
