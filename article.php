@@ -371,21 +371,7 @@ try {
         <h2>
           Thread (<?= sprintf("%d message%s", $count = $threads->count(), $count > 1 ? 's' : '') ?>)
         </h2>
-        <div class="responsive-table">
-          <table class="standard">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Subject</th>
-                <th>Author</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $threads->printRows($group, 'utf8'); ?>
-            </tbody>
-          </table>
-        </div>
+        <?php $threads->printFullThread($group, $article, charset: 'utf8'); ?>
       </blockquote>
     <?php
 } catch (\Throwable $t) {
@@ -415,5 +401,26 @@ echo '    </th>' . "\n";
 echo '   </tr>' . "\n";
 echo '  </table>' . "\n";
 echo '</section>';
+?>
+<script>
+    function localizeTimeElements() {
+      const timeElements = document.querySelectorAll('time[datetime]');
+
+      timeElements.forEach(timeElement => {
+        const iso8601String = timeElement.getAttribute('datetime');
+        const date = new Date(iso8601String);
+
+        if (!isNaN(date.getTime())) { // Check if the date is valid
+          timeElement.textContent = date.toLocaleString();
+        } else {
+          console.error(`Invalid datetime attribute: ${iso8601String}`);
+        }
+      });
+    }
+
+    // Call the function when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', localizeTimeElements);
+</script>
+<?
 
 foot();
