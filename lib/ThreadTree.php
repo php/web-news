@@ -151,13 +151,18 @@ class ThreadTree
                 echo "<b>";
             }
             echo
+                '<span class="author">',
                 format_author($details['author'], $charset, nameOnly: true),
-                " &mdash; ",
-                format_date($details['date'], "F j, Y, g:i a");
+                '</span>',
+                '<span class="date">',
+                format_date($details['date'], "D, j M Y H:i"),
+                '</span>';
 
             $newSubject = format_subject($details['subject'], $charset, trimRe: true);
-            if ($newSubject != $subject) {
-                echo " &mdash; " . format_subject($details['subject'], $charset);
+            if ($messageId != $this->root && $newSubject != $subject) {
+                echo '<span class="subject">';
+                echo format_subject($details['subject'], $charset);
+                echo '</span>';
             }
 
             if ($articleNumber != $activeArticleNumber) {
@@ -181,8 +186,7 @@ class ThreadTree
                 echo '</ul>';
             }
 
+            echo "</li>";
         }
-
-        echo "</li>";
     }
 }

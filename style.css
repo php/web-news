@@ -402,6 +402,7 @@ form.subscription-form {
   list-style: none;
   font-size: var(--tree-font-size);
   padding-inline-start: var(--tree-indent);
+  max-width: 50em;
 }
 .list-tree li{
   line-height: var(--tree-item-height);
@@ -413,12 +414,24 @@ form.subscription-form {
   &:last-child {
     border-color: transparent; /* hide (not remove!) border on last li element*/
   }
-  & span{
-    font-size: 0.8rem;
-    font-style: italic;
-    font-weight: 100;
-    opacity: .65;
 
+  & a, & b {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-item: start;
+      & span.author {
+        grid-column: 1 / 1;
+        white-space: normal;
+      }
+      & span.date {
+        grid-column: 2 / 2;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      & span.subject {
+        grid-column: 1 / 2;
+        white-space: normal;
+      }
   }
   &::before{
     content: '';
