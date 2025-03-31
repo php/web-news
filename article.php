@@ -371,21 +371,7 @@ try {
         <h2>
           Thread (<?= sprintf("%d message%s", $count = $threads->count(), $count > 1 ? 's' : '') ?>)
         </h2>
-        <div class="responsive-table">
-          <table class="standard">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Subject</th>
-                <th>Author</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php $threads->printRows($group, 'utf8'); ?>
-            </tbody>
-          </table>
-        </div>
+        <?php $threads->printFullThread($group, $article, charset: 'utf8'); ?>
       </blockquote>
     <?php
 } catch (\Throwable $t) {
