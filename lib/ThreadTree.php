@@ -94,4 +94,101 @@ class ThreadTree
             $this->printArticleAndChildren($root, $group, $charset, 1);
         }
     }
+
+    public function printFullThread(
+        $group,
+        $includingArticleNumber,
+        $charset = null
+    ) {
+        echo "<div class=\"list-tree\"><ul>";
+        $this->printThread(
+            group: $group,
+            messageId: $this->root,
+            activeArticleNumber: $includingArticleNumber,
+            charset: $charset,
+        );
+
+        foreach ($this->extraRootChildren as $childMessageId) {
+            $this->printThread(
+                group: $group,
+                activeArticleNumber: $includingArticleNumber,
+                messageId: $childMessageId,
+                charset: $charset,
+            );
+        }
+
+        echo "</ul></div>";
+    }
+
+    public function printThread(
+        $group,
+        $messageId = null,
+        $activeArticleNumber = null,
+        $depth = 0,
+        $subject = "",
+        $charset = 'utf8'
+    ) {
+        if ($depth > 40) {
+            echo "<li>Too deep!</li>";
+            return;
+        }
+
+        if (array_key_exists($messageId, $this->articleNumbers)) {
+            $articleNumber = $this->articleNumbers[$messageId];
+
+            # for debugging that we've actually handled all articles
+            #unset($this->articleNumbers[$messageId]);
+
+            $details = $this->articles[$articleNumber];
+
+            echo '<li>';
+
+            $details = $this->articles[$articleNumber];
+
+            if ($articleNumber != $activeArticleNumber) {
+                echo "<a href=\"/$group/$articleNumber\">";
+            } else {
+                echo "<b>";
+            }
+            echo
+                '<span class="author">',
+                format_author($details['author'], $charset, nameOnly: true),
+                '</span>',
+                '<span class="date">',
+                '<time datetime="', format_date($details['date'], 'c'), '">',
+                format_date($details['date']),
+                '</time>',
+                '</span>';
+
+            $newSubject = format_subject($details['subject'], $charset, trimRe: true);
+            if ($messageId != $this->root && $newSubject != $subject) {
+                echo '<span class="subject">';
+                echo format_subject($details['subject'], $charset);
+                echo '</span>';
+            }
+
+            if ($articleNumber != $activeArticleNumber) {
+                echo "</a>";
+            } else {
+                echo "</b>";
+            }
+
+            if (array_key_exists($messageId, $this->tree)) {
+                echo '<ul>';
+                foreach ($this->tree[$messageId] as $childMessageId) {
+                    $this->printThread(
+                        group: $group,
+                        activeArticleNumber: $activeArticleNumber,
+                        messageId: $childMessageId,
+                        subject: $newSubject,
+                        charset: $charset,
+                        depth: $depth + 1,
+                    );
+                }
+                echo '</ul>';
+            }
+
+            echo "</li>";
+        }
+    }
 }
