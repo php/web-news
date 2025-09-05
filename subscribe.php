@@ -38,7 +38,7 @@ if (
     if ($maillist) {
         // Get in contact with main server to subscribe the user
         $result = posttohost(
-            "https://main.php.net/entry/subscribe.php",
+            "https://main.internal.php.net/entry/subscribe.php",
             [
                 "request" => 'subscribe',
                 "email" => $_POST['email'],
