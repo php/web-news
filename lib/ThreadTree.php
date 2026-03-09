@@ -133,16 +133,14 @@ class ThreadTree
             return;
         }
 
+
+        # for debugging that we've actually handled all articles
+        #unset($this->articleNumbers[$messageId]);
+
+        echo '<li>';
+
         if (array_key_exists($messageId, $this->articleNumbers)) {
             $articleNumber = $this->articleNumbers[$messageId];
-
-            # for debugging that we've actually handled all articles
-            #unset($this->articleNumbers[$messageId]);
-
-            $details = $this->articles[$articleNumber];
-
-            echo '<li>';
-
             $details = $this->articles[$articleNumber];
 
             if ($articleNumber != $activeArticleNumber) {
@@ -172,23 +170,26 @@ class ThreadTree
             } else {
                 echo "</b>";
             }
-
-            if (array_key_exists($messageId, $this->tree)) {
-                echo '<ul>';
-                foreach ($this->tree[$messageId] as $childMessageId) {
-                    $this->printThread(
-                        group: $group,
-                        activeArticleNumber: $activeArticleNumber,
-                        messageId: $childMessageId,
-                        subject: $newSubject,
-                        charset: $charset,
-                        depth: $depth + 1,
-                    );
-                }
-                echo '</ul>';
-            }
-
-            echo "</li>";
+        } else {
+            echo "<i>Unknown Message</i>";
+            $newSubject = $messageId;
         }
+
+        if (array_key_exists($messageId, $this->tree)) {
+            echo '<ul>';
+            foreach ($this->tree[$messageId] as $childMessageId) {
+                $this->printThread(
+                    group: $group,
+                    activeArticleNumber: $activeArticleNumber,
+                    messageId: $childMessageId,
+                    subject: $newSubject,
+                    charset: $charset,
+                    depth: $depth + 1,
+                );
+            }
+            echo '</ul>';
+        }
+
+        echo "</li>";
     }
 }
