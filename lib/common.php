@@ -92,8 +92,12 @@ function posttohost($url, $data)
         'header' => 'Content-type: application/x-www-form-urlencoded',
         'content' => $data,
     ];
+    $sslOpts = [
+        'allow_self_signed' => true, // this connects internally
+        'verify_peer_name' => false, // our self-signed cert is for 'php.net'
+    ];
 
-    $ctx = stream_context_create(['http' => $opts]);
+    $ctx = stream_context_create(['http' => $opts, 'ssl' => $sslOpts]);
 
     return file_get_contents($url, false, $ctx);
 }
