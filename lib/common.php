@@ -182,9 +182,6 @@ function foot()
        <a class="footer-nav-item-link" href="https://php.net/sites.php">Other PHP.net sites</a>
      </li>
      <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/mirrors.php">Mirror sites</a>
-     </li>
-     <li class="footer-nav-item">
        <a class="footer-nav-item-link" href="https://php.net/privacy.php">Privacy policy</a>
      </li>
     </ul>
