@@ -12,6 +12,9 @@ class Nntp
      */
     protected $connection;
 
+    private $hostname;
+    private $port;
+
     /**
      * Constructs an Nntp object
      *
@@ -20,8 +23,18 @@ class Nntp
      */
     public function __construct($hostname, $port = 119)
     {
+        $this->hostname = $hostname;
+        $this->port = $port;
+    }
+
+    private function connect(): self
+    {
+        if ($this->connection) {
+            return $this;
+        }
+
         $errno = $errstr = null;
-        $this->connection = @fsockopen($hostname, $port, $errno, $errstr, 30);
+        $this->connection = @fsockopen($this->hostname, $this->port, $errno, $errstr, 30);
 
         if (!$this->connection) {
             throw new \RuntimeException(
@@ -43,6 +56,8 @@ class Nntp
                 // Successful connection
                 break;
         }
+
+        return $this;
     }
 
     /**
@@ -50,6 +65,10 @@ class Nntp
      */
     public function __destruct()
     {
+        if (!$this->connection) {
+            return;
+        }
+
         $this->sendCommand('QUIT', 205);
         fclose($this->connection);
         $this->connection = null;
@@ -72,7 +91,7 @@ class Nntp
                 }
 
                 $line = rtrim($line);
-                list($group, $high, $low, $status) = explode(' ', $line);
+                [$group, $high, $low, $status] = explode(' ', $line);
 
                 $list[$group] = [
                     'high' => $high,
@@ -104,7 +123,7 @@ class Nntp
                 }
 
                 $line = rtrim($line);
-                list($group, $description) = explode(' ', $line, 2);
+                [$group, $description] = explode(' ', $line, 2);
 
                 $list[$group] = $description;
             }
@@ -125,7 +144,7 @@ class Nntp
         $response = $this->sendCommand("GROUP {$group}", 211);
 
         if ($response !== false) {
-            list($number, $low, $high, $group) = explode(' ', $response);
+            [$number, $low, $high, $group] = explode(' ', $response);
 
             return [
                 'group' => $group,
@@ -173,7 +192,7 @@ class Nntp
             }
 
             $line = rtrim($line);
-            list($n, $subject, $author, $date, $messageId, $references, $lines, $extra) = explode("\t", $line, 9);
+            [$n, $subject, $author, $date, $messageId, $references, $lines, $extra] = explode("\t", $line, 9);
 
             $overview['articles'][$n] = [
                 'subject' => $subject,
@@ -214,7 +233,7 @@ class Nntp
             }
 
             $line = rtrim($line);
-            list($n, $subject, $author, $date, $messageId, $references, $lines, $extra) = explode("\t", $line, 9);
+            [$n, $subject, $author, $date, $messageId, $references, $lines, $extra] = explode("\t", $line, 9);
 
             $overview['articles'][$n] = [
                 'subject' => $subject,
@@ -272,7 +291,7 @@ class Nntp
     public function xpath($messageId)
     {
         $response = $this->sendCommand("XPATH {$messageId}", 223);
-        list($group, $articleId) = explode('/', $response);
+        [$group, $articleId] = explode('/', $response);
 
         return [
             'messageId' => $messageId,
@@ -290,9 +309,11 @@ class Nntp
      */
     protected function sendCommand($command, $expected)
     {
+        $this->connect();
+
         fwrite($this->connection, "$command\r\n");
         $result = fgets($this->connection);
-        list($code, $response) = explode(' ', $result, 2);
+        [$code, $response] = explode(' ', $result, 2);
 
         if ($code == $expected) {
             return rtrim($response);
