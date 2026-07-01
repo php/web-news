@@ -17,7 +17,7 @@ if (isset($_GET['group'])) {
 
 $nntpClient = new \Web\News\Nntp($NNTP_HOST);
 
-$articleInfo = memo(
+['mail' => $mail, 'refsResolved' => $refsResolved] = memo(
     "article:{$group}/{$article}",
     TTL_ARTICLE_CONTENT, // permanent cache
     function() use ($article, $group, $nntpClient) {
@@ -64,15 +64,9 @@ $articleInfo = memo(
             error($e->getMessage());
         }
 
-        return [ 'mail' => $mail, 'refsResolved' => $refsResolved, 'references' => $references ];
+        return [ 'mail' => $mail, 'refsResolved' => $refsResolved ];
     },
 );
-
-[
-    'mail' => $mail,
-    'refsResolved' => $refsResolved,
-    'references' => $references,
-] = $articleInfo;
 
 head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
 echo '<nav class="secondary-nav">';
