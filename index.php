@@ -2,10 +2,12 @@
 
 require 'common.php';
 
+$DATA_TTL = 600;
+
 try {
     $nntpClient = new \Web\News\Nntp($NNTP_HOST);
-    $groups = $nntpClient->listGroups();
-    $descriptions = $nntpClient->listGroupDescriptions();
+    $groups = memo('groups:list', $DATA_TTL, fn() => $nntpClient->listGroups());
+    $descriptions = memo('groups:descriptions', $DATA_TTL, fn() => $nntpClient->listGroupDescriptions());
     /* Reorder so it's moderated, active, and inactive */
     $order = [ 'm' => 1, 'y' => 2, 'n' => 3 ];
     uasort($groups, function ($a, $b) use ($order) {

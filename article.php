@@ -15,49 +15,64 @@ if (isset($_GET['group'])) {
     $group = false;
 }
 
-try {
-    $nntpClient = new \Web\News\Nntp($NNTP_HOST);
-    $message = $nntpClient->readArticle($article, $group);
+$nntpClient = new \Web\News\Nntp($NNTP_HOST);
 
-    if ($message === null) {
-        error('No article found');
-    }
+$articleInfo = memo(
+    "article:{$group}/{$article}",
+    TTL_ARTICLE_CONTENT, // permanent cache
+    function() use ($article, $group, $nntpClient) {
+        try {
+            $message = $nntpClient->readArticle($article, $group);
 
-    $mail = \Flourish\Mailbox::parseMessage($message);
-
-    $rawReferences = [];
-    if (!empty($mail['headers']['references'])) {
-        $rawReferences = $mail['headers']['references'];
-    } elseif (!empty($mail['headers']['in-reply-to'])) {
-        $rawReferences = $mail['headers']['in-reply-to'];
-    }
-
-    $references = [];
-    foreach ($rawReferences as $ref) {
-        $matches = [];
-        if (preg_match_all('/\<(.*?)\>/', $ref, $matches)) {
-            foreach ($matches[0] as $match) {
-                $references[] = $match;
+            if ($message === null) {
+                error('No article found');
             }
-        }
-    }
 
-    $refsResolved = [];
+            $mail = \Flourish\Mailbox::parseMessage($message);
 
-    $refCount = 0;
-    foreach ($references as $messageId) {
-        if (!$messageId) {
-            continue;
+            $rawReferences = [];
+            if (!empty($mail['headers']['references'])) {
+                $rawReferences = $mail['headers']['references'];
+            } elseif (!empty($mail['headers']['in-reply-to'])) {
+                $rawReferences = $mail['headers']['in-reply-to'];
+            }
+
+            $references = [];
+            foreach ($rawReferences as $ref) {
+                $matches = [];
+                if (preg_match_all('/\<(.*?)\>/', $ref, $matches)) {
+                    foreach ($matches[0] as $match) {
+                        $references[] = $match;
+                    }
+                }
+            }
+
+            $refsResolved = [];
+
+            $refCount = 0;
+            foreach ($references as $messageId) {
+                if (!$messageId) {
+                    continue;
+                }
+                if ($refCount >= REFERENCES_LIMIT) {
+                    break;
+                }
+                $refsResolved[] = $nntpClient->xpath($messageId);
+                $refCount++;
+            }
+        } catch (Exception $e) {
+            error($e->getMessage());
         }
-        if ($refCount >= REFERENCES_LIMIT) {
-            break;
-        }
-        $refsResolved[] = $nntpClient->xpath($messageId);
-        $refCount++;
-    }
-} catch (Exception $e) {
-    error($e->getMessage());
-}
+
+        return [ 'mail' => $mail, 'refsResolved' => $refsResolved, 'references' => $references ];
+    },
+);
+
+[
+    'mail' => $mail,
+    'refsResolved' => $refsResolved,
+    'references' => $references,
+] = $articleInfo;
 
 head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
 echo '<nav class="secondary-nav">';
@@ -363,7 +378,11 @@ echo "   </pre>\n";
 echo "  </blockquote>\n";
 
 try {
-    $overview = $nntpClient->getThreadOverview($group, $article);
+    $overview = memo(
+        "threads:{$group}/{$article}/overview",
+        TTL_THREAD_META,
+        fn() => $nntpClient->getThreadOverview($group, $article),
+    );
 
     $threads = new \PhpWeb\ThreadTree($overview['articles']);
     ?>

@@ -22,9 +22,9 @@ if (isset($_GET['i'])) {
     $i = 0;
 }
 
+$nntpClient = new \Web\News\Nntp($NNTP_HOST);
 try {
-    $nntpClient = new \Web\News\Nntp($NNTP_HOST);
-    $overview = $nntpClient->getArticlesOverview($group, $i);
+    $overview = memo("articles-overview:{$group}/p{$i}", TTL_THREAD_META, fn() => $nntpClient->getArticlesOverview($group, $i));
 } catch (Exception $e) {
     error($e->getMessage());
 }
@@ -71,7 +71,7 @@ switch ($format) {
         echo '<h1>' . htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</h1>';
         if ($i == 0) {
             /* Special header of info for the main page for a group */
-            $groups = $nntpClient->listGroups($group);
+            $groups = memo("group:{$group}/list", TTL_THREAD_META, fn() => $nntpClient->listGroups($group));
 
             if ($groups[$group]['status'] == 'n') {
                 ?>

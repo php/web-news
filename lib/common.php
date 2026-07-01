@@ -342,3 +342,43 @@ function get_subscribe_address($group, $mode = '')
 {
     return get_list_address($group) . '+subscribe' . ($mode ? '-' . $mode : '') . '@lists.php.net';
 }
+
+function memo(string $key, int $refreshAfter, Closure $callback): mixed
+{
+    $cacheKey = sha1($key);
+
+    // as this may have thousands of files, they're broken down into nested directories
+    $cacheDir = ($_ENV['CACHE_DIR'] ?? (__DIR__ . '/../.cache')) . '/' . substr($cacheKey, 0, 2);
+    if (!is_dir($cacheDir)) {
+        mkdir($cacheDir, recursive: true);
+    }
+
+    // note: uses unserialize to avoid empty array ambiguity issues, it is recommended to set CACHE_DIR
+    // to somewhere that can only be written to by this process
+    $cachePath = $cacheDir . '/' . $cacheKey;
+    if (file_exists($cachePath) && ($refreshAfter == -1 || (filemtime($cachePath) > time() - $refreshAfter))) {
+        $fp = fopen($cachePath, 'r');
+        $data = null;
+        if ($fp && flock($fp, LOCK_SH)) {
+            $data = stream_get_contents($fp);
+            flock($fp, LOCK_UN);
+        }
+
+        if ($fp) {
+            fclose($fp);
+        }
+
+        if ($data !== null && $data !== false) {
+            return unserialize($data);
+        }
+    }
+
+    $result = $callback();
+    @file_put_contents($cachePath, serialize($result), LOCK_EX);
+
+    return $result;
+}
+
+define('TTL_ARTICLE_CONTENT', -1);
+define('TTL_THREAD_META', 120);
+define('TTL_GROUPS', 3600);
