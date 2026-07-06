@@ -115,45 +115,45 @@ function head($title = "PHP Mailing Lists (PHP News)")
   <title><?php echo htmlspecialchars($title); ?></title>
   <link href="//fonts.googleapis.com/css?family=Fira+Sans|Source+Sans+Pro:300,400,600,400italic,600italic|Source+Code+Pro&amp;subset=latin,latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="/style.css" type="text/css" />
-  <link rel="shortcut icon" href="//php.net/favicon.ico">
+  <link rel="shortcut icon" href="//www.php.net/favicon.ico">
  </head>
  <body>
   <header class="header">
    <nav class="header-inner">
     <a href="/" class="header-brand">
-      <img src="//php.net/images/logos/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48">
+      <img src="//www.php.net/images/logos/php-logo.svg" class="header-brand-img" alt="PHP" height="24" width="48">
       <span class="header-brand-text">lists</span>
     </a>
     <ul class="header-menu">
       <li class="header-menu-item">
-        <a class="header-menu-item-link" href="https://php.net/downloads.php">Downloads</a>
+        <a class="header-menu-item-link" href="https://www.php.net/downloads.php">Downloads</a>
       </li>
       <li class="header-menu-item">
-        <a class="header-menu-item-link" href="https://php.net/docs.php">Documentation</a>
+        <a class="header-menu-item-link" href="https://www.php.net/docs.php">Documentation</a>
       </li>
       <li class="header-menu-item">
-        <a class="header-menu-item-link" href="https://php.net/get-involved.php">Get Involved</a>
+        <a class="header-menu-item-link" href="https://www.php.net/get-involved.php">Get Involved</a>
       </li>
       <li class="header-menu-item mod-active">
-        <a class="header-menu-item-link" href="https://php.net/support.php">Help</a>
+        <a class="header-menu-item-link" href="https://www.php.net/support.php">Help</a>
       </li>
      </ul>
-     <form class="search-form" action="https://php.net/search.php">
+     <form class="search-form" action="https://www.php.net/search.php">
       <input class="search-input" value="" name="pattern" placeholder="Search">
      </form>
     <div class="menu-icon" onclick="document.querySelector('.menu-mobile').classList.toggle('hide')">☰ MENU</div>
      <ul class="menu-mobile hide">
       <li class="menu-mobile-item">
-        <a class="menu-mobile-item-link" href="https://php.net/downloads.php">Downloads</a>
+        <a class="menu-mobile-item-link" href="https://www.php.net/downloads.php">Downloads</a>
       </li>
       <li class="menu-mobile-item">
-        <a class="menu-mobile-item-link" href="https://php.net/docs.php">Documentation</a>
+        <a class="menu-mobile-item-link" href="https://www.php.net/docs.php">Documentation</a>
       </li>
       <li class="menu-mobile-item">
-        <a class="menu-mobile-item-link" href="https://php.net/get-involved.php">Get Involved</a>
+        <a class="menu-mobile-item-link" href="https://www.php.net/get-involved.php">Get Involved</a>
       </li>
       <li class="menu-mobile-item mod-active">
-        <a class="menu-mobile-item-link" href="https://php.net/support.php">Help</a>
+        <a class="menu-mobile-item-link" href="https://www.php.net/support.php">Help</a>
       </li>
      </ul>
    </nav>
@@ -168,21 +168,21 @@ function foot()
  <footer class="footer">
     <ul class="footer-nav">
      <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/copyright.php">
+       <a class="footer-nav-item-link" href="https://www.php.net/copyright.php">
          Copyright ©2001-<?php echo date('Y'); ?> The PHP Group
        </a>
      </li>
      <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/my.php">My PHP.net</a>
+       <a class="footer-nav-item-link" href="https://www.php.net/my.php">My PHP.net</a>
      </li>
      <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/contact.php">Contact</a>
+       <a class="footer-nav-item-link" href="https://www.php.net/contact.php">Contact</a>
      </li>
      <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/sites.php">Other PHP.net sites</a>
+       <a class="footer-nav-item-link" href="https://www.php.net/sites.php">Other PHP.net sites</a>
      </li>
      <li class="footer-nav-item">
-       <a class="footer-nav-item-link" href="https://php.net/privacy.php">Privacy policy</a>
+       <a class="footer-nav-item-link" href="https://www.php.net/privacy.php">Privacy policy</a>
      </li>
     </ul>
  </footer>
