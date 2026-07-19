@@ -8,15 +8,15 @@ function error($str)
 {
     head("PHP news : error");
     echo "<section class=\"content\"><blockquote><strong>Error:</strong> ",
-       to_utf8($str), "</blockquote></section>\n";
+       clean(to_utf8($str)), "</blockquote></section>\n";
     foot();
     die();
 }
 
 /* Borrowed from web-php repo. */
-function clean($var)
+function clean($var): string
 {
-    return htmlspecialchars($var, \ENT_QUOTES);
+    return htmlspecialchars((string) $var, ENT_QUOTES | ENT_SUBSTITUTE, "UTF-8");
 }
 
 // Try to check that this email address is valid
@@ -112,7 +112,7 @@ function head($title = "PHP Mailing Lists (PHP News)")
  <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo htmlspecialchars($title); ?></title>
+  <title><?php echo clean($title); ?></title>
   <link href="//fonts.googleapis.com/css?family=Fira+Sans|Source+Sans+Pro:300,400,600,400italic,600italic|Source+Code+Pro&amp;subset=latin,latin-ext" rel="stylesheet">
   <link rel="stylesheet" href="/style.css" type="text/css" />
   <link rel="shortcut icon" href="//www.php.net/favicon.ico">
@@ -246,7 +246,11 @@ function format_author($a, $charset = 'iso-8859-1', $nameOnly = false)
         $email= spam_protect($ar[1]);
         $name = $ar[2];
     }
-    elseif (preg_match("/^\s*\"?(.+?)\"?\s*<(.+)>\s*$/", $a, $ar)) {
+
+    // Treat the address as one angle-bracketed part, so extra
+    // brackets in the display name do not confuse parsing.
+
+    elseif (preg_match("/^\s*\"?(.+?)\"?\s*<([^<>]+)>\s*$/", $a, $ar)) {
         $email = spam_protect($ar[2]);
         $name = $ar[1];
     }
@@ -255,13 +259,14 @@ function format_author($a, $charset = 'iso-8859-1', $nameOnly = false)
     } else {
         $email = $name = $a;
     }
+
     $name = clean($name);
 
     if ($nameOnly) {
         return str_replace(" ", "&nbsp;", $name);
     } else {
         return "<a href=\"mailto:" .
-            htmlspecialchars(urlencode($email), ENT_QUOTES, "UTF-8") .
+            clean(urlencode($email)) .
             "\" class=\"email fn n\">" .
             str_replace(" ", "&nbsp;", $name) . "</a>";
     }
@@ -281,7 +286,7 @@ function format_subject($s, $charset = 'iso-8859-1', $trimRe = false)
     } else {
         $s = wordwrap($s, 150);
     }
-    return nl2br(htmlspecialchars($s, ENT_QUOTES, "UTF-8"));
+    return nl2br(clean($s));
 }
 
 
@@ -296,7 +301,7 @@ function format_title($s, $charset = 'iso-8859-1', $trimRe = false)
     } else {
         $s = wordwrap($s, 150);
     }
-    return htmlspecialchars($s, ENT_QUOTES, "UTF-8");
+    return clean($s);
 }
 
 function format_date($d, $format = 'r')

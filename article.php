@@ -60,14 +60,17 @@ try {
 }
 
 head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
+$cleanGroupUrl = urlencode($group);
+$cleanGroup = clean($group);
+
 echo '<nav class="secondary-nav">';
 echo ' <ul class="breadcrumbs">';
 echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>';
 echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/' .
-    htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '">' .
-    htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</a></li>';
+    $cleanGroupUrl . '">' .
+    $cleanGroup . '</a></li>';
 echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/' .
-    htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '/' . $article . '">' .
+    $cleanGroupUrl . '/' . $article . '">' .
     format_title($mail['headers']['subject'], 'utf-8') . '</a></li>';
 echo ' </ul>';
 echo '</nav>';
@@ -107,7 +110,7 @@ if (!empty($mail['headers']['newsgroups'])) {
     echo '     <td class="headervalue" ' . (empty($refsResolved) ? 'colspan="3"' : null) . '>';
     $r = explode(",", rtrim($mail['headers']['newsgroups']));
     foreach ($r as $v) {
-        echo "<a href=\"/" . urlencode($v) . "\">" . htmlspecialchars($v) . "</a>&nbsp;";
+        echo "<a href=\"/" . urlencode($v) . "\">" . clean($v) . "</a>&nbsp;";
     }
     echo "</td>\n";
 }
@@ -331,7 +334,7 @@ if (!empty($mail['attachment'])) {
         $name = $attachment['filename'];
 
         if ($mimetype == 'text/plain') {
-            echo htmlspecialchars($attachment['data']);
+            echo clean($attachment['data']);
             continue;
         }
 
@@ -347,14 +350,14 @@ if (!empty($mail['attachment'])) {
             $link_desc .= " " . $description;
         }
 
-        $dl_link = "/getpart.php?group=$group&amp;article=$article&amp;part=$mimecount";
-        $link_desc = htmlspecialchars($link_desc, ENT_QUOTES, 'UTF-8');
+        $dl_link = "/getpart.php?group=" . urlencode($group) . "&amp;article=" . urlencode((string) $article) . "&amp;part=" . urlencode((string) $mimecount);
+        $link_desc = clean($link_desc);
 
         /* Attachment filename and mimetype might contain malicious characters */
         printf(
             'Attachment: <a href="%s">%s</a><br />' . "\n",
             $dl_link,
-            htmlspecialchars($link_desc)
+            $link_desc,
         );
     }
 }
@@ -380,7 +383,6 @@ try {
 
 // Does not check existence of next, so consider this the super duper fast [broken] version
 // Based off navbar() in group.php
-$group = htmlspecialchars($group, ENT_QUOTES, "UTF-8");
 $current = $article;
 
 echo '  <table class="standard">' . "\n";
@@ -388,15 +390,15 @@ echo '   <tr>' . "\n";
 echo '    <th class="nav">';
 
 if ($current > 1) {
-    echo '     <a href="/' , $group , '/' , ($current - 1) , '"><b>&laquo; <span>previous</span></b></a>';
+    echo '     <a href="/' , $cleanGroupUrl , '/' , ($current - 1) , '"><b>&laquo; <span>previous</span></b></a>';
 } else {
     echo '&nbsp;';
 }
 
 echo '    </th>' . "\n";
-echo '    <th class="align-center">' . "$group (#$current)</th>\n";
+echo '    <th class="align-center">' . $cleanGroup . " (#$current)</th>\n";
 echo '    <th class="nav align-right">';
-echo '     <a href="/' , $group , '/' , ($current + 1) , '"><b><span>next</span> &raquo;</b></a>';
+echo '     <a href="/' , $cleanGroupUrl , '/' , ($current + 1) , '"><b><span>next</span> &raquo;</b></a>';
 echo '    </th>' . "\n";
 echo '   </tr>' . "\n";
 echo '  </table>' . "\n";
