@@ -17,7 +17,7 @@ try {
 
 head();
 
-$DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news-web.php.net' : $NNTP_HOST);
+$CLEAN_DISPLAY_NNTP_HOST = clean(($NNTP_HOST == 'localhost') ? 'news-web.php.net' : $NNTP_HOST);
 ?>
 
 <nav class="secondary-nav">
@@ -33,7 +33,7 @@ $DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news-web.ph
    <p>
     The PHP project collaborates across a number of mailing lists. The archives
     are available through this site and via NNTP at
-    <a href="news://<?= $DISPLAY_NNTP_HOST ?>"> <?= $DISPLAY_NNTP_HOST ?></a>.
+    <a href="news://<?= $CLEAN_DISPLAY_NNTP_HOST ?>"> <?= $CLEAN_DISPLAY_NNTP_HOST ?></a>.
    </p>
    <p>
     Instructions for subscribing to active lists by email can be found on the page
@@ -61,13 +61,14 @@ foreach ($groups as $group => $details) {
             $last_status == 'y' ? 'Discussion Lists' : 'Inactive Lists',
             "</th></tr>\n";
     }
+    $cleanGroupUrl = urlencode($group);
     echo "       <tr>\n";
-    echo "        <td><a class=\"active{$details['status']}\" href=\"/$group\">$group</a></td>\n";
-    echo "        <td>", htmlspecialchars($descriptions[$group]), "</td>\n";
+    echo "        <td><a class=\"active" . clean($details['status']) . "\" href=\"/$cleanGroupUrl\">" . clean($group) . "</a></td>\n";
+    echo "        <td>", clean($descriptions[$group]), "</td>\n";
     echo "        <td class=\"align-right\">", $details['high'] - $details['low'] + 1, "</td>\n";
     echo "        <td class=\"align-center\">";
     if ($details['status'] != 'n') {
-        echo "<a href=\"group.php?group=$group&amp;format=rss\">RSS</a>";
+        echo "<a href=\"group.php?group=$cleanGroupUrl&amp;format=rss\">RSS</a>";
     }
     echo "</td>\n";
     echo "       </tr>\n";

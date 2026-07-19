@@ -60,12 +60,13 @@ class ThreadTree
             #unset($this->articleNumbers[$messageId]);
 
             $details = $this->articles[$articleNumber];
+            $cleanArticlePath = "/" . urlencode($group) . "/" . urlencode((string) $articleNumber);
 
             echo "   <tr>\n";
-            echo "    <td align=\"center\"><a href=\"/$group/$articleNumber\">$articleNumber</a></td>\n";
+            echo "    <td align=\"center\"><a href=\"$cleanArticlePath\">" . clean($articleNumber) . "</a></td>\n";
             echo "    <td>";
             echo str_repeat("&nbsp; &nbsp;", $depth ?? 0);
-            echo "<a href=\"/$group/$articleNumber\">";
+            echo "<a href=\"$cleanArticlePath\">";
             echo format_subject($details['subject'], $charset);
             echo "</a></td>\n";
             echo "    <td class=\"vcard\">" . format_author($details['author'], $charset) . "</td>\n";
@@ -144,7 +145,7 @@ class ThreadTree
             $details = $this->articles[$articleNumber];
 
             if ($articleNumber != $activeArticleNumber) {
-                echo "<a href=\"/$group/$articleNumber\">";
+                echo "<a href=\"/" . urlencode($group) . "/" . urlencode((string) $articleNumber) . "\">";
             } else {
                 echo "<b>";
             }

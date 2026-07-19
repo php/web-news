@@ -33,13 +33,14 @@ $cleanBaseUrl = clean($NEWS_WEB_BASE_URL);
 $baseUrlParts = parse_url($NEWS_WEB_BASE_URL);
 $cleanBaseHost = clean($baseUrlParts['host'] . (isset($baseUrlParts['port']) ? ':' . $baseUrlParts['port'] : ''));
 $cleanGroupUrl = urlencode($group);
+$cleanGroupHtml = clean($group);
 switch ($format) {
     case 'rss':
         header("Content-type: text/xml");
         echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";?>
 <rss version="2.0">
  <channel> 
-  <title><?php echo $cleanBaseHost; ?>: <?php echo $group?></title>
+  <title><?php echo $cleanBaseHost; ?>: <?php echo $cleanGroupHtml?></title>
   <link><?php echo $cleanBaseUrl; ?>/group.php?group=<?php echo $cleanGroupUrl?></link>
   <description></description>
         <?php
@@ -52,9 +53,9 @@ switch ($format) {
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns="http://my.netscape.com/rdf/simple/0.9/">
  <channel>
-  <title><?php echo $cleanBaseHost; ?>: <?php echo $group?></title>
+  <title><?php echo $cleanBaseHost; ?>: <?php echo $cleanGroupHtml?></title>
   <link><?php echo $cleanBaseUrl; ?>/group.php?group=<?php echo $cleanGroupUrl?></link>
-  <description><?php echo $group?> Newsgroup at <?php echo $NNTP_HOST; ?></description>
+  <description><?php echo $cleanGroupHtml?> Newsgroup at <?php echo clean($NNTP_HOST); ?></description>
   <language>en-US</language>
  </channel>
         <?php
@@ -66,12 +67,12 @@ switch ($format) {
         echo ' <ul class="breadcrumbs">';
         echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/">PHP Mailing Lists</a></li>';
         echo '  <li class="breadcrumbs-item"><a class="breadcrumbs-item-link" href="/',
-            htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '">',
-            htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</a></li>';
+            $cleanGroupUrl . '">',
+            $cleanGroupHtml . '</a></li>';
         echo ' </ul>';
         echo '</nav>';
         echo '<section class="content">';
-        echo '<h1>' . htmlspecialchars($group, ENT_QUOTES, "UTF-8") . '</h1>';
+        echo '<h1>' . $cleanGroupHtml . '</h1>';
         if ($i == 0) {
             /* Special header of info for the main page for a group */
             $groups = $nntpClient->listGroups($group);
@@ -92,7 +93,7 @@ switch ($format) {
                         </p>
                     <?php
                 }
-                $subscription_address = htmlspecialchars(get_subscribe_address($group));
+                $subscription_address = clean(get_subscribe_address($group));
                 ?>
                     <form class="subscription-form" method="POST" action="/subscribe.php">
                         <input type="hidden" name="group" value="<?= clean($group) ?>">
@@ -158,7 +159,7 @@ foreach ($overview['articles'] as $articleNumber => $details) {
             echo "   <link>$cleanArticleLink</link>\n";
             echo "   <title>", format_subject($details['subject'], $charset), "</title>\n";
             echo "   <description>",
-                htmlspecialchars(format_author($details['author'], $charset), ENT_QUOTES, "UTF-8"),
+                clean(format_author($details['author'], $charset)),
                 "</description>\n";
             echo "   <pubDate>$date822</pubDate>\n";
             echo "  </item>\n";
@@ -168,7 +169,7 @@ foreach ($overview['articles'] as $articleNumber => $details) {
             echo "  <title>", format_subject($details['subject'], $charset), "</title>\n";
             echo "  <link>$cleanArticleLink</link>\n";
             echo "  <description>",
-                htmlspecialchars(format_author($details['author'], $charset), ENT_QUOTES, "UTF-8"),
+                clean(format_author($details['author'], $charset)),
                 "</description>\n";
             echo "  <pubDate>$date822</pubDate>\n";
             echo " </item>\n";
@@ -176,14 +177,14 @@ foreach ($overview['articles'] as $articleNumber => $details) {
         case 'html':
         default:
             echo "   <tr>\n";
-            echo "    <td><a href=\"/$group/$articleNumber\">$articleNumber</a></td>\n";
-            echo "    <td><a href=\"/$group/$articleNumber\">";
+            echo "    <td><a href=\"$cleanArticlePath\">" . clean($articleNumber) . "</a></td>\n";
+            echo "    <td><a href=\"$cleanArticlePath\">";
             echo format_subject($details['subject'], $charset);
             echo "</a></td>\n";
             echo "    <td class=\"vcard\">" . format_author($details['author'], $charset) . "</td>\n";
             echo "    <td class=\"align-center\"><span class='monospace mod-small'>" .
                 format_date($details['date']) . "</span></td>\n";
-            echo "    <td class=\"align-right\">{$details['lines']}</td>\n";
+            echo "    <td class=\"align-right\">" . clean($details['lines']) . "</td>\n";
             echo "   </tr>\n";
     }
 }

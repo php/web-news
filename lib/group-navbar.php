@@ -7,7 +7,7 @@ function navbar($g, $f, $l, $i)
     echo '    <th class="nav">';
     if ($i > $f) {
         $p = max($i - 20, $f);
-        echo "<a href=\"/" . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$p\">",
+        echo "<a href=\"/" . urlencode($g) . "/start/$p\">",
             "<b>&laquo; <span>previous</span></b></a>";
     } else {
         echo "&nbsp;";
@@ -15,11 +15,11 @@ function navbar($g, $f, $l, $i)
     echo '</th>' . "\n";
     $j = min($i + 20, $l);
     $c = $l - $f + 1;
-    echo '    <th class="align-center">' . htmlspecialchars($g, ENT_QUOTES, "UTF-8") . " ($i-$j of $c)</th>\n";
+    echo '    <th class="align-center">' . clean($g) . " ($i-$j of $c)</th>\n";
     echo '    <th class="nav align-right">';
     if ($i + 20 <= $l) {
         $n = min($i + 20, $l - 19);
-        echo "<a href=\"/", htmlspecialchars($g, ENT_QUOTES, "UTF-8") . "/start/$n\">",
+        echo "<a href=\"/", urlencode($g) . "/start/$n\">",
             "<b><span>next</span> &raquo;</b></a>";
     } else {
         echo "&nbsp;";
