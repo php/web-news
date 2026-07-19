@@ -2,6 +2,14 @@
 
 require 'common.php';
 
+function sanitise_header_value($value)
+{
+    // Values must not contain control bytes; stripping them
+    // prevents rejected or injected response headers.
+
+    return trim(preg_replace('/[\x00-\x1F\x7F]/', '', (string) $value));
+}
+
 if (isset($_GET['group'])) {
     $group = preg_replace('@[^A-Za-z0-9.-]@', '', $_GET['group']);
 } else {
@@ -43,14 +51,37 @@ if (!empty($mail['attachment'][$part])) {
     $contentdisposition = 'attachment';
 
     if (!empty($attachment['filename'])) {
-        $contentdisposition .= '; filename="' . $attachment['filename'] . '"';
+
+        // Use a simple download name; attachment filenames
+        // are not trusted message content.
+
+        $filename = basename(str_replace('\\', '/', sanitise_header_value($attachment['filename'])));
+    } else {
+        $filename = '';
     }
 
-    header('Content-Type: ' . $attachment['mimetype']);
+    if ($filename === '') {
+        $filename = 'attachment';
+    }
+
+    $contentdisposition .= '; filename="' . addcslashes($filename, '\\"') . '"';
+
+    $mimetype = sanitise_header_value($attachment['mimetype']);
+
+    // Only send a bare type/subtype MIME value; parameters
+    // and malformed values fall back safely.
+
+    if (!preg_match('#^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$#i', $mimetype)) {
+        $mimetype = 'application/octet-stream';
+    }
+
+    header('X-Content-Type-Options: nosniff');
+    header('Content-Security-Policy: sandbox');
+    header('Content-Type: ' . $mimetype);
     header('Content-Disposition: ' . $contentdisposition);
 
     if (isset($attachment['description'])) {
-        header('Content-Description: ' . $attachment['description']);
+        header('Content-Description: ' . sanitise_header_value($attachment['description']));
     }
 
     echo $attachment['data'];
