@@ -255,8 +255,10 @@ function format_author($a, $charset = 'iso-8859-1', $nameOnly = false)
     } else {
         $email = $name = $a;
     }
+    $name = clean($name);
+
     if ($nameOnly) {
-        return str_replace(" ", "&nbsp;", htmlspecialchars($name, ENT_QUOTES, "UTF-8"));
+        return str_replace(" ", "&nbsp;", $name);
     } else {
         return "<a href=\"mailto:" .
             htmlspecialchars(urlencode($email), ENT_QUOTES, "UTF-8") .
