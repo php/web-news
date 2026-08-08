@@ -250,7 +250,7 @@ function format_author($a, $charset = 'iso-8859-1', $nameOnly = false)
         $email = spam_protect($ar[2]);
         $name = $ar[1];
     }
-    elseif (strpos("@", $a) !== false) {
+    elseif (strpos($a, "@") !== false) {
        $email = $name = spam_protect($a);
     } else {
         $email = $name = $a;
