@@ -6,7 +6,7 @@ for local development.
 ```
 git clone https://github.com/php/web-news.git
 cd web-news/
-NNTP_HOST=news-web.php.net php -S localhost:8080 .router.php
+NNTP_HOST=news.php.net php -S localhost:8080 .router.php
 ```
 
 -----
