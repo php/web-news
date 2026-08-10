@@ -29,15 +29,18 @@ try {
     error($e->getMessage());
 }
 
-$host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, "UTF-8");
+$cleanBaseUrl = clean($NEWS_WEB_BASE_URL);
+$baseUrlParts = parse_url($NEWS_WEB_BASE_URL);
+$cleanBaseHost = clean($baseUrlParts['host'] . (isset($baseUrlParts['port']) ? ':' . $baseUrlParts['port'] : ''));
+$cleanGroupUrl = urlencode($group);
 switch ($format) {
     case 'rss':
         header("Content-type: text/xml");
         echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";?>
 <rss version="2.0">
  <channel> 
-  <title><?php echo $host; ?>: <?php echo $group?></title>
-  <link>http://<?php echo $host; ?>/group.php?group=<?php echo $group?></link>
+  <title><?php echo $cleanBaseHost; ?>: <?php echo $group?></title>
+  <link><?php echo $cleanBaseUrl; ?>/group.php?group=<?php echo $cleanGroupUrl?></link>
   <description></description>
         <?php
         break;
@@ -49,8 +52,8 @@ switch ($format) {
         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns="http://my.netscape.com/rdf/simple/0.9/">
  <channel>
-  <title><?php echo $host; ?>: <?php echo $group?></title>
-  <link>http://<?php echo $host; ?>/group.php?group=<?php echo $group?></link>
+  <title><?php echo $cleanBaseHost; ?>: <?php echo $group?></title>
+  <link><?php echo $cleanBaseUrl; ?>/group.php?group=<?php echo $cleanGroupUrl?></link>
   <description><?php echo $group?> Newsgroup at <?php echo $NNTP_HOST; ?></description>
   <language>en-US</language>
  </channel>
@@ -146,11 +149,13 @@ $charset = "utf-8";
 foreach ($overview['articles'] as $articleNumber => $details) {
     /*  $date = date("H:i:s M/d/y", strtotime($odate)); */
     $date822 = date("r", strtotime($details['date']));
+    $cleanArticlePath = "/$cleanGroupUrl/" . urlencode((string) $articleNumber);
+    $cleanArticleLink = "$cleanBaseUrl$cleanArticlePath";
 
     switch ($format) {
         case 'rss':
             echo "  <item>\n";
-            echo "   <link>http://$host/$group/$articleNumber</link>\n";
+            echo "   <link>$cleanArticleLink</link>\n";
             echo "   <title>", format_subject($details['subject'], $charset), "</title>\n";
             echo "   <description>",
                 htmlspecialchars(format_author($details['author'], $charset), ENT_QUOTES, "UTF-8"),
@@ -161,7 +166,7 @@ foreach ($overview['articles'] as $articleNumber => $details) {
         case 'rdf':
             echo " <item>\n";
             echo "  <title>", format_subject($details['subject'], $charset), "</title>\n";
-            echo "  <link>http://$host/$group/$articleNumber</link>\n";
+            echo "  <link>$cleanArticleLink</link>\n";
             echo "  <description>",
                 htmlspecialchars(format_author($details['author'], $charset), ENT_QUOTES, "UTF-8"),
                 "</description>\n";

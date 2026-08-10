@@ -17,7 +17,7 @@ try {
 
 head();
 
-$DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news.php.net' : $NNTP_HOST);
+$DISPLAY_NNTP_HOST = htmlspecialchars(($NNTP_HOST == 'localhost') ? 'news-web.php.net' : $NNTP_HOST);
 ?>
 
 <nav class="secondary-nav">
