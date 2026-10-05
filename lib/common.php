@@ -102,9 +102,10 @@ function posttohost($url, $data)
     return file_get_contents($url, false, $ctx);
 }
 
-function head($title = "PHP Mailing Lists (PHP News)")
+function head($title = "PHP Mailing Lists (PHP News)", int $cacheTimeSeconds = 180)
 {
     header("Content-type: text/html; charset=utf-8");
+    header("Cache-Control: public, max-age={$cacheTimeSeconds}");
 
     ?>
 <!doctype html>

@@ -32,6 +32,24 @@ try {
         $rawReferences = $mail['headers']['in-reply-to'];
     }
 
+    if (array_key_exists('received', $mail)) {
+        $now = new DateTimeImmutable();
+        $messageTime = new DateTimeImmutable( $mail['received'] );
+        $diff = $now->diff($messageTime);
+
+        if ($diff->y > 1) {
+            $cacheTimeSeconds = 60 * 60 * 24;
+        } else if ($diff->m > 6) {
+            $cacheTimeSeconds = 60 * 60 * 12;
+        } else if ($diff->m > 1) {
+            $cacheTimeSeconds = 60 * 30;
+        } else {
+            $cacheTimeSeconds = 60 * 3;
+        }
+    } else {
+        $cacheTimeSeconds = 60 * 3;
+    }
+
     $references = [];
     foreach ($rawReferences as $ref) {
         $matches = [];
@@ -59,7 +77,7 @@ try {
     error($e->getMessage());
 }
 
-head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'));
+head("{$group}: " . format_title($mail['headers']['subject'], 'utf-8'), $cacheTimeSeconds);
 $cleanGroupUrl = urlencode($group);
 $cleanGroup = clean($group);
 
