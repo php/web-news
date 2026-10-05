@@ -252,13 +252,6 @@ h1:after {
     border-bottom: 1px dotted;
 }
 
-pre {
-    font-family: "Fira Mono", monospace;
-    font-size: 14px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
 .footer {
     color: #F2F2F2;
     max-width: 1440px;
@@ -370,16 +363,25 @@ table.standard th.subr {
 .quote3 { color: #a36008; }
 .quote0 { color: #909; }
 
-pre.flowed {
+.emailText {
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: "Fira Mono", monospace;
+}
+
+.emailText.flowed {
     max-width: 100ch;
     font-family: "Fira Sans", "Source Sans Pro", Helvetica, Arial, sans-serif;
     font-size: 16px;
 }
-pre.flowed code, pre.flowed pre {
+
+.emailText code, .emailText pre {
+    font-family: "Fira Mono", monospace;
     font-weight: 700;
     color: #369;
 }
-pre.flowed pre {
+.emailText pre {
     background: rgba(0,0,0,0.05);
     border: 1px solid rgba(0,0,0,0.2);
     padding: 0.5rem;
@@ -494,7 +496,7 @@ form.subscription-form {
         display: none;
     }
 
-    blockquote {
+    blockquote, article.email {
         margin: 16px;
     }
 }

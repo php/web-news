@@ -94,9 +94,9 @@ echo ' </ul>';
 echo '</nav>';
 echo '<section class="content">';
 
-echo '<h1>' . format_subject($mail['headers']['subject'], 'utf-8') . "</h1>\n";
-
-echo "  <blockquote>\n";
+echo " <article>\n";
+echo '  <h1>' . format_subject($mail['headers']['subject'], 'utf-8') . "</h1>\n";
+echo "  <header>\n";
 echo '   <table class="standard">' . "\n";
 # from
 echo '    <tr class="vcard">' . "\n";
@@ -140,10 +140,9 @@ echo '     <td class="headerlabel">Request:</td>' . "\n";
 echo '     <td class="headervalue" colspan="3">Send a blank email to <a href="mailto:' . clean($request_address) . '">' . clean($request_address)  . "</a> to get a copy of this message</td>\n";
 echo "    </tr>\n";
 echo "   </table>\n";
-echo "  </blockquote>\n";
-echo "  <blockquote>\n";
-$class = $mail['flowed'] ? ' class="flowed"' : '';
-echo "   <pre$class>\n";
+echo "  </header>\n";
+$class = $mail['flowed'] ? 'flowed' : '';
+echo "  <div class=\"emailText $class\">\n";
 
 /*
  * If there was no text part of the message, see what we can do about creating
@@ -379,20 +378,20 @@ if (!empty($mail['attachment'])) {
     }
 }
 
-echo "   </pre>\n";
-echo "  </blockquote>\n";
+echo "  </div>\n";
+echo " </article>\n";
 
 try {
     $overview = $nntpClient->getThreadOverview($group, $article);
 
     $threads = new \PhpWeb\ThreadTree($overview['articles']);
     ?>
-      <blockquote>
+      <nav>
         <h2>
           Thread (<?= sprintf("%d message%s", $count = $threads->count(), $count > 1 ? 's' : '') ?>)
         </h2>
         <?php $threads->printFullThread($group, $article, charset: 'utf8'); ?>
-      </blockquote>
+      </nav>
     <?php
 } catch (\Throwable $t) {
     // We don't care if there's no thread. (There should be, though.)
