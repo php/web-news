@@ -317,8 +317,16 @@ foreach ($lines as $line) {
     # Otherwise we're in a signature or not flowed
     else {
         if (!$insig && preg_match('/^((\s*\w*?&gt; ?)+)/', $line, $m)) {
+            $tags = [];
+            $line = preg_replace_callback('/<[^>]+>/', function ($matches) use (&$tags) {
+                $id = random_bytes(16);
+                $tags[$id] = $matches[0];
+
+                return $id;
+            }, $line);
+
             $level = substr_count($m[1], '&gt;') % 4;
-            echo "<span class=\"quote$level\">", wordwrap($line, 100, "\n" . $m[1]), "</span>";
+            echo "<span class=\"quote$level\">", strtr(wordwrap($line, 100, "\n" . $m[1]), $tags), "</span>";
         } else {
             echo wordwrap($line, 100);
         }
