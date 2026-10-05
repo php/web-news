@@ -386,7 +386,7 @@ pre.flowed pre {
     margin: 0;
 }
 
-div.quote {
+blockquote.quote {
     border-left: 2px solid #777;
     padding: 0;
     padding-left: 1em;
