@@ -230,7 +230,7 @@ foreach ($lines as $line) {
     # quoted lines broken up, so we can put quoted blocks in levels of <div>
     # blocks instead of highlighting them per-line
 
-    if (!$insig && $mail['flowed']) {
+    if (!$insig && array_key_exists('flowed', $mail) && $mail['flowed']) {
         $flowed = false;
         $new_level = 0;
 
