@@ -254,7 +254,7 @@ foreach ($lines as $line) {
         # If this line had more quoting, go ahead and open to that level
         if ($new_level && $new_level > $level) {
             foreach (range($level + 1, $new_level) as $this_level) {
-                echo "<div class=\"quote quote{$this_level}\">";
+                echo "<blockquote class=\"quote quote{$this_level}\">";
             }
             $level = $new_level;
             $in_flow = true;
@@ -262,7 +262,7 @@ foreach ($lines as $line) {
         # Otherwise if we are in a flow, but this line's level is lower (but
         # not 0), we need to close up the higher levels
         elseif ($in_flow && $new_level && $new_level < $level) {
-            echo str_repeat('</div>', $level - $new_level);
+            echo str_repeat('</blockquote>', $level - $new_level);
             $level = $new_level;
         }
 
@@ -304,7 +304,7 @@ foreach ($lines as $line) {
                     echo '</pre>';
                     $in_code_block = false;
                 }
-                echo str_repeat("</div>", $level) . "\n";
+                echo str_repeat("</blockquote>", $level) . "\n";
                 $level = 0;
                 $in_flow = false;
             } else {
