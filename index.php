@@ -15,7 +15,7 @@ try {
     error($e->getMessage());
 }
 
-head();
+head(cacheTimeSeconds: 60 * 60 * 24 * 90);
 
 $CLEAN_DISPLAY_NNTP_HOST = clean(($NNTP_HOST == 'localhost') ? 'news-web.php.net' : $NNTP_HOST);
 ?>
