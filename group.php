@@ -37,9 +37,10 @@ $cleanGroupHtml = clean($group);
 switch ($format) {
     case 'rss':
         header("Content-type: text/xml");
+        cacheHeader(60 * 30);
         echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";?>
 <rss version="2.0">
- <channel> 
+ <channel>
   <title><?php echo $cleanBaseHost; ?>: <?php echo $cleanGroupHtml?></title>
   <link><?php echo $cleanBaseUrl; ?>/group.php?group=<?php echo $cleanGroupUrl?></link>
   <description></description>
@@ -47,6 +48,7 @@ switch ($format) {
         break;
     case 'rdf':
         header("Content-type: text/xml");
+        cacheHeader(60 * 30);
         echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         ?>
 <rdf:RDF
