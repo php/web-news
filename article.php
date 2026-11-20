@@ -53,7 +53,7 @@ try {
     $references = [];
     foreach ($rawReferences as $ref) {
         $matches = [];
-        if (preg_match_all('/\<(.*?)\>/', $ref, $matches)) {
+        if (preg_match_all('/\<(.+?)\>/', $ref, $matches)) {
             foreach ($matches[0] as $match) {
                 $references[] = $match;
             }
